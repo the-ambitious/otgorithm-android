@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,16 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
+import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.RankerDTO;
 import com.ambit.otgorithm.models.Ranker;
 import com.ambit.otgorithm.modules.RankerViewHolder;
+import com.ambit.otgorithm.views.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHolder> {
 
-    private ArrayList<RankerDTO> mRankerList;
+    private ArrayList<GalleryDTO> mRankerList;
 
     public static class RankerViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -35,7 +38,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
 
     }   // end of RankerViewHolder
 
-    public RankAdapter(ArrayList<RankerDTO> rankerList) {
+    public RankAdapter(ArrayList<GalleryDTO> rankerList) {
         this.mRankerList = rankerList;
     }
 
@@ -49,16 +52,21 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
 
     @Override
     public void onBindViewHolder(@NonNull RankerViewHolder holder, int position) {
-        RankerDTO currentRanker = mRankerList.get(position);
+        GalleryDTO currentRanker = mRankerList.get(position);
 
-        holder.mImageView.setImageResource(currentRanker.getmProfileThumbnail());
+       /* holder.mImageView.setImageResource(currentRanker.getmProfileThumbnail());
         holder.mTextView1.setText(currentRanker.getmUserId());
-        holder.mTextView2.setText(currentRanker.getmUserDesc());
+        holder.mTextView2.setText(currentRanker.getmUserDesc());*/
     }
 
     @Override
     public int getItemCount() {
         return mRankerList.size();
+    }
+
+    public void addItem(int position, GalleryDTO galleryDTO){
+        mRankerList.add(position, galleryDTO);
+        notifyItemInserted(position);
     }
 
 }

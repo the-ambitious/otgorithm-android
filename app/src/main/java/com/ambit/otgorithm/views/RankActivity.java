@@ -15,7 +15,13 @@ import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.RankAdapter;
+import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.RankerDTO;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -24,6 +30,9 @@ public class RankActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    FirebaseDatabase mFirebaseDb;
+    DatabaseReference mGalleryRef;
+    int position;
 
     TextView tv;
     TextView toolbarTitle;
@@ -36,6 +45,7 @@ public class RankActivity extends AppCompatActivity {
         Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
+        position = 0;
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText("장군 서열 현황");
         toolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
@@ -49,8 +59,8 @@ public class RankActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*************************************************************/
-        ArrayList<RankerDTO> rankerList = new ArrayList<>();
-        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
+        ArrayList<GalleryDTO> rankerList = new ArrayList<>();
+       /* rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
 
@@ -60,18 +70,24 @@ public class RankActivity extends AppCompatActivity {
 
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
-        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));*/
+
+
 
         mRecyclerView = findViewById(R.id.rv_ranker);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new RankAdapter(rankerList);
 
+
+
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         /*************************************************************/
 
 
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        mGalleryRef = mFirebaseDb.getReference().child("galleries");
 
 
         Intent intent = getIntent();
@@ -79,6 +95,8 @@ public class RankActivity extends AppCompatActivity {
 
         tv = (TextView) findViewById(R.id.tv);
         tv.setText(name);
+
+        addGalleryListener();
 
         Log.d("테스트", "RankActivity 들왔음");
     }
@@ -103,5 +121,42 @@ public class RankActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void addGalleryListener(){
+        mGalleryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
+                drawUI(galleryDTO);
+                Log.d("ㅋㅋㅋ","ㅋㅋㅋ");
+                //mGalleryDTOS.add(galleryDTO);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void drawUI(GalleryDTO galleryDTO){
+        //mAdapter.addItem(position++ ,galleryDTO);
+    }
+
 
 }

@@ -30,7 +30,7 @@ public class ProvinceActivity extends AppCompatActivity {
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
 
-    final int ITEM_SIZE = 3;
+    final int ITEM_SIZE = 4;
     TextView tv;
 
     @Override
@@ -103,7 +103,7 @@ public class ProvinceActivity extends AppCompatActivity {
         item[0] = new ItemDTO("서울2", R.drawable.seoul);
         item[1] = new ItemDTO("대전3", R.drawable.seoul2);
         item[2] = new ItemDTO("부산4", R.drawable.seoul3);
-//        item[3] = new ItemDTO("서울", R.drawable.a);
+        item[3] = new ItemDTO("전국구", R.drawable.seoul);
 //        item[4] = new ItemDTO("서울", R.drawable.a);
 
         for (int i = 0; i < ITEM_SIZE; i++) {
