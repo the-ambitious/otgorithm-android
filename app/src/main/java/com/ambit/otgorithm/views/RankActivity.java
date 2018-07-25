@@ -1,8 +1,10 @@
 package com.ambit.otgorithm.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,12 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.RankAdapter;
 import com.ambit.otgorithm.dto.RankerDTO;
+import com.ambit.otgorithm.modules.RankerItemClickListener;
 
 import java.util.ArrayList;
 
@@ -63,7 +68,27 @@ public class RankActivity extends AppCompatActivity {
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
 
         mRecyclerView = findViewById(R.id.rv_ranker);
+        mRecyclerView.addOnItemTouchListener(
+                new RankerItemClickListener(getApplicationContext(), mRecyclerView, new RankerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                })
+        );
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new RankAdapter(rankerList);
 
