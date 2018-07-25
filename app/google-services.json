@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "609944736173",
+    "firebase_url": "https://otgorithm-69c6f.firebaseio.com",
+    "project_id": "otgorithm-69c6f",
+    "storage_bucket": "otgorithm-69c6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609944736173:android:888192469cec5e57",
+        "android_client_info": {
+          "package_name": "com.ambit.otgorithm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609944736173-7bdmcilgd0jruhoigo88q17ltqgpki3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ambit.otgorithm",
+            "certificate_hash": "8f564087b3fff23f2281a9995830709ce5c9bfed"
+          }
+        },
+        {
+          "client_id": "609944736173-ldomgrdapcvsqsdd21frofgbm2kfdf2l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ambit.otgorithm",
+            "certificate_hash": "041de90c9202e1db7564ec63ce4026ed29268bf8"
+          }
+        },
+        {
+          "client_id": "609944736173-oi725kvtilndhed4fls4q1sr2g8p6d3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5YgrIUToz-holG4-QInh69vcgrijvgxY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609944736173-oi725kvtilndhed4fls4q1sr2g8p6d3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

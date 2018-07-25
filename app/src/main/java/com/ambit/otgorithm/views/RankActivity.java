@@ -1,0 +1,107 @@
+package com.ambit.otgorithm.views;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.ambit.otgorithm.R;
+import com.ambit.otgorithm.adapters.RankAdapter;
+import com.ambit.otgorithm.dto.RankerDTO;
+
+import java.util.ArrayList;
+
+public class RankActivity extends AppCompatActivity {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    TextView tv;
+    TextView toolbarTitle;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rank);
+
+        Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
+        setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
+
+        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        toolbarTitle.setText("장군 서열 현황");
+        toolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        toolbarTitle.setTextColor(Color.WHITE);
+        Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
+        setSupportActionBar(galleryToolbar);
+
+        // 기본 타이틀을 보여줄 지 말 지 설정
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*************************************************************/
+        ArrayList<RankerDTO> rankerList = new ArrayList<>();
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
+
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "코코링", "안뇽"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "탱구와울라숑", "기이이이이이"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "인무", "가마취? 고"));
+
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
+        rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
+
+        mRecyclerView = findViewById(R.id.rv_ranker);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new RankAdapter(rankerList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        /*************************************************************/
+
+
+
+
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+
+        tv = (TextView) findViewById(R.id.tv);
+        tv.setText(name);
+
+        Log.d("테스트", "RankActivity 들왔음");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            // 툴바의 뒤로가기 키를 눌렀을 때 동작
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+}
