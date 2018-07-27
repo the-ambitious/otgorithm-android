@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ambit.otgorithm.modules.RankerItemClickListener;
+import com.google.firebase.database.Query;
 
 
 import java.util.ArrayList;
@@ -34,11 +35,12 @@ import java.util.ArrayList;
 public class RankActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RankAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     FirebaseDatabase mFirebaseDb;
     DatabaseReference mGalleryRef;
     int position;
+    ArrayList<GalleryDTO> rankerList;
 
     TextView tv;
     TextView toolbarTitle;
@@ -50,6 +52,9 @@ public class RankActivity extends AppCompatActivity {
 
         Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
+
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        mGalleryRef = mFirebaseDb.getReference().child("galleries");
 
         position = 0;
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
@@ -65,7 +70,7 @@ public class RankActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*************************************************************/
-        ArrayList<GalleryDTO> rankerList = new ArrayList<>();
+
        /* rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
@@ -81,6 +86,40 @@ public class RankActivity extends AppCompatActivity {
 
 
         mRecyclerView = findViewById(R.id.rv_ranker);
+        rankerList = new ArrayList<>();
+        mRecyclerView.setHasFixedSize(false);
+    /*    mRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
+
+        addGalleryListener();
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new RankAdapter(this, rankerList);
+
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        /*************************************************************/
+
+
+
+
+
+      /*  Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+
+        tv = (TextView) findViewById(R.id.tv);
+        tv.setText(name);
+*/
+
+
+        Log.d("테스트", "RankActivity 들왔음");
+
         mRecyclerView.addOnItemTouchListener(
                 new RankerItemClickListener(getApplicationContext(), mRecyclerView, new RankerItemClickListener.OnItemClickListener() {
                     @Override
@@ -94,37 +133,6 @@ public class RankActivity extends AppCompatActivity {
                     }
                 })
         );
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RankAdapter(rankerList);
-
-
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        /*************************************************************/
-
-
-        mFirebaseDb = FirebaseDatabase.getInstance();
-        mGalleryRef = mFirebaseDb.getReference().child("galleries");
-
-
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-
-        tv = (TextView) findViewById(R.id.tv);
-        tv.setText(name);
-
-        addGalleryListener();
-
-        Log.d("테스트", "RankActivity 들왔음");
     }
 
     @Override
@@ -149,13 +157,16 @@ public class RankActivity extends AppCompatActivity {
     }
 
     private void addGalleryListener(){
-        mGalleryRef.addChildEventListener(new ChildEventListener() {
+
+
+        Query noSql = mGalleryRef.orderByChild("starCount").limitToLast(100);
+
+        noSql.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
+                Log.d("큭큭 : ", galleryDTO.imageUrl);
                 drawUI(galleryDTO);
-                Log.d("ㅋㅋㅋ","ㅋㅋㅋ");
-                //mGalleryDTOS.add(galleryDTO);
             }
 
             @Override
@@ -181,8 +192,6 @@ public class RankActivity extends AppCompatActivity {
     }
 
     private void drawUI(GalleryDTO galleryDTO){
-        //mAdapter.addItem(position++ ,galleryDTO);
+        mAdapter.additem(position++ ,galleryDTO);
     }
-
-
 }

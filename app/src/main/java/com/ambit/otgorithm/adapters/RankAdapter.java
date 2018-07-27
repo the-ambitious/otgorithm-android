@@ -1,8 +1,11 @@
 package com.ambit.otgorithm.adapters;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +18,15 @@ import com.ambit.otgorithm.dto.RankerDTO;
 import com.ambit.otgorithm.models.Ranker;
 import com.ambit.otgorithm.modules.RankerViewHolder;
 import com.ambit.otgorithm.views.ProfileActivity;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHolder> {
-
+    Context context;
     private ArrayList<GalleryDTO> mRankerList;
+    LayoutInflater inflater;
 
     public static class RankerViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -42,21 +47,37 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         this.mRankerList = rankerList;
     }
 
+    public RankAdapter(Context context, ArrayList<GalleryDTO> mRankerList) {
+        this.context = context;
+        this.mRankerList = mRankerList;
+        inflater = LayoutInflater.from(context);
+    }
+
     @NonNull
     @Override
     public RankerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranker, parent, false);
+        View v = inflater.inflate(R.layout.item_ranker, parent, false);
         RankerViewHolder rvh = new RankerViewHolder(v);
         return rvh;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RankerViewHolder holder, int position) {
         GalleryDTO currentRanker = mRankerList.get(position);
-
+        Uri uri = Uri.parse(currentRanker.imageUrl);
+        Glide.with(context).load(uri).into(holder.mImageView);
+        holder.mTextView1.setText(currentRanker.email);
+        holder.mTextView2.setText(currentRanker.description);
        /* holder.mImageView.setImageResource(currentRanker.getmProfileThumbnail());
         holder.mTextView1.setText(currentRanker.getmUserId());
         holder.mTextView2.setText(currentRanker.getmUserDesc());*/
+
+/*        myViewHolder.textview.setText(data.get(position).sysdate);
+        Uri uri = Uri.parse(data.get(position).imageUrl);
+        Glide.with(context).load(uri).into(myViewHolder.imageview);
+        //myViewHolder.imageview.setImageURI(uri);
+        Log.d("onBindViewHolder 테스트: ", "사진 경로? : " + data.get(position).imageUrl);*/
     }
 
     @Override
@@ -64,11 +85,11 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         return mRankerList.size();
     }
 
-    public void addItem(int position, GalleryDTO galleryDTO){
+
+    public void additem(int position, GalleryDTO galleryDTO){
         mRankerList.add(position, galleryDTO);
         notifyItemInserted(position);
     }
-
 }
 
 /*
