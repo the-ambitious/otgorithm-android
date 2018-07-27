@@ -2,6 +2,7 @@ package com.ambit.otgorithm.views;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.BannerViewPagerAdapter;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -45,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
+
 
     private long pressedTime = 0;
 
@@ -156,11 +160,39 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         startActivity(intent);
                         break;
 
+                    case R.id.nav_aboutUs_logout:
+                        Log.v("알림", "LOGOUT 아이템 클릭");
+                        AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
+                        alt_bld.setTitle("종료")
+                                .setMessage("로그아웃 하시겠습니까?")
+                                .setCancelable(false)
+                                .setPositiveButton("네",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                // 네 클릭
+                                                // 로그아웃 함수 call
+                                                mAuth.signOut();
+                                                LoginManager.getInstance().logOut();
+                                                finish();
+                                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                                Log.v("알림", "페북로그아웃 LOGOUT");
+                                                startActivity(intent);
+                                            }
+                                        }).setNegativeButton("아니오",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // 아니오 클릭. dialog 닫기.
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = alt_bld.create();
+                        alt_bld.show();
+                        break;
                 }
-
                 return true;
             }
         });
+
 
         // strings.xml
         /*ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
