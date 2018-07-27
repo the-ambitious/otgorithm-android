@@ -2,6 +2,7 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,12 +39,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Iterator;
 
 public class SignInActivity extends AppCompatActivity {
 
     // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     //google 변수
     private GoogleSignInClient mGoogleSignInClient;
@@ -262,6 +263,15 @@ public class SignInActivity extends AppCompatActivity {
         };
         rootRef.child("User").addListenerForSingleValueEvent(eventListener);
     }
+
+    /*@Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+            Toast.makeText(SignInActivity.this, "로그아웃", Toast.LENGTH_SHORT).show();
+        }
+    }*/
 }
 
 
