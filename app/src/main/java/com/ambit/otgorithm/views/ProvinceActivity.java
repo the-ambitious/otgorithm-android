@@ -71,11 +71,13 @@ public class ProvinceActivity extends AppCompatActivity {
 
         List<ItemDTO> items = new ArrayList<>();
         ItemDTO[] item = new ItemDTO[ITEM_SIZE];
+
         item[0] = new ItemDTO("서울", R.drawable.seoul);
         item[1] = new ItemDTO("대전", R.drawable.daejeon);
         item[2] = new ItemDTO("부산", R.drawable.busan);
         item[3] = new ItemDTO("제주도", R.drawable.jeju);
 //        item[3] = new ItemDTO("서울", R.drawable.a);
+
 //        item[4] = new ItemDTO("서울", R.drawable.a);
 
         for (int i = 0; i < ITEM_SIZE; i++) {

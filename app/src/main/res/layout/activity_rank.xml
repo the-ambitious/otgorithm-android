@@ -24,8 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:scrollbars="vertical"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:scrollbars="vertical" />
 
         </LinearLayout>
 
