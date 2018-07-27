@@ -1,6 +1,6 @@
 package com.ambit.otgorithm.views;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,13 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.RankAdapter;

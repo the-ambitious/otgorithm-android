@@ -2,6 +2,8 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
@@ -58,52 +62,22 @@ public class ProvinceActivity extends AppCompatActivity {
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_rank);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view3);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.nav_item_closet:
-                        Log.d("nav test: ", "1");
-                        break;
-
-                    case R.id.nav_item_favorites:
-                        Log.d("nav test: ", "2");
-                        break;
-
-                    case R.id.nav_item_letterbox:
-                        Log.d("nav test: ", "31");
-                        break;
-
-                    case R.id.nav_contact_notice:
-                        Log.d("nav test: ", "31");
-                        break;
-
-                    case R.id.nav_contact_commentary:
-                        Log.d("nav test: ", "31");
-                        break;
-
-                }
-
-                return true;
-            }
-        });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.provinceview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
+
         List<ItemDTO> items = new ArrayList<>();
         ItemDTO[] item = new ItemDTO[ITEM_SIZE];
-        item[0] = new ItemDTO("서울2", R.drawable.seoul);
-        item[1] = new ItemDTO("대전3", R.drawable.seoul2);
-        item[2] = new ItemDTO("부산4", R.drawable.seoul3);
-        item[3] = new ItemDTO("전국구", R.drawable.seoul);
+
+        item[0] = new ItemDTO("서울", R.drawable.seoul);
+        item[1] = new ItemDTO("대전", R.drawable.daejeon);
+        item[2] = new ItemDTO("부산", R.drawable.busan);
+        item[3] = new ItemDTO("제주도", R.drawable.jeju);
+//        item[3] = new ItemDTO("서울", R.drawable.a);
+
 //        item[4] = new ItemDTO("서울", R.drawable.a);
 
         for (int i = 0; i < ITEM_SIZE; i++) {
