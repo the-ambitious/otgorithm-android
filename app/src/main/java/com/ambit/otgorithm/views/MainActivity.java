@@ -49,7 +49,6 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
-
     private long pressedTime = 0;
 
     // 툴바 변수 선언
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd/HHmm");
     String formatDate = sdfNow.format(date);
     String[] rightNow;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

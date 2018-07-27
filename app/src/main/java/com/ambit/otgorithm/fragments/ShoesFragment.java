@@ -1,14 +1,17 @@
 package com.ambit.otgorithm.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GridViewAdapter;
+import com.ambit.otgorithm.views.WebViewActivity;
 
 import java.util.ArrayList;
 
@@ -18,7 +21,6 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
     ArrayList arrayList; // gridView에서 보여줄 item
     GridViewAdapter gridViewAdapter;
     View view;
-
 
     @Nullable
     @Override
@@ -33,8 +35,20 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
 
         grid = view.findViewById(R.id.grid);
         gridViewAdapter = new GridViewAdapter(getActivity(),arrayList,R.layout.square_view);
-        grid.setAdapter(gridViewAdapter);
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
 
+                switch (position) {
+                    case 0:     // 로퍼
+                        intent = new Intent(view.getContext(), WebViewActivity.class);
+                        intent.putExtra("id", "loafer");
+                        break;
+                }
+            }
+        });
+        grid.setAdapter(gridViewAdapter);
 
         return view;
     }
