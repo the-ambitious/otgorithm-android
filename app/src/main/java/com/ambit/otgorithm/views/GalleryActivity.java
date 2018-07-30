@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.MyCustomAdapter;
-import com.ambit.otgorithm.dto.DataDTO;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.fragments.DatePickerFragment;
 import com.google.firebase.database.ChildEventListener;
@@ -34,12 +33,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 public class GalleryActivity extends AppCompatActivity
                                 implements DatePickerDialog.OnDateSetListener {
 
     RecyclerView recyclerView;
-    TextView tv;
+    TextView textViewToolbarTitle;
 
     MyCustomAdapter adapter;
     Button calendar;
@@ -57,10 +55,13 @@ public class GalleryActivity extends AppCompatActivity
         mFirebaseDb = FirebaseDatabase.getInstance();
         mGalleryRef = mFirebaseDb.getReference().child("galleries");
 
-        tv = (TextView) findViewById(R.id.toolbar_title);
-        tv.setText("전투 상황 보고");
-        tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        tv.setTextColor(Color.WHITE);
+        /*****************************************************************
+         * 커스텀 툴바 셋팅
+         */
+        textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        textViewToolbarTitle.setText("전투 상황 보고");
+        textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
         setSupportActionBar(galleryToolbar);    // 액션바와 같게 만들어줌
 
@@ -68,19 +69,23 @@ public class GalleryActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /*
+        /****************************************************************/
+
+/*
         galleryToolbar.setTitle("전투 상황 보고");
         galleryToolbar.setTitleTextColor(Color.WHITE);
         galleryToolbar.setForegroundGravity(View.TEXT_ALIGNMENT_CENTER);
 */
 
-
-        /*getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+/*
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_actionbar);
-        View view = getSupportActionBar().getCustomView();*/
+        View view = getSupportActionBar().getCustomView();
+*/
 
-        /*ImageButton imageButton= (ImageButton)view.findViewById(R.id.action_bar_back);
+/*
+        ImageButton imageButton= (ImageButton)view.findViewById(R.id.action_bar_back);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +101,8 @@ public class GalleryActivity extends AppCompatActivity
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"Forward Button is clicked",Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
+*/
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         mGalleryDTOS = new ArrayList<>();

@@ -1,11 +1,9 @@
 package com.ambit.otgorithm.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +12,9 @@ import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
-import com.ambit.otgorithm.dto.RankerDTO;
-import com.ambit.otgorithm.models.Ranker;
-import com.ambit.otgorithm.modules.RankerViewHolder;
-import com.ambit.otgorithm.views.ProfileActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHolder> {
     Context context;

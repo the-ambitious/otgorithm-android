@@ -21,8 +21,8 @@
             android:layout_weight="45"
             android:orientation="horizontal">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewpager"
+            <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+                android:id="@+id/autoViewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -129,9 +129,17 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="野人 Corp." />
+                android:text="2018년 7월 30일" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="부산 금정구" />
         </LinearLayout>
     </LinearLayout>
 

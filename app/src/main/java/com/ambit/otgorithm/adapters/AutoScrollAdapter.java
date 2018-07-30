@@ -12,16 +12,17 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class BannerViewPagerAdapter extends PagerAdapter {
-    ArrayList arrayList;
-    LayoutInflater inflater;
+public class AutoScrollAdapter extends PagerAdapter {
+
     Context context;
+    ArrayList<String> arrayList;
+    LayoutInflater inflater;
 
     /**
      * @param inflater : View를 찾을 때 쓰는 인수
      * @param arrayList : Viewpager에 들어갈 Item을 받아올 ArrayList
      */
-    public BannerViewPagerAdapter(LayoutInflater inflater, ArrayList arrayList, Context context) {
+    public AutoScrollAdapter(LayoutInflater inflater, ArrayList<String> arrayList, Context context) {
         this.inflater = inflater;
         this.arrayList = arrayList;
         this.context = context;
@@ -40,7 +41,36 @@ public class BannerViewPagerAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        // 새로운 View 객체를 Layoutinflater를 이용해서 생성
+        //뷰페이지 슬라이딩 할 레이아웃 인플레이션
+//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View v = inflater.inflate(R.layout.activity_main_viewpager_image,null);
+        ImageView image_container = (ImageView) v.findViewById(R.id.viewpager_image);
+
+        /*TextView bannerTitle = (TextView) v.findViewById(R.id.banner_title);
+        bannerTitle.setTextColor(Color.WHITE);
+
+        switch (position) {
+            case 0:
+                bannerTitle.setText("더 이상 코디 고민은 No!");
+                break;
+            case 1:
+                bannerTitle.setText("출격 명령이란?");
+                break;
+            case 2:
+                bannerTitle.setText("관리도 중요합니다!");
+                break;
+            default:
+                bannerTitle.setText("준비중입니다.");
+                break;
+        }*/
+
+
+        Glide.with(context).load(arrayList.get(position)).into(image_container);
+        container.addView(v);
+        return v;
+
+        /*// 새로운 View 객체를 Layoutinflater를 이용해서 생성
         View view = inflater.inflate(R.layout.activity_main_viewpager_image, null);
 
         // 메인에서 찾는 것과 다르게 위에서 만들었던 View를 이용해서 find 를 하는 것을 주의!
@@ -56,7 +86,7 @@ public class BannerViewPagerAdapter extends PagerAdapter {
         container.addView(view);
 
         // Image가 세팅된 View를 리턴
-        return view;
+        return view;*/
     }
 
     @Override   // 화면에 보이지 않은 View는 제거해서 메모리를 관리함.

@@ -3,9 +3,11 @@ package com.ambit.otgorithm.dto;
 public class ItemDTO {
 
     String provincesTitle;
-    int provincesImage;
+    String provincesImage;
 
-    public ItemDTO(String provincesTitle, int provincesImage) {
+    public ItemDTO() { }
+
+    public ItemDTO(String provincesTitle, String provincesImage) {
         this.provincesTitle = provincesTitle;
         this.provincesImage = provincesImage;
     }
@@ -14,8 +16,16 @@ public class ItemDTO {
         return provincesTitle;
     }
 
-    public int getProvincesImage() {
+    public void setProvincesTitle(String provincesTitle) {
+        this.provincesTitle = provincesTitle;
+    }
+
+    public String getProvincesImage() {
         return provincesImage;
+    }
+
+    public void setProvincesImage(String provincesImage) {
+        this.provincesImage = provincesImage;
     }
 
 }

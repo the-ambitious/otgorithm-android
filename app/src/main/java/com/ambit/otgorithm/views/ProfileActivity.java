@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
+import com.ambit.otgorithm.fragments.DailyLookFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +38,26 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        /*****************************************************************
+         * 커스텀 툴바 셋팅
+         * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
+         */
         final Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Parallax Tabs");
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /*****************************************************************/
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.htab_viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.profile_viewpager);
         setupViewPager(viewPager);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.htab_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.htab_collapse_toolbar);
+        final CollapsingToolbarLayout collapsingToolbarLayout =
+                (CollapsingToolbarLayout) findViewById(R.id.htab_collapse_toolbar);
 
         try {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snow);
@@ -57,7 +65,6 @@ public class ProfileActivity extends AppCompatActivity {
                 @SuppressWarnings("ResourceType")
                 @Override
                 public void onGenerated(Palette palette) {
-
                     int vibrantColor = palette.getVibrantColor(R.color.text_color);
                     int vibrantDarkColor = palette.getDarkVibrantColor(R.color.colorPrimary);
                     collapsingToolbarLayout.setContentScrimColor(vibrantColor);
@@ -79,9 +86,9 @@ public class ProfileActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                // tab.getPosition(): 탭의 index에 해당함
                 viewPager.setCurrentItem(tab.getPosition());
-                Log.d("테스트: ", "onTabSelected: pos: " + tab.getPosition());
+                Log.d("테스트: ", "onTabSelected pos: " + tab.getPosition());
 
                 switch (tab.getPosition()) {
                     case 0:
@@ -103,14 +110,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * setupViewPager(): 뷰페이저(프래그먼트)를 설치하는 부분
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ProfileFragment(
-                ContextCompat.getColor(this, android.R.color.holo_green_dark)), "Profile");
+                ContextCompat.getColor(this, android.R.color.background_light)), "Profile");
+        adapter.addFrag(new DailyLookFragment(
+                ContextCompat.getColor(this, android.R.color.darker_gray)), "Daily Look");
         adapter.addFrag(new ProfileFragment(
-                ContextCompat.getColor(this, android.R.color.holo_purple)), "Daily Look");
-        adapter.addFrag(new ProfileFragment(
-                ContextCompat.getColor(this, android.R.color.holo_red_light)), "Dress Room");
+                ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
         viewPager.setAdapter(adapter);
     }
 

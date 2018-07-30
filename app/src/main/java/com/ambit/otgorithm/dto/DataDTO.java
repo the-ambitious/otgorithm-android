@@ -10,7 +10,6 @@ public class DataDTO {
         ArrayList<InformationDTO> data = new ArrayList<>();
 
         int[] images = {
-                R.drawable.ad1,
                 R.drawable.ic_accessory2,
                 R.drawable.ic_accessory3,
                 R.drawable.ic_accessory4,
@@ -19,7 +18,7 @@ public class DataDTO {
                 R.drawable.ic_accessory7,
         };
 
-        String[] Categories = {"cat 1", "cat 2", "cat 3", "cat 4", "cat 5", "cat 6", "cat 8"};
+        String[] Categories = {"cat 2", "cat 3", "cat 4", "cat 5", "cat 6", "cat 8"};
 
         for (int i = 0; i < images.length; i++) {
             InformationDTO current = new InformationDTO();

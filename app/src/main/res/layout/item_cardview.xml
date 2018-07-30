@@ -9,9 +9,8 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        card_view:cardCornerRadius="5dp"
-        >
+        android:layout_margin="4dp"
+        card_view:cardCornerRadius="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -19,22 +18,21 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/province_image"
                 android:layout_width="match_parent"
-                android:layout_height="210dp" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_alignBottom="@id/image"
-                android:layout_alignLeft="@id/image"
-                android:layout_alignRight="@id/image"
-                android:layout_alignTop="@id/image"
+                android:layout_alignBottom="@id/province_image"
+                android:layout_alignLeft="@id/province_image"
+                android:layout_alignRight="@id/province_image"
+                android:layout_alignTop="@id/province_image"
                 android:gravity="center"
-                android:text="test"
-                android:textSize="36sp"
+                android:text="이미지를 불러오는 중입니다."
                 android:textColor="@android:color/white"/>
 
         </RelativeLayout>

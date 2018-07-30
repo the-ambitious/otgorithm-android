@@ -34,7 +34,9 @@ public class ProvinceActivity extends AppCompatActivity {
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
 
-    final int ITEM_SIZE = 4;
+    RecyclerView mProvinceRecyclerView;
+
+    final int ITEM_SIZE = 14;
     TextView tv;
 
     @Override
@@ -42,11 +44,11 @@ public class ProvinceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_province);
 
+        /*****************************************************************
+         * 커스텀 툴바 셋팅
+         */
         Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
-
-/*        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);*/
 
         tv = (TextView) findViewById(R.id.toolbar_title);
         tv.setText("지역 선택");
@@ -59,33 +61,34 @@ public class ProvinceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /****************************************************************/
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_rank);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.provinceview);
+        mProvinceRecyclerView = (RecyclerView) findViewById(R.id.provinceview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-
+        mProvinceRecyclerView.setHasFixedSize(true);
+        mProvinceRecyclerView.setLayoutManager(layoutManager);
 
         List<ItemDTO> items = new ArrayList<>();
+        mProvinceRecyclerView.setAdapter(
+                new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_province));
+
         ItemDTO[] item = new ItemDTO[ITEM_SIZE];
 
-        item[0] = new ItemDTO("서울", R.drawable.seoul);
+/*        item[0] = new ItemDTO("서울", R.drawable.seoul);
         item[1] = new ItemDTO("대전", R.drawable.daejeon);
         item[2] = new ItemDTO("부산", R.drawable.busan);
-        item[3] = new ItemDTO("제주도", R.drawable.jeju);
-//        item[3] = new ItemDTO("서울", R.drawable.a);
-
-//        item[4] = new ItemDTO("서울", R.drawable.a);
+        item[3] = new ItemDTO("제주도", R.drawable.jeju);*/
 
         for (int i = 0; i < ITEM_SIZE; i++) {
             items.add(item[i]);
         }
 
-        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main));
     }   // end of onCreate()
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,6 +126,8 @@ public class ProvinceActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
+//        int itemPosition = mProvinceRecyclerView.getChildLayoutPosition(v);
+//        Log.d("테스트: ", "itemPosition: " + itemPosition);
         Intent intent = null;
 
         switch (v.getId()) {
