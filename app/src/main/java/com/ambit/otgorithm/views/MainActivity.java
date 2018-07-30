@@ -119,59 +119,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             startActivity(intent);
         }
 
-        //메인 날씨띄우는 부분에 있는 view들 불러오기 이미지,온도.아이콘
-        weathericon = (ImageView) findViewById(R.id.weathericon);
-        weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
-        temper = (TextView) findViewById(R.id.temper);
-
-        /**
-         sdk23을 기준으로 허가권을 얻는 방식이 바뀜
-         23미만 버전에서는 manifest에 permission추가하는 것으로
-         끝이었지만 23이상부터는 앱이 돌아가는 중에 허가권을
-         매번 요청해야함.
-         */
-        if (Build.VERSION.SDK_INT >= 23) {
-            Log.d("coco: ", "if 진입해?");
-            //위치정보를 불러오기위한 허가권
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.d("coco2: ", "if 진입해?");
-                //허가권이 없을 경우 허가권을 요청해야함.
-                //requestPermissions()함수를 호출하면 아래에 onRequestPermissionsResult()메소드가 호출됨.
-                //requestPermissions(activity, 허가권 배열, 요청번호)
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            } else {
-                Log.d("coco3: ", "else 진입해?");
-                //허가권이 있을 경우 바로 위치를 찾는 함수 호출.
-                findLocation();
-            }
-        } else {
-            Log.d("coco4: ", "else 진입해?");
-            //23버전 미만일 경우에는 바로 허가권요청없이 위치찾기 시작.
-            findLocation();
-        }
-
-        Log.d("coco5: ", "오토스크롤뷰페이저");
-        // 이미지 url을 저장하는 arrayList
-        // viewPager에서 보여줄 item
-        ArrayList<String> bannerList = new ArrayList<String>();
-        bannerList.add("http://172.22.225.37:3000/banners/banner1.png");
-        bannerList.add("http://172.22.225.37:3000/banners/banner2.png");
-        bannerList.add("http://172.22.225.37:3000/banners/banner3.png");
-
-        autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
-        // AutoScrollAdapter에 사진을 담은 arrayList 전달
-        AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getLayoutInflater(), bannerList, MainActivity.this);
-        autoViewPager.setAdapter(scrollAdapter);    // Auto Viewpager에 Adapter 장착
-        autoViewPager.setInterval(5000);            // 페이지 넘어갈 시간 간격 설정
-        autoViewPager.startAutoScroll();            // Auto Scroll 시작
-
-//        autoScrollAdapter = new AutoScrollAdapter(getLayoutInflater(), arrayList,this);
-
         // 툴바 부분
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -241,6 +193,55 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 return true;
             }
         });
+
+        //메인 날씨띄우는 부분에 있는 view들 불러오기 이미지,온도.아이콘
+        weathericon = (ImageView) findViewById(R.id.weathericon);
+        weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
+        temper = (TextView) findViewById(R.id.temper);
+
+        /**
+         sdk23을 기준으로 허가권을 얻는 방식이 바뀜
+         23미만 버전에서는 manifest에 permission추가하는 것으로
+         끝이었지만 23이상부터는 앱이 돌아가는 중에 허가권을
+         매번 요청해야함.
+         */
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.d("coco: ", "if 진입해?");
+            //위치정보를 불러오기위한 허가권
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("coco2: ", "if 진입해?");
+                //허가권이 없을 경우 허가권을 요청해야함.
+                //requestPermissions()함수를 호출하면 아래에 onRequestPermissionsResult()메소드가 호출됨.
+                //requestPermissions(activity, 허가권 배열, 요청번호)
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            } else {
+                Log.d("coco3: ", "else 진입해?");
+                //허가권이 있을 경우 바로 위치를 찾는 함수 호출.
+                findLocation();
+            }
+        } else {
+            Log.d("coco4: ", "else 진입해?");
+            //23버전 미만일 경우에는 바로 허가권요청없이 위치찾기 시작.
+            findLocation();
+        }
+
+        Log.d("coco5: ", "오토스크롤뷰페이저");
+        // 이미지 url을 저장하는 arrayList
+        // viewPager에서 보여줄 item
+        ArrayList<String> bannerList = new ArrayList<String>();
+        bannerList.add("http://172.22.225.37:3000/banners/banner1.png");
+        bannerList.add("http://172.22.225.37:3000/banners/banner2.png");
+        bannerList.add("http://172.22.225.37:3000/banners/banner3.png");
+
+        autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
+        // AutoScrollAdapter에 사진을 담은 arrayList 전달
+        AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getLayoutInflater(), bannerList, MainActivity.this);
+        autoViewPager.setAdapter(scrollAdapter);    // Auto Viewpager에 Adapter 장착
+        autoViewPager.setInterval(5000);            // 페이지 넘어갈 시간 간격 설정
+        autoViewPager.startAutoScroll();            // Auto Scroll 시작
+
+//        autoScrollAdapter = new AutoScrollAdapter(getLayoutInflater(), arrayList,this);
 
         // strings.xml
         /*ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
