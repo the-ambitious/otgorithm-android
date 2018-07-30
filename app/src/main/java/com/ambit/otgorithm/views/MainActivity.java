@@ -149,7 +149,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_item_letterbox:
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                        intent = new Intent(MainActivity.this, ChatMain.class);
+                        startActivity(intent);
+                        //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     case R.id.nav_contact_notice:

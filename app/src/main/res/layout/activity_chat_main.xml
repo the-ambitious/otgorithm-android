@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,28 +14,26 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             app:tabMode="fixed"
-            app:tabGravity="fill" />
+            app:tabGravity="fill"/>
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.view.ViewPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_chat_black_24dp" />
+        app:srcCompat="@android:drawable/ic_dialog_email"/>
 
- <!--   <selector xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:drawable="@drawable/ic_chat_disabled" android:state_selected="false"/>
-        <item android:drawable="@drawable/ic_chat_enabled" android:state_selected="true"/>
-    </selector>-->
 
 </android.support.design.widget.CoordinatorLayout>

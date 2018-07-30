@@ -5,7 +5,6 @@
     <!-- WebView를 띄우기 위해 INTERNET 사용 권한 추가 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -51,7 +50,6 @@
         <!-- 페북끝 -->
 
         <activity android:name=".views.SortieActivity" />
-        <activity android:name=".views.ChatActivity" />
         <activity android:name=".views.GalleryActivity" />
         <activity android:name=".views.FirstStartActivity" />
         <activity android:name=".views.ProvinceActivity" />
@@ -61,7 +59,9 @@
         <activity android:name=".views.SignUp2Activity" />
         <activity android:name=".views.UploadPicture" />
         <activity android:name=".views.ProfileActivity" />
-        <activity android:name=".views.WebViewActivity"></activity>
+        <activity android:name=".views.WebViewActivity" />
+        <activity android:name=".views.ChatActivity" />
+        <activity android:name=".views.ChatMain"></activity>
     </application>
 
 </manifest>
