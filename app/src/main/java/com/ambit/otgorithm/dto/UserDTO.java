@@ -4,16 +4,27 @@ public class UserDTO {
     String email;
     String name;
     String uid;
+    String profileUrl;
+    boolean selection;
 
 
     public UserDTO(){
 
     }
 
-    public UserDTO(String email, String name, String uid) {
+    public UserDTO(String uid, String email, String name, String profileUrl) {
+        this.uid = uid;
+        this.email = email;
+        this.name = name;
+        this.profileUrl = profileUrl;
+    }
+
+    public UserDTO(String email, String name, String uid, String profileUrl, boolean selection) {
         this.email = email;
         this.name = name;
         this.uid = uid;
+        this.profileUrl = profileUrl;
+        this.selection = selection;
     }
 
     public String getEmail() {
@@ -38,5 +49,21 @@ public class UserDTO {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public boolean isSelection() {
+        return selection;
+    }
+
+    public void setSelection(boolean selection) {
+        this.selection = selection;
     }
 }

@@ -2,7 +2,6 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,7 +56,7 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseDatabase database;
 
     // DB참조 객체 (검색시 사용)
-    private DatabaseReference rootRef;
+    private DatabaseReference mUserRef;
 
     TextView tvSignUp;
 
@@ -72,7 +71,7 @@ public class SignInActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         // DB 참조객체 얻음. (검색시 사용)
-        rootRef = database.getReference();
+        mUserRef = database.getReference("users");
 
 
         //구글 아이디연동 부분
@@ -171,7 +170,8 @@ public class SignInActivity extends AppCompatActivity {
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            Log.d("테스트: ", "구글 로그인 성공");
+                            Log.d("테스트1: ", user.getEmail());
+                            Log.d("테스트2:",task.getResult().getUser().getEmail());
                             updateUI(user);
 
                             //mAuth.getCurrentUser().getPhotoUrl();
@@ -230,8 +230,49 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     // 파베 홈피에서 코드 복사
-    private void updateUI(final FirebaseUser user){
-        ValueEventListener eventListener = new ValueEventListener() {
+    private void updateUI(final FirebaseUser firebaseUser){
+        final UserDTO user = new UserDTO();
+        user.setEmail(firebaseUser.getEmail());
+        user.setName(firebaseUser.getDisplayName());
+        user.setUid(firebaseUser.getUid());
+        if ( firebaseUser.getPhotoUrl() != null )
+            user.setProfileUrl(firebaseUser.getPhotoUrl().toString());
+        mUserRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if ( !dataSnapshot.exists() ) {
+                    mUserRef.child(user.getUid()).setValue(user, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                            if ( databaseError == null ) {
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        }
+                    });
+                } else {
+                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                    finish();
+                }
+
+/*                Bundle eventBundle = new Bundle();
+                eventBundle.putString("email", user.getEmail());
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, eventBundle);*/
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+       /* ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -249,7 +290,7 @@ public class SignInActivity extends AppCompatActivity {
                 userDTO.setEmail(user.getEmail());
                 userDTO.setName(user.getDisplayName());
                 userDTO.setUid(user.getUid());
-                rootRef.child("User").push().setValue(userDTO);
+                rootRef.child("users").push().setValue(userDTO);
 
                 Intent intent = new Intent(SignInActivity.this,MainActivity.class);
                 startActivity(intent);
@@ -261,7 +302,7 @@ public class SignInActivity extends AppCompatActivity {
 
             }
         };
-        rootRef.child("User").addListenerForSingleValueEvent(eventListener);
+        rootRef.child("users").addListenerForSingleValueEvent(eventListener);*/
     }
 
     /*@Override

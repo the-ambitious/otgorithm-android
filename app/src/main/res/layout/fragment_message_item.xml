@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- 상대방-->
+    <LinearLayout
+        android:id="@+id/yourChatArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:visibility="gone">
+
+        <com.ambit.otgorithm.modules.RoundedImageView
+            android:id="@+id/rcvProfile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/rcvTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rouned_your_chat_message"
+            android:maxWidth="230dp"
+            android:padding="7dp"
+            android:textColor="#000"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/rcvImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rouned_your_chat_message"
+            android:maxHeight="230dp"
+            android:maxWidth="230dp"
+            android:padding="3dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/rcvUnreadCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFF00"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/rcvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:textColor="#68747C"
+                android:textSize="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- 방 나갈을-->
+    <LinearLayout
+        android:id="@+id/exitArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/exitTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="7dp"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+
+    <!-- 내가 ㅆㄴ글-->
+
+    <LinearLayout
+        android:id="@+id/myChatArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:padding="2dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/sendUnreadCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textColor="#FFFF00"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/sendDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="06/13 오후\n 11:00"
+                android:textAlignment="textEnd"
+                android:textColor="#68747C"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/sendTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rouned_my_chat_message"
+            android:maxWidth="250dp"
+            android:padding="7dp"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/sendImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rouned_my_chat_message"
+            android:maxHeight="250dp"
+            android:maxWidth="250dp"
+            android:padding="3dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
