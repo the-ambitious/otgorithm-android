@@ -17,13 +17,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
-import com.ambit.otgorithm.adapters.BannerViewPagerAdapter;
+import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,9 +47,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private long pressedTime = 0;
+
+    private AutoScrollViewPager autoViewPager;
+    AutoScrollAdapter autoScrollAdapter;
 
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
@@ -75,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     static int weather_Icon;
 
     LocationManager lm = null;
-    ViewPager viewPager;
-    BannerViewPagerAdapter bannerViewPagerAdapter;
-    ArrayList arrayList; // viewPager에서 보여줄 item
 
     //날씨 아이콘
     ImageView weathericon;
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -191,6 +194,54 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
+        //메인 날씨띄우는 부분에 있는 view들 불러오기 이미지,온도.아이콘
+        weathericon = (ImageView) findViewById(R.id.weathericon);
+        weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
+        temper = (TextView) findViewById(R.id.temper);
+
+        /**
+         sdk23을 기준으로 허가권을 얻는 방식이 바뀜
+         23미만 버전에서는 manifest에 permission추가하는 것으로
+         끝이었지만 23이상부터는 앱이 돌아가는 중에 허가권을
+         매번 요청해야함.
+         */
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.d("coco: ", "if 진입해?");
+            //위치정보를 불러오기위한 허가권
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("coco2: ", "if 진입해?");
+                //허가권이 없을 경우 허가권을 요청해야함.
+                //requestPermissions()함수를 호출하면 아래에 onRequestPermissionsResult()메소드가 호출됨.
+                //requestPermissions(activity, 허가권 배열, 요청번호)
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            } else {
+                Log.d("coco3: ", "else 진입해?");
+                //허가권이 있을 경우 바로 위치를 찾는 함수 호출.
+                findLocation();
+            }
+        } else {
+            Log.d("coco4: ", "else 진입해?");
+            //23버전 미만일 경우에는 바로 허가권요청없이 위치찾기 시작.
+            findLocation();
+        }
+
+        Log.d("coco5: ", "오토스크롤뷰페이저");
+        // 이미지 url을 저장하는 arrayList
+        // viewPager에서 보여줄 item
+        ArrayList<String> bannerList = new ArrayList<String>();
+        bannerList.add("http://172.22.225.37:3000/banners/banner1.png");
+        bannerList.add("http://172.22.225.37:3000/banners/banner2.png");
+        bannerList.add("http://172.22.225.37:3000/banners/banner3.png");
+
+        autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
+        // AutoScrollAdapter에 사진을 담은 arrayList 전달
+        AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getLayoutInflater(), bannerList, MainActivity.this);
+        autoViewPager.setAdapter(scrollAdapter);    // Auto Viewpager에 Adapter 장착
+        autoViewPager.setInterval(5000);            // 페이지 넘어갈 시간 간격 설정
+        autoViewPager.startAutoScroll();            // Auto Scroll 시작
+
+//        autoScrollAdapter = new AutoScrollAdapter(getLayoutInflater(), arrayList,this);
 
         // strings.xml
         /*ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
@@ -208,50 +259,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 */
-
-
-
-        //arrayList에 메인화면에 띄워지는 사진3장 담기
-        arrayList = new ArrayList();
-        for (int i = 0; i < 3; i++) {
-            arrayList.add(R.drawable.ad1 + i);
-        }
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        //viewPagerAdapter에 사진을 담은 arrayList 전달
-        bannerViewPagerAdapter = new BannerViewPagerAdapter(getLayoutInflater(), arrayList,this);
-        //adapter를 통한 viewpage 설정
-        viewPager.setAdapter(bannerViewPagerAdapter);
-
-        //메인 날씨띄우는 부분에 있는 view들 불러오기 이미지,온도.아이콘
-        weathericon = (ImageView) findViewById(R.id.weathericon);
-        weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
-        temper = (TextView) findViewById(R.id.temper);
-
-
-
-        /**
-            sdk23을 기준으로 허가권을 얻는 방식이 바뀜
-            23미만 버전에서는 manifest에 permission추가하는 것으로
-            끝이었지만 23이상부터는 앱이 돌아가는 중에 허가권을
-            매번 요청해야함.
-        */
-        if (Build.VERSION.SDK_INT >= 23) {
-            //위치정보를 불러오기위한 허가권
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                //허가권이 없을 경우 허가권을 요청해야함.
-                //requestPermissions()함수를 호출하면 아래에 onRequestPermissionsResult()메소드가 호출됨.
-                //requestPermissions(activity, 허가권 배열, 요청번호)
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            } else {
-                //허가권이 있을 경우 바로 위치를 찾는 함수 호출.
-                findLocation();
-            }
-        } else {
-            //23버전 미만일 경우에는 바로 허가권요청없이 위치찾기 시작.
-            findLocation();
-        }
 
     }   // end of onCreate()
 
@@ -389,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //예보 발표시간  Base_time  : 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300 (1일 8회)
         //String baseTime = "1400";
         //서비스 인증키
-        String serviceKey = "J6pxxHVvdyC6qOrOiPtuVTeYHpGwRR3dSIexEj49E6X0IrB20wC%2BC5sJaFNpWsQPRtLs62xy8htWiSFsWIe3YQ%3D%3D";
+        String serviceKey = "cVJU6P10LzbbeN7kv%2BkrtRgofKOftb1zU%2BDS05qwL0%2F0flU2VFRI6CKC%2F7SEwxMI2GO5ANG4q3LU6dBYVAr4kQ%3D%3D";
 
         //정보를 모아서 URL정보 만듬
         String urlStr = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?" +
@@ -473,19 +480,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onProviderEnabled(String provider) { }
 
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+    public void onProviderDisabled(String provider) { }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -502,8 +503,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
                 break;
         }
-
-
     }
 
 
@@ -599,21 +598,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     class WeatherParsing extends AsyncTask<String, Void, StringBuffer> {
 
-  /*      int rain;                  //POP  강수확률
-        int snowrain;              //PTY  없음(0), 비(1), 비/눈(2), 눈(3)
-        int humidity;              //REH  습도
-        int precipitation;         //R06  6시간 강수량
-        //String lowtemper;        //TMN  아침 최저기온
-        //String hightemper;       //TMX  낮 최고기온
-        int currenttemper;         //T3H  3시간 기온
-        int windspeed;             //WSD  풍속
-        int sky;                   //SKY  맑음(1), 구름조금(2), 구름많음(3), 흐림(4)*/
-
-
         @Override
         protected void onPostExecute(StringBuffer buffer) {
-
             String json = buffer.toString();
+
             try {
                 Log.d("ㅁㅁㅁㅁ", json);
 

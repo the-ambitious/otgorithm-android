@@ -191,11 +191,9 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
             star =  (ImageButton) itemView.findViewById(R.id.star);
             weather = (ImageView) itemView.findViewById(R.id.weather_icon);
-
-
         }
 
-    }
+    }   // end of class MyViewHolder
 
     // This removes the data from our Dataset and Updates the Recycler View.
     private void removeItem(GalleryDTO infoData) {

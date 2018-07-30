@@ -5,20 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="center"
+        android:background="#ee2d3041"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_collapseMode="parallax"
+        app:popupTheme="@style/Theme.AppCompat.Light">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#ee2d3041"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            app:layout_collapseMode="parallax"/>
-    </RelativeLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/toolbar_logo" />
+
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
+
 
     <!--<FrameLayout
         android:id="@+id/fragment_container"

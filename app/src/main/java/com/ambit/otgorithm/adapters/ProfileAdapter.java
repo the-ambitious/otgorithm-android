@@ -16,9 +16,9 @@ import java.util.List;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileVh> {
 
     private List<ProfileDTO> profiles = new ArrayList<>();
-
     private Context context;
 
+    // 생성자(constructor)
     public ProfileAdapter(Context context) {
         this.context = context;
 
