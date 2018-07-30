@@ -20,7 +20,8 @@ import com.ambit.otgorithm.dto.Message;
 import com.ambit.otgorithm.dto.Notification;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.RecyclerViewItemClickListener;
-import com.ambit.otgorithm.views.ChatMain;
+
+import com.ambit.otgorithm.views.ChatActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -85,7 +86,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Chat chat = mChatListAdapter.getItem(position);
-                Intent chatIntent = new Intent(getActivity(), ChatMain.class);
+                Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
                 chatIntent.putExtra("chat_id", chat.getChatId());
                 startActivityForResult(chatIntent, JOIN_ROOM_REQUEST_CODE);
             }
@@ -131,7 +132,7 @@ public class ChatFragment extends Fragment {
                     if ( !updatedChat.getLastMessage().getMessageUser().getUid().equals(mFirebaseUser.getUid())) {
                         if ( !updatedChat.getChatId().equals(JOINED_ROOM)) {
                             // 노티피케이션 알림
-                            Intent chatIntent = new Intent(mContext, ChatMain.class);
+                            Intent chatIntent = new Intent(mContext, ChatActivity.class);
                             chatIntent.putExtra("chat_id", updatedChat.getChatId());
                             mNotification
                                     .setData(chatIntent)

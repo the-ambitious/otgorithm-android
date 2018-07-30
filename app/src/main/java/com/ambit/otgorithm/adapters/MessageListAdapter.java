@@ -13,6 +13,7 @@ import com.ambit.otgorithm.dto.Message;
 import com.ambit.otgorithm.dto.PhotoMessage;
 import com.ambit.otgorithm.dto.TextMessage;
 import com.ambit.otgorithm.modules.RoundedImageView;
+import com.ambit.otgorithm.modules.SquareView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
