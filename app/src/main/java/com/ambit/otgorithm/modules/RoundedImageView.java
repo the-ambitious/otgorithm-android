@@ -1,25 +1,19 @@
 package com.ambit.otgorithm.modules;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.drawable.AdaptiveIconDrawable;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.util.Log;
 
-import com.ambit.otgorithm.R;
-import com.bumptech.glide.Glide;
 
 public class RoundedImageView extends AppCompatImageView {
 

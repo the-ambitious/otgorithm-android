@@ -48,51 +48,51 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         final ItemDTO item = items.get(position);
         
         switch (position) {
-            case 0:     // 서울
-                url = "http://172.22.225.37:3000/provinces/seoul.png";
+            case 0:     //전국구
+                url = "http://172.22.225.44:3000/provinces/seoul.png";
+                break;
+            case 1:     // 서울
+                url = "http://172.22.225.44:3000/provinces/seoul.png";
                 Log.d("url 테스트: ", url);
                 break;
-            case 1:     // 인천
-                url = "http://172.22.225.37:3000/provinces/incheon.png";
+            case 2:     // 인천
+                url = "http://172.22.225.44:3000/provinces/incheon.png";
                 Log.d("url 테스트: ", url);
                 break;
-            case 2:     // 대전
-                url = "http://172.22.225.37:3000/provinces/daejeon.png";
+            case 3:     // 대전
+                url = "http://172.22.225.44:3000/provinces/daejeon.png";
                 Log.d("url 테스트: ", url);
                 break;
-            case 3:     // 대구
-                url = "http://172.22.225.37:3000/provinces/daegu.png";
+            case 4:     // 대구
+                url = "http://172.22.225.44:3000/provinces/daegu.png";
                 Log.d("url 테스트: ", url);
                 break;
-            case 4:     // 광주
-                url = "http://172.22.225.37:3000/provinces/gwangju.png";
+            case 5:     // 광주
+                url = "http://172.22.225.44:3000/provinces/gwangju.png";
                 break;
-            case 5:     // 부산
-                url = "http://172.22.225.37:3000/provinces/busan.png";
+            case 6:     // 부산
+                url = "http://172.22.225.44:3000/provinces/busan.png";
                 break;
-            case 6:     // 울산
-                url = "http://172.22.225.37:3000/provinces/ulsan.png";
-                break;
-            case 7:     // 세종
-                url = "http://172.22.225.37:3000/provinces/sejong.png";
+            case 7:     // 울산
+                url = "http://172.22.225.44:3000/provinces/ulsan.png";
                 break;
             case 8:     // 경기
-                url = "http://172.22.225.37:3000/provinces/gyeonggi.png";
+                url = "http://172.22.225.44:3000/provinces/gyeonggi.png";
                 break;
             case 9:     // 강원
-                url = "http://172.22.225.37:3000/provinces/gangwon.png";
+                url = "http://172.22.225.44:3000/provinces/gangwon.png";
                 break;
             case 10:     // 충청
-                url = "http://172.22.225.37:3000/provinces/chungcheong.png";
+                url = "http://172.22.225.44:3000/provinces/chungcheong.png";
                 break;
             case 11:     // 경상
-                url = "http://172.22.225.37:3000/provinces/kyungsang.png";
+                url = "http://172.22.225.44:3000/provinces/kyungsang.png";
                 break;
             case 12:     // 전라
-                url = "http://172.22.225.37:3000/provinces/jeolla.png";
+                url = "http://172.22.225.44:3000/provinces/jeolla.png";
                 break;
             case 13:     // 제주
-                url = "http://172.22.225.37:3000/provinces/jeju.png";
+                url = "http://172.22.225.44:3000/provinces/jeju.png";
                 break;
         }
 

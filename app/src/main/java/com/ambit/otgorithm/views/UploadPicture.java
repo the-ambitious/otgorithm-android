@@ -25,7 +25,12 @@ import com.ambit.otgorithm.modules.PermissionUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -47,6 +52,8 @@ public class UploadPicture extends AppCompatActivity {
     private FirebaseStorage storage;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
+    private DatabaseReference mUserRef;
+    private FirebaseUser mFirebaseUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,8 @@ public class UploadPicture extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        mUserRef = database.getReference().child("users");
+        mFirebaseUser = mAuth.getCurrentUser();
 
         pictureChoose = findViewById(R.id.picture_choose);
         pictureView = findViewById(R.id.picture_view);
@@ -156,19 +165,34 @@ public class UploadPicture extends AppCompatActivity {
 
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                GalleryDTO galleryDTO = new GalleryDTO();
+                final GalleryDTO galleryDTO = new GalleryDTO();
                 galleryDTO.description = pictureDescription.getText().toString();
                 galleryDTO.imageUrl = downloadUrl.toString();
                 galleryDTO.email = mAuth.getCurrentUser().getEmail();
                 galleryDTO.sysdate = sdfNow.format(date);
                 galleryDTO.weather = MainActivity.sky;
                 galleryDTO.weatherIcon = MainActivity.weather_Icon;
+                galleryDTO.gid =  database.getReference().child("galleries").push().getKey();
+
+                mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        galleryDTO.battlefield = dataSnapshot.getValue(String.class);
+
+                        database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO);
+                        Toast.makeText(UploadPicture.this,"업로드 끝",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
-
-
+/*
                 database.getReference().child("galleries").push().setValue(galleryDTO);
-                Toast.makeText(UploadPicture.this,"업로드 끝",Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadPicture.this,"업로드 끝",Toast.LENGTH_SHORT).show();*/
             }
         });
 
