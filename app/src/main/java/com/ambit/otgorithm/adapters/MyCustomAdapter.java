@@ -29,11 +29,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<GalleryDTO> data;
+    List<GalleryDTO> data;
     LayoutInflater inflater;
     FirebaseDatabase database;
     DatabaseReference mGalleryRef;
@@ -208,6 +209,10 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
         notifyItemInserted(position);
     }
 
+    public void addList(List<GalleryDTO> list){
+        data = list;
+        notifyDataSetChanged();
+    }
 
     private void onStarClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
