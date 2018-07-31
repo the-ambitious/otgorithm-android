@@ -16,6 +16,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -27,6 +28,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,10 +83,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     LocationManager lm = null;
 
+    // 날씨 배경
+    LinearLayout weatherBackground;
     //날씨 아이콘
     ImageView weathericon;
     //날씨 설명
     TextView weatherdiscrip;
+    // 날씨 기술
+    TextView weatherDescription;
     //온도
     TextView temper;
 
@@ -197,8 +203,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
 
         //메인 날씨띄우는 부분에 있는 view들 불러오기 이미지,온도.아이콘
+        weatherBackground = (LinearLayout) findViewById(R.id.weather_background);
         weathericon = (ImageView) findViewById(R.id.weathericon);
         weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
+        weatherDescription = (TextView) findViewById(R.id.weather_description);
         temper = (TextView) findViewById(R.id.temper);
 
         /**
@@ -232,9 +240,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 이미지 url을 저장하는 arrayList
         // viewPager에서 보여줄 item
         ArrayList<String> bannerList = new ArrayList<String>();
-        bannerList.add("http://172.22.225.37:3000/banners/banner1.png");
-        bannerList.add("http://172.22.225.37:3000/banners/banner2.png");
-        bannerList.add("http://172.22.225.37:3000/banners/banner3.png");
+        bannerList.add("http://172.22.225.44:3000/banners/banner1.png");
+        bannerList.add("http://172.22.225.44:3000/banners/banner2.png");
+        bannerList.add("http://172.22.225.44:3000/banners/banner3.png");
 
         autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
         // AutoScrollAdapter에 사진을 담은 arrayList 전달
@@ -367,14 +375,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         int time = Integer.parseInt(rightNow[1]);
 
-        if(time>=0 && time <210){
-            int a=Integer.parseInt(rightNow[0]);
-            rightNow[0] = Integer.toString(a-1);
+        if (time >= 0 && time < 210) {
+            int a = Integer.parseInt(rightNow[0]);
+            rightNow[0] = Integer.toString(a - 1);
             rightNow[1] = "2000";
         } else if (time >= 210 && time < 510) {
             Log.d("12시 15분 테스트", "첫 if문 진입");
-            int a=Integer.parseInt(rightNow[0]);
-            rightNow[0] = Integer.toString(a-1);
+            int a = Integer.parseInt(rightNow[0]);
+            rightNow[0] = Integer.toString(a - 1);
             rightNow[1] = "2300";
         } else if (time >= 510 && time < 810) {
             rightNow[1] = "0200";
@@ -388,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             rightNow[1] = "1400";
         } else if (time >= 2010 && time < 2310) {
             rightNow[1] = "1700";
-        } else if(time>=2310){
+        } else if (time >= 2310) {
             Log.d("12시 15분 테스트", "else문 진입");
             rightNow[1] = "2000";
         }
@@ -674,8 +682,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 } else if (sky == 2 || sky == 3) {
                     weather_Icon = R.drawable.cloudy;
                     weathericon.setImageResource(R.drawable.cloudy);
-                    weatherdiscrip.setText("구름이 있네요");
-                    temper.setText(currenttemper + "도");
+                    weatherdiscrip.setText("구름이 뭉게뭉게~");
+                    weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_cloudy));
+                    weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
+                    temper.setText(currenttemper + "°");
                 }
 
             } catch (Exception e) {

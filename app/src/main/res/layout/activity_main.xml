@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:weightSum="100">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="?attr/actionBarSize"
@@ -24,8 +24,10 @@
             <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
                 android:id="@+id/autoViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"></cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,10 +60,50 @@
                 android:onClick="onClick" />
         </LinearLayout>
 
+        <!-- 날짜, 지역 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="29"
+            android:layout_weight="5"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="2018년 7월 30일 월요일" />
+
+            <TextView
+                android:id="@+id/loc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="40"
+                android:background="@drawable/button"
+                android:gravity="center"
+                android:text="제주도 서귀포시"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:paddingRight="8dp"
+                android:src="@drawable/ic_location_on_purple_24dp" />
+        </LinearLayout>
+
+        <!-- 날씨 정보 -->
+        <LinearLayout
+            android:id="@+id/weather_background"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="24"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -72,7 +114,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="45"
+                    android:layout_weight="40"
                     android:orientation="vertical"
                     android:weightSum="100">
 
@@ -80,77 +122,86 @@
                         android:id="@+id/weathericon"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:paddingTop="20dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="75"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
-                        android:paddingBottom="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="80" />
+                        android:paddingTop="10dp" />
 
                     <TextView
                         android:id="@+id/temper"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:textSize="20sp"
-                        android:gravity="center"
-                        android:layout_weight="20"
-                        />
+                        android:layout_weight="25"
+                        android:gravity="center_horizontal"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="55"
+                    android:layout_weight="60"
                     android:orientation="vertical"
                     android:weightSum="100">
 
                     <TextView
                         android:id="@+id/weatherdiscrip"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="100"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textSize="36sp" />
+                        android:paddingTop="@dimen/fab_margin"
+                        android:textSize="24sp" />
 
+                    <TextView
+                        android:id="@+id/weather_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
+        <!-- 한 줄의 명언 -->
         <LinearLayout
+            android:background="@drawable/saying_theme"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="10">
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="2018년 7월 30일" />
+                android:text="'옷이 사람을 만든다.'"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+            <!--<TextView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
+                android:layout_weight="3.5"
                 android:gravity="center"
-                android:text="부산 금정구" />
+                android:text="- 라틴어 격언"
+                android:textSize="14sp" />-->
+
         </LinearLayout>
+
+
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="276dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer">
-    </android.support.design.widget.NavigationView>
+        app:menu="@menu/drawer"></android.support.design.widget.NavigationView>
 
 
     <!--   <android.support.design.widget.CoordinatorLayout
