@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -37,6 +39,11 @@ import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +55,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
@@ -94,8 +102,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     //온도
     TextView temper;
 
+    //현재시간
+    TextView current_time;
+
+    //전장
+    TextView battlefield;
+
     private double nx;
     private double ny;
+
+    double longitude;
+    double latitude;
 
     // 현재 날짜와 시간을 초기화하는 부분
     long now = System.currentTimeMillis();
@@ -103,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd/HHmm");
     String formatDate = sdfNow.format(date);
     String[] rightNow;
+
+
+    private FirebaseDatabase database;
+    private DatabaseReference mUserRef;
+    private FirebaseUser mFirebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +137,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         //firebase 인증객체 얻기
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        // DB객체 싱글톤 패턴으로 얻음
+        database = FirebaseDatabase.getInstance();
+
+        // DB 참조객체 얻음. (검색시 사용)
+        mUserRef = database.getReference("users");
 
         // 도움말; a는 마치 File 이름
         SharedPreferences preference = getSharedPreferences("a", MODE_PRIVATE);
@@ -208,6 +237,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
         weatherDescription = (TextView) findViewById(R.id.weather_description);
         temper = (TextView) findViewById(R.id.temper);
+        current_time = (TextView)findViewById(R.id.current_time);
+        battlefield = (TextView)findViewById(R.id.battlefield);
+
+
 
         /**
          sdk23을 기준으로 허가권을 얻는 방식이 바뀜
@@ -391,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         } else if (time >= 1110 && time < 1410) {
             rightNow[1] = "0800";
         } else if (time >= 1410 && time < 1710) {
+            Log.d("현재시간",rightNow[1]);
             rightNow[1] = "1100";
         } else if (time >= 1710 && time < 2010) {
             rightNow[1] = "1400";
@@ -451,8 +485,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
 
         Log.d("test", "onLocationChanged, location:" + location);
-        double longitude = location.getLongitude(); //경도
-        double latitude = location.getLatitude();   //위도
+        longitude = location.getLongitude(); //경도
+        latitude = location.getLatitude();   //위도
         //double altitude = location.getAltitude();   //고도
         //float accuracy = location.getAccuracy();    //정확도
         //String provider = location.getProvider();   //위치제공자
@@ -462,6 +496,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         //위도 경도를 x,y좌표로 변환한 값을 리턴받는다
         LatXLngY tmp = convertGRID_GPS(TO_GRID, latitude, longitude);
+
+        nx = tmp.x;
+        ny = tmp.y;
+
 
         //x,y좌표를 들고 날씨정보 호출하는 함수로 간다.
         weatherInfo(tmp.x, tmp.y);
@@ -687,6 +725,50 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
                     temper.setText(currenttemper + "°");
                 }
+
+                /**
+                 *
+                 *
+                 *현재 지역 알아오기
+                 *
+                 **/
+                Geocoder geocoder = new Geocoder(MainActivity.this);
+                final List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+
+
+                    Log.d("컥컥 : ",list.get(0).getAdminArea());
+                   Log.d("컥컥2 : ",list.get(0).getAddressLine(0));
+
+
+
+                long current = System.currentTimeMillis();
+                Date day = new Date(current);
+                SimpleDateFormat sdf_current = new SimpleDateFormat("yyyy/MM/dd");
+                String formatDay = sdf_current.format(day);
+                String[] this_is_the_moment = formatDay.split("/");
+
+
+                // 글자 크기 조절
+                battlefield.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                current_time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+                battlefield.setText(list.get(0).getAdminArea());
+                current_time.setText(this_is_the_moment[0] + "년 " + this_is_the_moment[1] + "월 " + this_is_the_moment[2] + "일");
+
+                if(mFirebaseUser!=null){
+                    mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(list.get(0).getAdminArea());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
 
             } catch (Exception e) {
                 e.printStackTrace();

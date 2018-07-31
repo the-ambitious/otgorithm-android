@@ -12,6 +12,7 @@ import com.ambit.otgorithm.dto.Chat;
 import com.ambit.otgorithm.dto.Message;
 import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.modules.RoundedImageView;
+import com.ambit.otgorithm.modules.SquareView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

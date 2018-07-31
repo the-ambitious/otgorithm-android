@@ -64,37 +64,37 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.provinceTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36);
 
         switch (position) {
-            case 0:     // 서울
+            case 0:     // 전국
+                url = "http://172.22.225.44:3000/provinces/sejong.png";
+                provinceName = new SpannableString("전 국");
+                break;
+            case 1:     // 서울
                 url = "http://172.22.225.44:3000/provinces/seoul.png";
                 provinceName = new SpannableString("서 울");
                 break;
-            case 1:     // 인천
+            case 2:     // 인천
                 url = "http://172.22.225.44:3000/provinces/incheon.png";
                 provinceName = new SpannableString("인 천");
                 break;
-            case 2:     // 대전
+            case 3:     // 대전
                 url = "http://172.22.225.44:3000/provinces/daejeon.png";
                 provinceName = new SpannableString("대 전");
                 break;
-            case 3:     // 대구
+            case 4:     // 대구
                 url = "http://172.22.225.44:3000/provinces/daegu.png";
                 provinceName = new SpannableString("대 구");
                 break;
-            case 4:     // 광주
+            case 5:     // 광주
                 url = "http://172.22.225.44:3000/provinces/gwangju.png";
                 provinceName = new SpannableString("광 주");
                 break;
-            case 5:     // 부산
+            case 6:     // 부산
                 url = "http://172.22.225.44:3000/provinces/busan.png";
                 provinceName = new SpannableString("부 산");
                 break;
-            case 6:     // 울산
+            case 7:     // 울산
                 url = "http://172.22.225.44:3000/provinces/ulsan.png";
                 provinceName = new SpannableString("울 산");
-                break;
-            case 7:     // 세종특별자치시
-                url = "http://172.22.225.44:3000/provinces/sejong.png";
-                provinceName = new SpannableString("세종특별자치시");
                 break;
             case 8:     // 경기도
                 url = "http://172.22.225.44:3000/provinces/gyeonggi.png";

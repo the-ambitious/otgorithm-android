@@ -5,6 +5,7 @@ public class UserDTO {
     String name;
     String uid;
     String profileUrl;
+    String battlefield;
     boolean selection;
 
 
@@ -19,12 +20,21 @@ public class UserDTO {
         this.profileUrl = profileUrl;
     }
 
-    public UserDTO(String email, String name, String uid, String profileUrl, boolean selection) {
+    public UserDTO(String email, String name, String uid, String profileUrl, String battlefield, boolean selection) {
         this.email = email;
         this.name = name;
         this.uid = uid;
         this.profileUrl = profileUrl;
+        this.battlefield = battlefield;
         this.selection = selection;
+    }
+
+    public String getBattlefield() {
+        return battlefield;
+    }
+
+    public void setBattlefield(String battlefield) {
+        this.battlefield = battlefield;
     }
 
     public String getEmail() {

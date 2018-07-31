@@ -12,6 +12,7 @@ import com.ambit.otgorithm.dto.UserDTO;
 
 
 import com.ambit.otgorithm.modules.RoundedImageView;
+import com.ambit.otgorithm.modules.SquareView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

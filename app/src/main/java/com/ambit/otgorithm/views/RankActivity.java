@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.views;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RankActivity extends AppCompatActivity {
 
@@ -38,6 +42,9 @@ public class RankActivity extends AppCompatActivity {
 
     TextView tv;
     TextView toolbarTitle;
+
+    //선택한 지역이름
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +95,10 @@ public class RankActivity extends AppCompatActivity {
 
             }
         });*/
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
 
-        addGalleryListener();
+        addGalleryListener(name);
 
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new RankAdapter(this, rankerList);
@@ -100,14 +109,7 @@ public class RankActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         /*************************************************************/
 
-
-
-
-
-      /*  Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-
-        tv = (TextView) findViewById(R.id.tv);
+      /*  tv = (TextView) findViewById(R.id.tv);
         tv.setText(name);
 */
 
@@ -150,18 +152,101 @@ public class RankActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addGalleryListener(){
+    private void addGalleryListener(final String name){
 
 
-        Query noSql = mGalleryRef.orderByChild("starCount").limitToLast(100);
 
-        noSql.addChildEventListener(new ChildEventListener() {
+        Query noSql = mGalleryRef.orderByChild("starCount").limitToFirst(100);
+
+        noSql.addListenerForSingleValueEvent(new ValueEventListener() {
+            List<GalleryDTO> galleryDTOList = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                galleryDTOList.clear();
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
+                    switch (name){
+                        case "0":    //전국구
+                            galleryDTOList.add(galleryDTO);
+                            break;
+                        case "1":    //서울
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("서울특별시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "2":    // 인천
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("인천광역시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "3":    // 대전
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("대전광역시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "4":    // 대구
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("대구광역시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "5":    // 광주
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("광주광역시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "6":    // 부산
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("부산광역시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "7":    // 울산
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("울산광역시"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "8":    // 경기
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("경기도"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "9":    // 강원
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("강원도"))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "10":   // 충청
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("충청남도") || galleryDTO.battlefield.equals("충청북도")))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "11":   // 경상
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("경상남도") || galleryDTO.battlefield.equals("경상북도")))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "12":   // 전라
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("전라남도") || galleryDTO.battlefield.equals("전라북도")))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                        case "13":   // 제주
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("제주특별자치도")))
+                                galleryDTOList.add(galleryDTO);
+                            break;
+                    }
+
+                }
+                Collections.reverse(galleryDTOList);
+                addition(galleryDTOList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        /*noSql.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
                 Log.d("큭큭 : ", galleryDTO.imageUrl);
-                drawUI(galleryDTO);
+                //galleryDTOList.add(galleryDTO);
+
+                addition(galleryDTO);
+                //drawUI(galleryDTO);
+                //Log.d("큭큭2 : ", galleryDTOList.get(0).imageUrl);
             }
+
+
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -182,10 +267,16 @@ public class RankActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+        Log.d("큭큭2 : ", "큭큭2 : ");
     }
 
-    private void drawUI(GalleryDTO galleryDTO){
-        mAdapter.additem(position++ ,galleryDTO);
+    private void addition(List<GalleryDTO> list){
+        mAdapter.addList(list);
     }
+
+/*    private void drawUI(GalleryDTO galleryDTO){
+        mAdapter.additem(position++ ,galleryDTO);
+    }*/
 }
