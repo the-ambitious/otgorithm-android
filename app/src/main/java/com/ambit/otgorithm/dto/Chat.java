@@ -11,18 +11,8 @@ public class Chat {
     private boolean disabled;
     private int totalUnreadCount;
 
-    public Chat(){
+    public Chat() { }
 
-    }
-
-    public Chat(String chatId, String title, Date createDate, TextMessage lastMessage, boolean disabled, int totalUnreadCount) {
-        this.chatId = chatId;
-        this.title = title;
-        this.createDate = createDate;
-        this.lastMessage = lastMessage;
-        this.disabled = disabled;
-        this.totalUnreadCount = totalUnreadCount;
-    }
 
     public String getChatId() {
         return chatId;
@@ -71,4 +61,5 @@ public class Chat {
     public void setTotalUnreadCount(int totalUnreadCount) {
         this.totalUnreadCount = totalUnreadCount;
     }
+
 }

@@ -8,10 +8,12 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
 
 public class RoundedImageView extends AppCompatImageView {
 
@@ -35,11 +37,13 @@ public class RoundedImageView extends AppCompatImageView {
         if (drawable == null) {
             return;
         }
-
         if (getWidth() == 0 || getHeight() == 0) {
             return;
         }
-        Bitmap b =  ((BitmapDrawable) drawable).getBitmap();
+
+        Bitmap b = getBitmapFromDrawable(drawable);
+
+        /*Bitmap b =  ((BitmapDrawable) drawable).getBitmap();*/
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
         int w = getWidth(), h = getHeight();
@@ -47,9 +51,15 @@ public class RoundedImageView extends AppCompatImageView {
 
         Bitmap roundBitmap =  getCroppedBitmap(bitmap, w);
         canvas.drawBitmap(roundBitmap, 0,0, null);
-
     }
-
+    @NonNull
+    private Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
+    }
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
         if(bmp.getWidth() != radius || bmp.getHeight() != radius)
@@ -77,7 +87,5 @@ public class RoundedImageView extends AppCompatImageView {
 
         return output;
     }
-
-
 
 }

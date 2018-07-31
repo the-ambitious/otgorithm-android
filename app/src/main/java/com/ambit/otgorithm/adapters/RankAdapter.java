@@ -15,10 +15,12 @@ import com.ambit.otgorithm.dto.GalleryDTO;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHolder> {
     Context context;
-    private ArrayList<GalleryDTO> mRankerList;
+    private List<GalleryDTO> mRankerList;
     LayoutInflater inflater;
 
     public static class RankerViewHolder extends RecyclerView.ViewHolder {
@@ -78,11 +80,19 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         return mRankerList.size();
     }
 
+    public void addList(List<GalleryDTO> list){
+        mRankerList = list;
+        notifyDataSetChanged();
+    }
+
 
     public void additem(int position, GalleryDTO galleryDTO){
         mRankerList.add(position, galleryDTO);
         notifyItemInserted(position);
     }
+
+
+
 }
 
 /*
