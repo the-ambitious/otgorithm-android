@@ -29,6 +29,8 @@ import com.ambit.otgorithm.adapters.ProfileAdapter;
 import com.ambit.otgorithm.adapters.ProfileViewPagerAdapter;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
 import com.ambit.otgorithm.fragments.IntroFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     /*private ViewPager profileViewPager;*/
     private ViewPagerAdapter profileViewPagerAdapter;
+
+    private FirebaseAuth mAuth;
+
+    private FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +53,14 @@ public class ProfileActivity extends AppCompatActivity {
          * Remove shadow from the action bar(커스텀 툴바 셋팅)
          * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
          */
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+
         final Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Parallax Tabs");
+            getSupportActionBar().setTitle(mFirebaseUser.getDisplayName());
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /*****************************************************************/
