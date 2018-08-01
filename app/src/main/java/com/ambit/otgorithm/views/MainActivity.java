@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -36,6 +37,9 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -108,6 +112,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     //전장
     TextView battlefield;
 
+    //프로필사진
+    ImageView sigin_in_thumbnail;
+
+    //닉네임
+    TextView sigin_in_nickname;
+
+    //이메일
+    TextView sigin_in_email;
+
     private double nx;
     private double ny;
 
@@ -164,7 +177,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+
+
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View nav_header_view = navigationView.getHeaderView(0);
+
+
+
+
+
+        sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
+        sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
+        sigin_in_nickname = nav_header_view.findViewById(R.id.sigin_in_nickname);
+        if(mFirebaseUser != null) {
+            Glide.with(MainActivity.this).load(mFirebaseUser.getPhotoUrl()).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+            sigin_in_nickname.setText(mFirebaseUser.getDisplayName());
+            sigin_in_email.setText(mFirebaseUser.getEmail());
+        }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
