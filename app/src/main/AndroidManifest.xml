@@ -61,7 +61,9 @@
         <activity android:name=".views.ProfileActivity" />
         <activity android:name=".views.WebViewActivity" />
         <activity android:name=".views.ChatActivity" />
-        <activity android:name=".views.ChatMain"></activity>
+        <activity android:name=".views.ChatMain" />
+        <activity android:name=".views.IntroActivity" />
+        <activity android:name=".views.DescriptionActivity" />
     </application>
 
 </manifest>

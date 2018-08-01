@@ -198,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         startActivity(intent);
                         break;
 
+                    case R.id.nav_aboutUs_intro:
+                        intent = new Intent(MainActivity.this, IntroActivity.class);
+                        startActivity(intent);
+                        break;
+
                     case R.id.nav_aboutUs_logout:
                         Log.v("알림", "LOGOUT 아이템 클릭");
                         AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
@@ -273,9 +278,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 이미지 url을 저장하는 arrayList
         // viewPager에서 보여줄 item
         ArrayList<String> bannerList = new ArrayList<String>();
-        bannerList.add("http://172.22.225.44:3000/banners/banner1.png");
-        bannerList.add("http://172.22.225.44:3000/banners/banner2.png");
-        bannerList.add("http://172.22.225.44:3000/banners/banner3.png");
+        bannerList.add("http://13.125.253.250/banners/banner1.png");
+        bannerList.add("http://13.125.253.250/banners/banner2.png");
+        bannerList.add("http://13.125.253.250/banners/banner3.png");
 
         autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
         // AutoScrollAdapter에 사진을 담은 arrayList 전달
@@ -689,24 +694,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
-                        case 1:
-                            weather_Icon = R.drawable.rain;
-                            weathericon.setImageResource(R.drawable.rain);
-                            weatherdiscrip.setText("비가 오네요");
-                            temper.setText(currenttemper + "도");
-                            break;
-                        case 2:
-                            weather_Icon = R.drawable.snowrain;
-                            weathericon.setImageResource(R.drawable.snowrain);
-                            weatherdiscrip.setText("진눈개비가 내리네요");
-                            temper.setText(currenttemper + "도");
-                            break;
-                        case 3:
-                            weather_Icon = R.drawable.snow;
-                            weathericon.setImageResource(R.drawable.snow);
-                            weatherdiscrip.setText("눈이 내립니다");
-                            temper.setText(currenttemper + "도");
-                            break;
+                    case 1:
+                        weather_Icon = R.drawable.rain;
+                        weathericon.setImageResource(R.drawable.rain);
+                        weatherdiscrip.setText("비가 오네요");
+                        temper.setText(currenttemper + "도");
+                        break;
+                    case 2:
+                        weather_Icon = R.drawable.snowrain;
+                        weathericon.setImageResource(R.drawable.snowrain);
+                        weatherdiscrip.setText("진눈개비가 내리네요");
+                        temper.setText(currenttemper + "도");
+                        break;
+                    case 3:
+                        weather_Icon = R.drawable.snow;
+                        weathericon.setImageResource(R.drawable.snow);
+                        weatherdiscrip.setText("눈이 내립니다");
+                        temper.setText(currenttemper + "도");
+                        break;
 
                     default:
                         break;
@@ -721,25 +726,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     weather_Icon = R.drawable.cloudy;
                     weathericon.setImageResource(R.drawable.cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게~");
-                    weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_cloudy));
+                    weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_sunny));
                     weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
                     temper.setText(currenttemper + "°");
                 }
 
                 /**
-                 *
-                 *
-                 *현재 지역 알아오기
-                 *
-                 **/
+                 * 현재 지역 알아오기
+                 */
                 Geocoder geocoder = new Geocoder(MainActivity.this);
-                final List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                final List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
 
-
-                    Log.d("컥컥 : ",list.get(0).getAdminArea());
-                   Log.d("컥컥2 : ",list.get(0).getAddressLine(0));
-
-
+                Log.d("컥컥 : ", list.get(0).getAdminArea());
+                Log.d("컥컥2 : ", list.get(0).getAddressLine(0));
 
                 long current = System.currentTimeMillis();
                 Date day = new Date(current);
@@ -755,7 +754,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 battlefield.setText(list.get(0).getAdminArea());
                 current_time.setText(this_is_the_moment[0] + "년 " + this_is_the_moment[1] + "월 " + this_is_the_moment[2] + "일");
 
-                if(mFirebaseUser!=null){
+                if (mFirebaseUser != null) {
                     mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -827,6 +826,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
         //updateUI(currentUser);
     }
-
 
 }

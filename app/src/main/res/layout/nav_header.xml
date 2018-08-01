@@ -9,11 +9,13 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/sigin_in_thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/sigin_in_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -21,6 +23,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
+        android:id="@+id/sigin_in_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="info@codinginflow.com" />
