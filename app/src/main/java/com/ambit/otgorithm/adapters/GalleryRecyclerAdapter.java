@@ -193,6 +193,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         notifyItemInserted(position);
     }
 
+
     // 내림차순
     public void addList(List<GalleryDTO> list) {
         data = list;

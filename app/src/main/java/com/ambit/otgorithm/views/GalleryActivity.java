@@ -28,10 +28,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 public class GalleryActivity extends AppCompatActivity
                                 implements DatePickerDialog.OnDateSetListener {
@@ -205,28 +208,18 @@ public class GalleryActivity extends AppCompatActivity
     }
 
     private void addGalleryListener(){
-        mGalleryRef.addChildEventListener(new ChildEventListener() {
+
+        mGalleryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            List<GalleryDTO> galleryDTOList = new ArrayList<>();
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
-                drawUI(galleryDTO);
-                Log.d("ㅋㅋㅋ","ㅋㅋㅋ");
-                //mGalleryDTOS.add(galleryDTO);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                galleryDTOList.clear();
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
+                    galleryDTOList.add(galleryDTO);
+                }
+                Collections.reverse(galleryDTOList);
+                addition(galleryDTOList);
             }
 
             @Override
@@ -234,11 +227,12 @@ public class GalleryActivity extends AppCompatActivity
 
             }
         });
+
+    }
+    private void addition(List<GalleryDTO> list){
+        adapter.addList(list);
     }
 
-    private void drawUI(GalleryDTO galleryDTO){
-        adapter.addItem(position++,galleryDTO);
-    }
 
 }   // end of class
 
