@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ambit.otgorithm">
+
+    <!-- WebView를 띄우기 위해 INTERNET 사용 권한 추가 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_otgorithm"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".views.MainActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 페북시작 -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <!-- 페북끝 -->
+
+        <activity android:name=".views.SortieActivity" />
+        <activity android:name=".views.GalleryActivity" />
+        <activity android:name=".views.FirstStartActivity" />
+        <activity android:name=".views.ProvinceActivity" />
+        <activity android:name=".views.RankActivity" />
+        <activity android:name=".views.SignInActivity" />
+        <activity android:name=".views.SiginUp1Activity" />
+        <activity android:name=".views.SignUp2Activity" />
+        <activity android:name=".views.UploadPicture" />
+        <activity android:name=".views.ProfileActivity" />
+        <activity android:name=".views.WebViewActivity" />
+        <activity android:name=".views.ChatActivity" />
+        <activity android:name=".views.ChatMain" />
+        <activity android:name=".views.IntroActivity" />
+        <activity android:name=".views.DescriptionActivity" />
+    </application>
+
+</manifest>

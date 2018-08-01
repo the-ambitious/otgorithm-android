@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.GalleryActivity">
+
+    <item
+        android:id="@+id/linearViewHorizontal"
+        android:orderInCategory="100"
+        android:title="Linear View Horizontal"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/linearViewVertical"
+        android:orderInCategory="100"
+        android:title="Linear View Vertical"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/gridView"
+        android:orderInCategory="100"
+        android:title="Grid View"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/staggeredViewHorizontal"
+        android:orderInCategory="100"
+        android:title="Staggered View Horizontal"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/staggeredViewVertical"
+        android:orderInCategory="100"
+        android:title="Staggered View Vertical"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/action_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+</menu>

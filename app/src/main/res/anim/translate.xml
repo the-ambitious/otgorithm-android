@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+        <translate
+            android:duration="3000"
+            android:fromYDelta="0"
+            android:toYDelta="100%" />
+    -->
+    <translate
+        android:duration="1000"
+        android:fromYDelta="50%"
+        android:toYDelta="0" />
+
+</set>
+
+    <!-- translate.xml : 좌표 이동 효과
+        android:fromXDelta - x축의 시작 위치
+        android:toXDelta - x축의 마지막 위치
+        android:fromYDelta - y축의 시작 위치
+        android:toYDelta - y축의 마지막 위치
+        android:duration - 애니메이션 작동 시간
+    -->

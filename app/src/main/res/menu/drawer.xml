@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_item_closet"
+            android:checked="true"
+            android:icon="@drawable/ic_attachment"
+            android:title="@string/nav_item_closet" />
+        <item
+            android:id="@+id/nav_item_favorites"
+            android:icon="@drawable/ic_image"
+            android:title="@string/nav_item_favorites" />
+        <item
+            android:id="@+id/nav_item_letterbox"
+            android:icon="@drawable/ic_place"
+            android:title="@string/nav_item_letterbox" />
+    </group>
+
+    <item android:title="@string/nav_contact">
+        <menu>
+            <item
+                android:id="@+id/nav_contact_notice"
+                android:icon="@drawable/ic_emoticon"
+                android:title="@string/nav_contact_notice" />
+            <item
+                android:id="@+id/nav_contact_commentary"
+                android:icon="@drawable/ic_emoticon"
+                android:title="@string/nav_contact_commentary" />
+        </menu>
+    </item>
+
+    <item android:title="@string/nav_aboutUs">
+        <menu>
+            <item
+                android:id="@+id/nav_aboutUs_intro"
+                android:icon="@drawable/ic_emoticon"
+                android:title="@string/nav_aboutUs_intro" />
+            <item
+                android:id="@+id/nav_aboutUs_settings"
+                android:icon="@drawable/ic_emoticon"
+                android:title="@string/nav_aboutUs_settings" />
+            <item
+                android:id="@+id/nav_aboutUs_logout"
+                android:icon="@drawable/ic_emoticon"
+                android:title="로그아웃" />
+        </menu>
+    </item>
+
+</menu>

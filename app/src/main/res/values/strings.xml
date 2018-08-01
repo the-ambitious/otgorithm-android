@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Otgorithm</string>
+
+    <!--
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+-->
+    <string name="tvSignUp"><u>회원가입</u></string>
+
+
+    <!-- 프로젝트에서 필요한 문자열들을 정의 -->
+    <string name="nav_item_closet">내 옷장</string>
+    <string name="nav_item_favorites">즐겨찾는 장군</string>
+    <string name="nav_item_letterbox">서신함</string>
+
+    <string name="nav_contact">이용 문의</string>
+    <string name="nav_contact_notice">공지사항</string>
+    <string name="nav_contact_commentary">상소문</string>
+
+    <string name="nav_aboutUs">옷고리즘이란?</string>
+    <string name="nav_aboutUs_intro">옷고리즘이란?</string>
+    <string name="nav_aboutUs_settings">환경 설정</string>
+
+    <!-- ativity_rank.xml -->
+    <string name="action_search">검색</string>
+
+    <!-- ativity_profile.xml -->
+    <string name="card_one">카드1</string>
+    <string name="card_two">카드2</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="nav_item_attachment">Attachment</string>
+    <string name="nav_item_images">Images</string>
+    <string name="nav_item_location">My Location</string>
+    <string name="nav_sub_menu">Sub Menu</string>
+    <string name="nav_sub_menu_item01">Sub Menu Item 1</string>
+    <string name="nav_sub_menu_item02">Sub Menu Item 2</string>
+    <string name="drawer_header_text">Drawer Header</string>
+    <string name="second_activity_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consectetur diam id aliquam scelerisque. Donec ultrices lacus vel dignissim pharetra. Vivamus pharetra augue quis rhoncus placerat. Sed ultricies at risus non cursus. Nam rutrum leo nec placerat consectetur. Vestibulum feugiat eleifend diam, nec interdum augue tincidunt sit amet. Praesent feugiat est auctor lacus consectetur, vitae pellentesque dolor laoreet.</string>
+    <string name="title_activity_second">SecondActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--페북-->
+    <string name="facebook_app_id">244104373080056</string>
+    <string name="fb_login_protocol_scheme">fb244104373080056</string>
+</resources>

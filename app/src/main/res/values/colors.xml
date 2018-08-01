@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2d3041</color>
+    <color name="colorPrimaryDark">#2d3247</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="customToolbar">#ee2d3041</color>
+
+    <color name="text_color">#212121</color>
+    <color name="menu_color">#FFFFFF</color>
+
+
+
+    <!--채팅부분 추가-->
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+
+
+    <color name="main_bg">#F6F6F6</color>
+    <color name="main_yellow">#FDCE00</color>
+    <color name="main_mint">#00CFC3</color>
+    <color name="main_red">#F96246</color>
+    <color name="font_color">#E4E4E4</color>
+
+    <color name="white">#fff</color>
+</resources>
