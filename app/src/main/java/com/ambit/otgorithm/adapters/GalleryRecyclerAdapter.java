@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyViewHolder> {
+public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder> {
 
     Context context;
     List<GalleryDTO> data;
@@ -49,25 +49,19 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(like){
-                Glide.with(context).load(R.drawable.baseline_favorite_black_18dp).into(thumbs_up);
+                Glide.with(context).load(R.drawable.thumbs_up_on).into(thumbs_up);
             }else {
-                Glide.with(context).load(R.drawable.baseline_favorite_border_black_18dp).into(thumbs_up);
+                Glide.with(context).load(R.drawable.thumbs_up_off).into(thumbs_up);
             }
         }
     };
 
-
     int previousPosition = 0;
 
-    public MyCustomAdapter(){
-
-    }
-
-    public MyCustomAdapter(Context context){
-
-    }
-
-    public MyCustomAdapter(Context context, ArrayList<GalleryDTO> data) {
+    // 생성자(constructor)
+    public GalleryRecyclerAdapter() { }
+    public GalleryRecyclerAdapter(Context context) { }
+    public GalleryRecyclerAdapter(Context context, ArrayList<GalleryDTO> data) {
         this.context = context;
         this.data = data;
         inflater = LayoutInflater.from(context);
@@ -83,8 +77,6 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder myViewHolder, int position) {
-
-
         myViewHolder.textview.setText(data.get(position).sysdate);
         Uri uri = Uri.parse(data.get(position).imageUrl);
         Glide.with(context).load(uri).into(myViewHolder.imageview);
@@ -94,9 +86,9 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
     /*        like = true;
             handler.sendEmptyMessage(0);*/
             // Glide.with(context).load(R.drawable.baseline_favorite_black_18dp).into(myViewHolder.star);
-            myViewHolder.star.setImageResource(R.drawable.baseline_favorite_black_18dp);
+            // 기존에 누른 사람들 기록 유지하기 위함
+            myViewHolder.star.setImageResource(R.drawable.thumbs_up_on);
         }
-
 
         if (position > previousPosition) {      // // We are scrolling DOWN
             AnimationUtil.animate(myViewHolder, true);
@@ -122,9 +114,7 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
             @Override
             public boolean onLongClick(View v) {
                 //Toast.makeText(context, "OnLongClick Called on postition " + position, Toast.LENGTH_SHORT).show();
-
                 removeItem(infoData);
-
                 return true;
             }
         });
@@ -145,32 +135,27 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Iterator<DataSnapshot> galleryIterator = dataSnapshot.getChildren().iterator();
 
-                        while (galleryIterator.hasNext()){
+                        while (galleryIterator.hasNext()) {
                             Log.d("테스트: ", "iterator 진입");
                             dataSnapshot = galleryIterator.next();
                             GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
-                            if(galleryDTO.imageUrl.equals(data.get(currentPosition).imageUrl)){
+                            if (galleryDTO.imageUrl.equals(data.get(currentPosition).imageUrl)) {
                                 //onStarClicked(mGalleryRef.child(dataSnapshot.getKey()));
 
                                 Log.d("유알아이값: ", galleryDTO.imageUrl);
                                 Log.d("키값: ", dataSnapshot.getKey());
                                 onStarClicked(mGalleryRef.child(dataSnapshot.getKey()));
                             }
-
                         }
-                    }
+                    }   // end of onDataChange()
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
+                    public void onCancelled(DatabaseError databaseError) { }
                 });
-
-
                 thumbs_up = myViewHolder.star;
             }
         });
-    }
+    }   // end of onBindViewHolder()
 
     @Override
     public int getItemCount() {
@@ -183,7 +168,6 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
         ImageView imageview;
         ImageButton star;
         ImageView weather;
-
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -209,7 +193,9 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
         notifyItemInserted(position);
     }
 
-    public void addList(List<GalleryDTO> list){
+
+    // 내림차순
+    public void addList(List<GalleryDTO> list) {
         data = list;
         notifyDataSetChanged();
     }
@@ -257,4 +243,3 @@ public class MyCustomAdapter extends RecyclerView.Adapter<MyCustomAdapter.MyView
     }
 
 }
-

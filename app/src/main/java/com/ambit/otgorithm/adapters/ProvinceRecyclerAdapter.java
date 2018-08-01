@@ -18,24 +18,22 @@ import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.ItemDTO;
-import com.ambit.otgorithm.views.ProfileActivity;
 import com.ambit.otgorithm.views.RankActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 // ProvinceActivity의 Adapter
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecyclerAdapter.ViewHolder> {
 
-    private String url;
-
-    Animation ani;
+    private String url;     // 지역 이미지를 불러오기 위한 경로
+    Animation ani;          // 지역명에 애니메이션 효과를 주기 위한 변수
 
     Context context;
     List<ItemDTO> items;
     int item_layout;
 
-    public RecyclerAdapter(Context context, List<ItemDTO> items, int item_layout) {
+    public ProvinceRecyclerAdapter(Context context, List<ItemDTO> items, int item_layout) {
         this.context = context;
         this.items = items;
         this.item_layout = item_layout;
@@ -49,7 +47,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        // 밑줄 긋기 위한 객체 선언
+        // 글자에 밑줄을 긋기 위한 객체 선언
         SpannableString provinceName = null;
 
         /* Log.v("url: ", "아이템 이미지: " + items.get(position).getProvincesImage()); */
@@ -65,59 +63,59 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         switch (position) {
             case 0:     // 전국
-                url = "http://172.22.225.44:3000/provinces/sejong.png";
+                url = "http://13.125.253.250/provinces/korea.png";
                 provinceName = new SpannableString("전 국");
                 break;
             case 1:     // 서울
-                url = "http://172.22.225.44:3000/provinces/seoul.png";
+                url = "http://13.125.253.250/provinces/seoul.png";
                 provinceName = new SpannableString("서 울");
                 break;
             case 2:     // 인천
-                url = "http://172.22.225.44:3000/provinces/incheon.png";
+                url = "http://13.125.253.250/provinces/incheon.png";
                 provinceName = new SpannableString("인 천");
                 break;
             case 3:     // 대전
-                url = "http://172.22.225.44:3000/provinces/daejeon.png";
+                url = "http://13.125.253.250/provinces/daejeon.png";
                 provinceName = new SpannableString("대 전");
                 break;
             case 4:     // 대구
-                url = "http://172.22.225.44:3000/provinces/daegu.png";
+                url = "http://13.125.253.250/provinces/daegu.png";
                 provinceName = new SpannableString("대 구");
                 break;
             case 5:     // 광주
-                url = "http://172.22.225.44:3000/provinces/gwangju.png";
+                url = "http://13.125.253.250/provinces/gwangju.png";
                 provinceName = new SpannableString("광 주");
                 break;
             case 6:     // 부산
-                url = "http://172.22.225.44:3000/provinces/busan.png";
+                url = "http://13.125.253.250/provinces/busan.png";
                 provinceName = new SpannableString("부 산");
                 break;
             case 7:     // 울산
-                url = "http://172.22.225.44:3000/provinces/ulsan.png";
+                url = "http://13.125.253.250/provinces/ulsan.png";
                 provinceName = new SpannableString("울 산");
                 break;
             case 8:     // 경기도
-                url = "http://172.22.225.44:3000/provinces/gyeonggi.png";
+                url = "http://13.125.253.250/provinces/gyeonggi.png";
                 provinceName = new SpannableString("경기도");
                 break;
             case 9:     // 강원도
-                url = "http://172.22.225.44:3000/provinces/gangwon.png";
+                url = "http://13.125.253.250/provinces/gangwon.png";
                 provinceName = new SpannableString("강원도");
                 break;
             case 10:     // 충청도
-                url = "http://172.22.225.44:3000/provinces/chungcheong.png";
+                url = "http://13.125.253.250/provinces/chungcheong.png";
                 provinceName = new SpannableString("충청도");
                 break;
             case 11:     // 경상도
-                url = "http://172.22.225.44:3000/provinces/kyungsang.png";
+                url = "http://13.125.253.250/provinces/kyungsang.png";
                 provinceName = new SpannableString("경상도");
                 break;
             case 12:     // 전라도
-                url = "http://172.22.225.44:3000/provinces/jeolla.png";
+                url = "http://13.125.253.250/provinces/jeolla.png";
                 provinceName = new SpannableString("전라도");
                 break;
             case 13:     // 제주도
-                url = "http://172.22.225.44:3000/provinces/jeju.png";
+                url = "http://13.125.253.250/provinces/jeju.png";
                 provinceName = new SpannableString("제주도");
                 break;
         }
@@ -126,17 +124,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.provinceTitle.setText(provinceName);
 
         Glide.with(context.getApplicationContext())
-//                .load(items.get(position).getProvincesImage())  -> it doesn't work
+                // .load(items.get(position).getProvincesImage()) --> it doesn't work
                 .load(url) // it works
                 .into(holder.provinceImage);
 
-
-/*
-        Drawable drawable = ContextCompat.getDrawable(context, item.getProvincesImage());
-        */
-        //holder.image.setBackground(drawable);
-
-//        holder.title.setText(item.getProvincesTitle());
+        // holder.title.setText(item.getProvincesTitle());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +137,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 v.getContext().startActivity(intent);
             }
         });
-    }
+/*
+        Drawable drawable = ContextCompat.getDrawable(context, item.getProvincesImage());
+        */
+        //holder.image.setBackground(drawable);
+
+
+    }   // end of onBindViewHolder()
 
     @Override
     public int getItemCount() {

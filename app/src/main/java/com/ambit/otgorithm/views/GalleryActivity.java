@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
-import com.ambit.otgorithm.adapters.MyCustomAdapter;
+import com.ambit.otgorithm.adapters.GalleryRecyclerAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.fragments.DatePickerFragment;
 import com.google.firebase.database.ChildEventListener;
@@ -42,7 +42,7 @@ public class GalleryActivity extends AppCompatActivity
     RecyclerView recyclerView;
     TextView textViewToolbarTitle;
 
-    MyCustomAdapter adapter;
+    GalleryRecyclerAdapter adapter;
     Button calendar;
 
     FirebaseDatabase mFirebaseDb;
@@ -114,7 +114,7 @@ public class GalleryActivity extends AppCompatActivity
         addGalleryListener();
 
         Log.d("ㄷㄷㄷ : ","ㄷㄷㄷ");
-        adapter = new MyCustomAdapter(this, mGalleryDTOS);
+        adapter = new GalleryRecyclerAdapter(this, mGalleryDTOS);
         //Log.d("갤러리 테스트: ", DataDTO.getData().get(0).imageUrl);
         recyclerView.setAdapter(adapter);
 
