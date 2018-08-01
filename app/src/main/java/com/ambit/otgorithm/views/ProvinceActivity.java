@@ -2,29 +2,20 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
-import com.ambit.otgorithm.adapters.RecyclerAdapter;
+import com.ambit.otgorithm.adapters.ProvinceRecyclerAdapter;
 import com.ambit.otgorithm.dto.ItemDTO;
 
 import java.util.ArrayList;
@@ -74,7 +65,7 @@ public class ProvinceActivity extends AppCompatActivity {
 
         List<ItemDTO> items = new ArrayList<>();
         mProvinceRecyclerView.setAdapter(
-                new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_province));
+                new ProvinceRecyclerAdapter(getApplicationContext(), items, R.layout.activity_province));
 
         ItemDTO[] item = new ItemDTO[ITEM_SIZE];
 
