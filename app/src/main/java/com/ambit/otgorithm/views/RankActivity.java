@@ -64,7 +64,7 @@ public class RankActivity extends AppCompatActivity {
         toolbarTitle.setText("장군 목록");
         toolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         toolbarTitle.setTextColor(Color.WHITE);
-        Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
+        final Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
         setSupportActionBar(galleryToolbar);
 
         // 기본 타이틀을 보여줄 지 말 지 설정
@@ -121,14 +121,15 @@ public class RankActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         // 랭커마다 클릭했을 시 개인 프로필 화면 전환
-                        /*Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                        Log.d("테스트: ", "user ID? :" + rankerList.get(position).nickname);*/
-                        /**
-                         * intent.putExtra("ranker_id", Integer.toString(position));
-                         * putExtra로 starCount에 해당하는 아이디 같은 걸 들고가면 될 듯
-                         */
+                        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                        TextView user = view.findViewById(R.id.userId);
+                        Log.d("테스트: ", "user ID? :" + user.getText());
+
+                        intent.putExtra("ranker_id", user.getText());
+
+
                         Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
-                        /*view.getContext().startActivity(intent);*/
+                        view.getContext().startActivity(intent);
                     }
 
                     @Override

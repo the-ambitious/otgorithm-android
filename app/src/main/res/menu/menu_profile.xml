@@ -5,7 +5,6 @@
     tools:context=".views.GalleryActivity">
 
     <item
-        android:id="@+id/action_chat"
         android:icon="@android:drawable/sym_action_chat"
         android:title="@string/action_chat"
         app:actionViewClass="android.support.v7.widget.SearchView"

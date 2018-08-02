@@ -73,6 +73,11 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         return dailyLookList.size();
     }
 
+    public void addList(ArrayList<GalleryDTO> galleryDTOS){
+        dailyLookList = galleryDTOS;
+        notifyDataSetChanged();
+    }
+
     // 내부 클래스
     class MyViewHolder extends RecyclerView.ViewHolder {
 
