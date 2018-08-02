@@ -61,18 +61,20 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        Intent intent = null;
+        Intent intent = new Intent(this, DescriptionActivity.class);
 
         switch (v.getId()) {
             case R.id.privacy:
-                intent = new Intent(this, DescriptionActivity.class);
                 intent.putExtra("description", "privacy");
                 break;
             case R.id.terms:
-                intent = new Intent(this, DescriptionActivity.class);
                 intent.putExtra("description", "terms");
+                break;
+            case R.id.license:
+                intent.putExtra("description", "license");
                 break;
         }
         startActivity(intent);
-    }
+    }   // end of onClick()
+
 }

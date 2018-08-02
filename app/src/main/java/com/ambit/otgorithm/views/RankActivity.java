@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,6 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.RankAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.modules.RankerItemClickListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,7 @@ import java.util.List;
 
 public class RankActivity extends AppCompatActivity {
 
+    private LinearLayout mProvinceTheme;
     private RecyclerView mRecyclerView;
     private RankAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -59,10 +61,10 @@ public class RankActivity extends AppCompatActivity {
 
         position = 0;
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("장군 서열 현황");
+        toolbarTitle.setText("장군 목록");
         toolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         toolbarTitle.setTextColor(Color.WHITE);
-        Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
+        final Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
         setSupportActionBar(galleryToolbar);
 
         // 기본 타이틀을 보여줄 지 말 지 설정
@@ -71,7 +73,6 @@ public class RankActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*************************************************************/
-
        /* rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
@@ -84,17 +85,21 @@ public class RankActivity extends AppCompatActivity {
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));*/
 
-
-
+        //mProvinceTheme = (LinearLayout) findViewById(R.id.province_theme);
         mRecyclerView = findViewById(R.id.rv_ranker);
-        rankerList = new ArrayList<>();
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(false);
-    /*    mRecyclerView.setOnClickListener(new View.OnClickListener() {
+
+        rankerList = new ArrayList<>();
+
+/*
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });*/
+        });
+*/
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
 
@@ -103,29 +108,33 @@ public class RankActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new RankAdapter(this, rankerList);
 
-
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         /*************************************************************/
 
       /*  tv = (TextView) findViewById(R.id.tv);
         tv.setText(name);
 */
-
-
         Log.d("테스트", "RankActivity 들왔음");
-
         mRecyclerView.addOnItemTouchListener(
                 new RankerItemClickListener(getApplicationContext(), mRecyclerView, new RankerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        // 랭커마다 클릭했을 시 개인 프로필 화면 전환
+                        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                        TextView user = view.findViewById(R.id.userId);
+                        Log.d("테스트: ", "user ID? :" + user.getText());
+
+                        intent.putExtra("ranker_id", user.getText());
+
+
                         Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
+                        view.getContext().startActivity(intent);
                     }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-
+                        // 즐겨찾기?
                     }
                 })
         );
@@ -134,7 +143,7 @@ public class RankActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_rank, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -147,6 +156,10 @@ public class RankActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_gallary:
+                Intent intent = new Intent(RankActivity.this, GalleryActivity.class);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

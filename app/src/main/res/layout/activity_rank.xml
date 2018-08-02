@@ -9,39 +9,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
         android:weightSum="100">
 
-        <!-- 리스트 목록 -->
-        <LinearLayout
+        <!-- 지역 리스트 -->
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="60">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_ranker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:background="@android:color/darker_gray"
-                android:scrollbars="vertical" />
-
-        </LinearLayout>
-
-
-        <!-- 수정해야 함 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="36sp" />
 
             <TextView
                 android:id="@+id/country_name"
@@ -54,16 +32,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
+        </LinearLayout>-->
 
-            <Button
-                android:id="@+id/button"
+        <!-- 지역 레이아웃 -->
+        <LinearLayout
+            android:id="@+id/province_theme"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="31.5"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/province_busan"
+            android:weightSum="10">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="굳" />
+                android:gravity="center"
+                android:text="부 산"
+                android:textColor="@android:color/white"
+                android:textSize="36sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="2018년 8월 1주차 현황"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
         </LinearLayout>
 
+        <!-- 지역 레이아웃 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="68.5"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_ranker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
     </LinearLayout>
-
-
 
 </RelativeLayout>

@@ -1,17 +1,24 @@
 package com.ambit.otgorithm.views;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,14 +30,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
-import com.ambit.otgorithm.adapters.ProfileViewPagerAdapter;
+import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
 import com.ambit.otgorithm.fragments.IntroFragment;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +53,29 @@ public class ProfileActivity extends AppCompatActivity {
 
     /*private ViewPager profileViewPager;*/
     private ViewPagerAdapter profileViewPagerAdapter;
+    private FloatingActionButton chatFab;
 
     private FirebaseAuth mAuth;
-
     private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mFirebaseDB;
+    private DatabaseReference mUserRef;
+
+    private String ranker_id;
+
+    String rankerPhotoUrl;
+
+    ImageView htab_header;
+
+    Uri photoUri;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //Glide.with(ProfileActivity.this).load(photoUri).apply(new RequestOptions().override(50,20)).into(htab_header);
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +87,53 @@ public class ProfileActivity extends AppCompatActivity {
          * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
          */
 
+        Bundle extras = getIntent().getExtras();
+        ranker_id = extras.getString("ranker_id");
+
+        htab_header = findViewById(R.id.htab_header);
+        chatFab = findViewById(R.id.action_chat);
+        chatFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ProfileActivity.this);
+                alertDialogBuilder.setTitle("장군 면담 요청")
+                        .setMessage("장군의 허락을 받아야 합니다." + "\n" + "요청하시겠습니까?")
+                        .setCancelable(false)
+                        .setPositiveButton("네",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
+                                        Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
+                                        Log.v("알림", "요청 성고");
+                                        startActivity(intent);
+                                    }
+                                }).setNegativeButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // 아니오 클릭. dialog 닫기.
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = alertDialogBuilder.create();
+                alertDialogBuilder.show();
+            }
+        });
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+        mFirebaseDB = FirebaseDatabase.getInstance();
+        mUserRef = mFirebaseDB.getReference("users");
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
-        setSupportActionBar(toolbar);
+        addProfileListener(ranker_id);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
+        setSupportActionBar(toolbar);    // 액션바와 같게 만들어줌
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(mFirebaseUser.getDisplayName());
+            getSupportActionBar().setTitle(ranker_id);
         }
+        /*// 기본 타이틀을 보여줄 지 말 지 설정
+        getSupportActionBar().setDisplayShowTitleEnabled(false);*/
+        // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /*****************************************************************/
 
@@ -86,9 +158,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 //        profileTabs.getTabAt(0).setIcon(R.drawable.ic_mr_button_connected_17_dark);
         /*****************************************************************/
-
-
-
         try {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snow);
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
@@ -138,6 +207,12 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     /**
      * setupViewPager(): 뷰페이저(프래그먼트)를 설치하는 부분
      * @param viewPager
@@ -146,17 +221,38 @@ public class ProfileActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new IntroFragment(
                 ContextCompat.getColor(this, android.R.color.background_light)), "Profile");
-        adapter.addFrag(new DailyLookFragment(
-                ContextCompat.getColor(this, android.R.color.darker_gray)), "Daily Look");
+        adapter.addFrag(new DailyLookFragment(ranker_id), "Daily Look");
         adapter.addFrag(new ProfileFragment(
                 ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
         viewPager.setAdapter(adapter);
     }
 
+    private void addProfileListener(final String ranker_id){
+        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    UserDTO userDTO = children.getValue(UserDTO.class);
+                    if(userDTO.getName().equals(ranker_id)){
+                        rankerPhotoUrl = userDTO.getProfileUrl();
+                        photoUri = Uri.parse(rankerPhotoUrl);
+                        handler.sendEmptyMessage(0);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
@@ -166,8 +262,10 @@ public class ProfileActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_settings:
-                return true;
+            case R.id.action_chat:
+                Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -176,9 +274,12 @@ public class ProfileActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
+
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
+
+
 
         @Override
         public Fragment getItem(int position) {

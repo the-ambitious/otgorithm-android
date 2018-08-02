@@ -24,6 +24,9 @@
     <!-- ativity_rank.xml -->
     <string name="action_search">검색</string>
 
+    <!-- ativity_rank.xml -->
+    <string name="action_chat">채팅</string>
+
     <!-- ativity_profile.xml -->
     <string name="card_one">카드1</string>
     <string name="card_two">카드2</string>

@@ -8,10 +8,34 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp">
 
-        <ImageView
+        <TextView
+            android:id="@+id/rank_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:text="10"
+            android:textColor="@android:color/black"
+            android:textSize="36sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="50dp"
+            android:text="위"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileThumbnail"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="80dp"
             android:padding="4dp" />
 
         <TextView
@@ -20,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="96dp"
-            android:layout_marginTop="13dp"
-            android:text="Line 1"
+            android:layout_marginStart="170dp"
+            android:layout_marginTop="9dp"
+            android:text="id: userId"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -31,9 +55,9 @@
             android:id="@+id/userDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/profileThumbnail"
             android:layout_alignStart="@+id/userId"
-            android:text="Line 2"
+            android:layout_below="@+id/userId"
+            android:text="http://corock.tistory.com"
             android:textSize="18sp" />
 
 

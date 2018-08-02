@@ -50,6 +50,9 @@ public class DescriptionActivity extends AppCompatActivity {
             case "terms":
                 textViewToolbarTitle.setText("이용약관");
                 break;
+            case "license":
+                textViewToolbarTitle.setText("오픈소스 라이센스");
+                break;
         }
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
@@ -59,7 +62,7 @@ public class DescriptionActivity extends AppCompatActivity {
 
         // 웹뷰에 웹페이지가 출력됨(다른페이지로감)
         // webview1.loadUrl("http://google.com");
-        descriptionWebView.loadUrl("http://ec2-13-125-253-250.ap-northeast-2.compute.amazonaws.com/site/" + target + ".html");
+        descriptionWebView.loadUrl("http://13.125.253.250/site/" + target + ".html");
     }
 
     @Override
@@ -75,7 +78,6 @@ public class DescriptionActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

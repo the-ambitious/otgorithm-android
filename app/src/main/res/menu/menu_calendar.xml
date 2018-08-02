@@ -9,4 +9,34 @@
         android:title="Calendar"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/linearViewHorizontal"
+        android:orderInCategory="100"
+        android:title="Linear View Horizontal"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/linearViewVertical"
+        android:orderInCategory="100"
+        android:title="Linear View Vertical"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/gridView"
+        android:orderInCategory="100"
+        android:title="Grid View"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/staggeredViewHorizontal"
+        android:orderInCategory="100"
+        android:title="Staggered View Horizontal"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/staggeredViewVertical"
+        android:orderInCategory="100"
+        android:title="Staggered View Vertical"
+        app:showAsAction="never" />
+
 </menu>
