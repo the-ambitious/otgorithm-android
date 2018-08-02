@@ -36,7 +36,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
             mTextView2 = itemView.findViewById(R.id.userDesc);
         }
 
-    }   // end of RankerViewHolder
+    }   // end of RankerViewHolderDemo
 
     public RankAdapter(ArrayList<GalleryDTO> rankerList) {
         this.mRankerList = rankerList;
@@ -62,7 +62,8 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         GalleryDTO currentRanker = mRankerList.get(position);
         Uri uri = Uri.parse(currentRanker.imageUrl);
         Glide.with(context).load(uri).into(holder.mImageView);
-        holder.mTextView1.setText(currentRanker.email);
+        if (currentRanker.nickname != null)
+            holder.mTextView1.setText(currentRanker.nickname);
         holder.mTextView2.setText(currentRanker.description);
        /* holder.mImageView.setImageResource(currentRanker.getmProfileThumbnail());
         holder.mTextView1.setText(currentRanker.getmUserId());
@@ -96,7 +97,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
 }
 
 /*
-public class RankAdapter extends RecyclerView.Adapter<RankerViewHolder> {
+public class RankAdapter extends RecyclerView.Adapter<RankerViewHolderDemo> {
 
     private List<Ranker> mRanker;
 
@@ -106,15 +107,15 @@ public class RankAdapter extends RecyclerView.Adapter<RankerViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(RankerViewHolder RankerViewHolder, int i) {
+    public void onBindViewHolder(RankerViewHolderDemo RankerViewHolderDemo, int i) {
         final Ranker model = mRanker.get(i);
-        RankerViewHolder.bind(model);
+        RankerViewHolderDemo.bind(model);
     }
 
     @Override
-    public RankerViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RankerViewHolderDemo onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_rank, viewGroup, false);
-        return new RankerViewHolder(view);
+        return new RankerViewHolderDemo(view);
     }
 
     @Override

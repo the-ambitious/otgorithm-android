@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +74,6 @@ public class RankActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*************************************************************/
-
        /* rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "코코링", "안뇽"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));
@@ -84,17 +86,20 @@ public class RankActivity extends AppCompatActivity {
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));*/
 
-
-
         mRecyclerView = findViewById(R.id.rv_ranker);
-        rankerList = new ArrayList<>();
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(false);
-    /*    mRecyclerView.setOnClickListener(new View.OnClickListener() {
+
+        rankerList = new ArrayList<>();
+
+/*
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });*/
+        });
+*/
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
 
@@ -103,29 +108,32 @@ public class RankActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new RankAdapter(this, rankerList);
 
-
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         /*************************************************************/
 
       /*  tv = (TextView) findViewById(R.id.tv);
         tv.setText(name);
 */
-
-
         Log.d("테스트", "RankActivity 들왔음");
-
         mRecyclerView.addOnItemTouchListener(
                 new RankerItemClickListener(getApplicationContext(), mRecyclerView, new RankerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        // 랭커마다 클릭했을 시 개인 프로필 화면 전환
+                        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                        Log.d("테스트: ", "user ID? :" + rankerList.get(position).nickname);
+                        /**
+                         * intent.putExtra("ranker_id", Integer.toString(position));
+                         * putExtra로 starCount에 해당하는 아이디 같은 걸 들고가면 될 듯
+                         */
                         Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
+                        view.getContext().startActivity(intent);
                     }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-
+                        // 즐겨찾기?
                     }
                 })
         );

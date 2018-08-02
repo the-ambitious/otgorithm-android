@@ -172,6 +172,7 @@ public class UploadPicture extends AppCompatActivity {
                 galleryDTO.sysdate = sdfNow.format(date);
                 galleryDTO.weather = MainActivity.sky;
                 galleryDTO.weatherIcon = MainActivity.weather_Icon;
+                galleryDTO.nickname = mFirebaseUser.getDisplayName();
                 galleryDTO.gid =  database.getReference().child("galleries").push().getKey();
 
                 mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {

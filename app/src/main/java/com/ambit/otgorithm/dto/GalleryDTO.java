@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class GalleryDTO {
 
+    public String nickname;
     public String description;
     public String imageUrl;
     public String email;
@@ -19,7 +20,8 @@ public class GalleryDTO {
     public GalleryDTO() {
     }
 
-    public GalleryDTO(String description, String imageUrl, String email, String sysdate, String battlefield, String gid, int weather, int weatherIcon, int starCount, Map<String, Boolean> stars) {
+    public GalleryDTO(String nickname, String description, String imageUrl, String email, String sysdate, String battlefield, String gid, int weather, int weatherIcon, int starCount, Map<String, Boolean> stars) {
+        this.nickname = nickname;
         this.description = description;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -32,20 +34,12 @@ public class GalleryDTO {
         this.stars = stars;
     }
 
-    public String getGid() {
-        return gid;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
-
-    public String getBattlefield() {
-        return battlefield;
-    }
-
-    public void setBattlefield(String battlefield) {
-        this.battlefield = battlefield;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getDescription() {
@@ -80,6 +74,22 @@ public class GalleryDTO {
         this.sysdate = sysdate;
     }
 
+    public String getBattlefield() {
+        return battlefield;
+    }
+
+    public void setBattlefield(String battlefield) {
+        this.battlefield = battlefield;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
+    }
+
     public int getWeather() {
         return weather;
     }
@@ -111,5 +121,4 @@ public class GalleryDTO {
     public void setStars(Map<String, Boolean> stars) {
         this.stars = stars;
     }
-
 }

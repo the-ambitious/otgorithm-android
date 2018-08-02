@@ -73,8 +73,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
+                android:textColor="@android:color/black"
                 android:gravity="center"
-                android:text="2018년 7월 30일 월요일" />
+                android:textSize="18sp"
+                android:text="오늘은 며칠인가요?" />
 
             <TextView
                 android:id="@+id/battlefield"
@@ -86,9 +88,9 @@
                 android:layout_weight="40"
                 android:background="@drawable/button"
                 android:gravity="center"
-                android:text="제주도 서귀포시"
+                android:text="지역 탐색중.."
                 android:textColor="#FFFFFF"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="0dp"
@@ -168,7 +170,6 @@
 
         <!-- 한 줄의 명언 -->
         <LinearLayout
-            android:background="@drawable/saying_theme"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
@@ -176,9 +177,11 @@
             android:weightSum="10">
 
             <TextView
+                android:background="#EBCED0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textColor="@android:color/black"
                 android:text="'옷이 사람을 만든다.'"
                 android:textSize="14sp" />
 
