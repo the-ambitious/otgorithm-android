@@ -122,13 +122,15 @@ public class RankActivity extends AppCompatActivity {
                     public void onItemClick(View view, int position) {
                         // 랭커마다 클릭했을 시 개인 프로필 화면 전환
                         Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                        Log.d("테스트: ", "user ID? :" + rankerList.get(position).nickname);
-                        /**
-                         * intent.putExtra("ranker_id", Integer.toString(position));
-                         * putExtra로 starCount에 해당하는 아이디 같은 걸 들고가면 될 듯
-                         */
+                        TextView user = view.findViewById(R.id.userId);
+                        Log.d("테스트: ", "user ID? :" + user.getText());
+
+                        intent.putExtra("ranker_id", user.getText());
+
+
                         Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
                         view.getContext().startActivity(intent);
+
                     }
 
                     @Override

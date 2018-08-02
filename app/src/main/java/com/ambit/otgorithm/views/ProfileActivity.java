@@ -3,6 +3,9 @@ package com.ambit.otgorithm.views;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,15 +26,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
 import com.ambit.otgorithm.adapters.ProfileViewPagerAdapter;
+import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
 import com.ambit.otgorithm.fragments.IntroFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +57,27 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseUser mFirebaseUser;
 
+    private FirebaseDatabase mFirebaseDB;
+
+    private DatabaseReference mUserRef;
+
+    private String ranker_id;
+
+    String rankerPhotoUrl;
+
+    ImageView htab_header;
+
+    Uri photoUri;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //Glide.with(ProfileActivity.this).load(photoUri).apply(new RequestOptions().override(50,20)).into(htab_header);
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +88,27 @@ public class ProfileActivity extends AppCompatActivity {
          * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
          */
 
+        Bundle extras = getIntent().getExtras();
+        ranker_id = extras.getString("ranker_id");
+
+        htab_header = findViewById(R.id.htab_header);
+
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
+        mFirebaseDB = FirebaseDatabase.getInstance();
+        mUserRef = mFirebaseDB.getReference("users");
+
+
+
+
+        addProfileListener(ranker_id);
+
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(mFirebaseUser.getDisplayName());
+            getSupportActionBar().setTitle(ranker_id);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /*****************************************************************/
@@ -138,6 +186,12 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     /**
      * setupViewPager(): 뷰페이저(프래그먼트)를 설치하는 부분
      * @param viewPager
@@ -146,11 +200,32 @@ public class ProfileActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new IntroFragment(
                 ContextCompat.getColor(this, android.R.color.background_light)), "Profile");
-        adapter.addFrag(new DailyLookFragment(
-                ContextCompat.getColor(this, android.R.color.darker_gray)), "Daily Look");
+        adapter.addFrag(new DailyLookFragment(ranker_id), "Daily Look");
         adapter.addFrag(new ProfileFragment(
                 ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
         viewPager.setAdapter(adapter);
+    }
+
+    private void addProfileListener(final String ranker_id){
+        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    UserDTO userDTO = children.getValue(UserDTO.class);
+                    if(userDTO.getName().equals(ranker_id)){
+                        rankerPhotoUrl = userDTO.getProfileUrl();
+                        photoUri = Uri.parse(rankerPhotoUrl);
+                        handler.sendEmptyMessage(0);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -176,9 +251,12 @@ public class ProfileActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
+
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
+
+
 
         @Override
         public Fragment getItem(int position) {
