@@ -1,6 +1,7 @@
 package com.ambit.otgorithm.views;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -156,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
@@ -166,8 +167,10 @@ public class ProfileActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_settings:
-                return true;
+            case R.id.action_chat:
+                Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -34,36 +34,41 @@
                 android:textSize="16sp" />
         </LinearLayout>-->
 
-        <!-- 랭커 목록 -->
+        <!-- 지역 레이아웃 -->
         <LinearLayout
+            android:id="@+id/province_theme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_height="0dp"
+            android:layout_weight="31.5"
+            android:gravity="center"
             android:orientation="vertical"
+            android:background="@drawable/province_busan"
             android:weightSum="10">
 
             <TextView
-                android:layout_weight="8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="부 산"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="36sp" />
 
             <TextView
-                android:layout_weight="12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="2018년 8월 1주차 현황"
+                android:textColor="@android:color/white"
                 android:textSize="18sp" />
+
         </LinearLayout>
 
+        <!-- 지역 레이아웃 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="90">
+            android:layout_height="0dp"
+            android:layout_weight="68.5"
+            android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_ranker"

@@ -9,14 +9,25 @@
         android:layout_margin="4dp">
 
         <TextView
+            android:id="@+id/rank_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
-            android:text="1st"
+            android:layout_marginStart="5dp"
+            android:text="10"
             android:textColor="@android:color/black"
             android:textSize="36sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="50dp"
+            android:text="위"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileThumbnail"
@@ -33,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="180dp"
+            android:layout_marginStart="170dp"
             android:layout_marginTop="9dp"
-            android:text="Line 1"
+            android:text="id: userId"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -46,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/userId"
             android:layout_below="@+id/userId"
-            android:text="Line 2"
+            android:text="http://corock.tistory.com"
             android:textSize="18sp" />
 
 

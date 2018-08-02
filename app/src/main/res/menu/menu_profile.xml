@@ -5,40 +5,10 @@
     tools:context=".views.GalleryActivity">
 
     <item
-        android:id="@+id/linearViewHorizontal"
-        android:orderInCategory="100"
-        android:title="Linear View Horizontal"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/linearViewVertical"
-        android:orderInCategory="100"
-        android:title="Linear View Vertical"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/gridView"
-        android:orderInCategory="100"
-        android:title="Grid View"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/staggeredViewHorizontal"
-        android:orderInCategory="100"
-        android:title="Staggered View Horizontal"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/staggeredViewVertical"
-        android:orderInCategory="100"
-        android:title="Staggered View Vertical"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/action_search"
+        android:id="@+id/action_chat"
+        android:icon="@android:drawable/sym_action_chat"
+        android:title="@string/action_chat"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always|collapseActionView" />
+        app:showAsAction="always" />
 
 </menu>

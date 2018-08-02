@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,6 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.RankAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.modules.RankerItemClickListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,14 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class RankActivity extends AppCompatActivity {
 
+    private LinearLayout mProvinceTheme;
     private RecyclerView mRecyclerView;
     private RankAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -62,7 +61,7 @@ public class RankActivity extends AppCompatActivity {
 
         position = 0;
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("장군 서열 현황");
+        toolbarTitle.setText("장군 목록");
         toolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         toolbarTitle.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -86,6 +85,7 @@ public class RankActivity extends AppCompatActivity {
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail2, "탱구와울라숑", "기이이이이이"));
         rankerList.add(new RankerDTO(R.drawable.profilethumbnail1, "인무", "가마취? 고"));*/
 
+        //mProvinceTheme = (LinearLayout) findViewById(R.id.province_theme);
         mRecyclerView = findViewById(R.id.rv_ranker);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(false);
@@ -121,14 +121,14 @@ public class RankActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         // 랭커마다 클릭했을 시 개인 프로필 화면 전환
-                        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                        Log.d("테스트: ", "user ID? :" + rankerList.get(position).nickname);
+                        /*Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                        Log.d("테스트: ", "user ID? :" + rankerList.get(position).nickname);*/
                         /**
                          * intent.putExtra("ranker_id", Integer.toString(position));
                          * putExtra로 starCount에 해당하는 아이디 같은 걸 들고가면 될 듯
                          */
                         Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
-                        view.getContext().startActivity(intent);
+                        /*view.getContext().startActivity(intent);*/
                     }
 
                     @Override
@@ -142,7 +142,7 @@ public class RankActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_rank, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -155,6 +155,10 @@ public class RankActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_gallary:
+                Intent intent = new Intent(RankActivity.this, GalleryActivity.class);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
