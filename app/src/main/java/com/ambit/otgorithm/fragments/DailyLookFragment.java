@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.DailyLookAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -51,6 +54,10 @@ public class DailyLookFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
         dailyLookDTOs = new ArrayList<>();
 
+        mFirebaseDB = FirebaseDatabase.getInstance();
+        mGalleryRef = mFirebaseDB.getReference("galleries");
+
+
         addDailyListener(ranker_id);
 
 
@@ -66,8 +73,29 @@ public class DailyLookFragment extends Fragment {
         return view;
     }
 
-    private void addDailyListener(String ranker_id){
+    private void addDailyListener(final String ranker_id){
+        mGalleryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<GalleryDTO> galleryDTOS = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
+                    if(galleryDTO.nickname.equals(ranker_id)){
+                        galleryDTOS.add(galleryDTO);
+                    }
+                }
+                addition(galleryDTOS);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addition(ArrayList<GalleryDTO> galleryDTOS){
+        adapter.addList(galleryDTOS);
     }
 
 }
