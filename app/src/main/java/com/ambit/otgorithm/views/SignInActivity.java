@@ -277,7 +277,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 while (children.iterator().hasNext()){
-                    dataSnapshot = children.iterator().next();
+                    dataSnapshot = children.iterator().menu_next();
                     UserDTO userDTO = dataSnapshot.getValue(UserDTO.class);
                     if(user.getEmail().equals(userDTO.getEmail())){
                         Intent intent = new Intent(SignInActivity.this,MainActivity.class);

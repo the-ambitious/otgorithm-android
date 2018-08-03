@@ -1,3 +1,4 @@
+/*
 package com.ambit.otgorithm.fragments;
 
 import android.os.Bundle;
@@ -27,3 +28,4 @@ public class TotalFragment extends android.support.v4.app.Fragment {
         return fragment;
     }
 }
+*/
