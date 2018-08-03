@@ -1,3 +1,4 @@
+/*
 package com.ambit.otgorithm.fragments;
 
 import android.os.Bundle;
@@ -15,7 +16,7 @@ public class TotalFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.total_view,container,false);
+        view = inflater.inflate(R.layout.fragment_total,container,false);
 
         return view;
     }
@@ -27,3 +28,4 @@ public class TotalFragment extends android.support.v4.app.Fragment {
         return fragment;
     }
 }
+*/

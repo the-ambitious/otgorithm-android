@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="countries">
+        <item>Argentina</item>
+        <item>Bolivia</item>
+        <item>Brazil</item>
+        <item>Chile</item>
+        <item>Costa Rica</item>
+        <item>Dominican Republic</item>
+        <item>Mexico</item>
+        <item>Nicaragua</item>
+        <item>Peru</item>
+        <item>Venezuela</item>
+        <item>Cuba</item>
+        <item>Ecuador</item>
+        <item>El Salvador</item>
+        <item>Haiti</item>
+        <item>Panama</item>
+        <item>Paraguay</item>
+    </string-array>
+
+    <integer-array name="images">
+        <item>@drawable/ic_outer1</item>
+        <item>@drawable/ic_outer2</item>
+        <item>@drawable/ic_outer3</item>
+        <item>@drawable/ic_outer4</item>
+        <item>@drawable/ic_outer5</item>
+        <item>@drawable/ic_inner1</item>
+        <item>@drawable/ic_inner2</item>
+        <item>@drawable/ic_inner3</item>
+        <item>@drawable/ic_inner4</item>
+        <item>@drawable/ic_pants1</item>
+        <item>@drawable/ic_pants2</item>
+        <item>@drawable/ic_pants3</item>
+        <item>@drawable/ic_accessory1</item>
+        <item>@drawable/ic_accessory2</item>
+        <item>@drawable/ic_shoes3</item>
+        <item>@drawable/ic_shoes4</item>
+    </integer-array>
+
+    <integer-array name="colors">
+        <item>@color/roseStart</item>
+        <item>@color/roseEnd</item>
+        <item>@color/blueStart</item>
+        <item>@color/blueEnd</item>
+        <item>@color/greenStart</item>
+        <item>@color/greenEnd</item>
+        <item>@color/purpleStart</item>
+        <item>@color/purpleEnd</item>
+    </integer-array>
+
     <string-array name="dessert_names">
         <item>Cupcake</item>
         <item>Donut</item>

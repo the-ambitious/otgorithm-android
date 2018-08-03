@@ -38,14 +38,31 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = null;
+                Intent intent = new Intent(view.getContext(), WebViewActivity.class);
 
                 switch (position) {
                     case 0:     // 로퍼
-                        intent = new Intent(view.getContext(), WebViewActivity.class);
                         intent.putExtra("id", "loafer");
+                        startActivity(intent);
+                        break;
+                    case 4:     // 스니커즈(가죽/스웨이드)
+                        intent.putExtra("id", "sneakers");
+                        startActivity(intent);
+                        break;
+                    case 5:     // 스니커즈(가죽/스웨이드)
+                        intent.putExtra("id", "sneakers");
+                        startActivity(intent);
+                        break;
+                    case 6:     // 슬립온(가죽/합성피혁)
+                        intent.putExtra("id", "slipon");
+                        startActivity(intent);
+                        break;
+                    case 7:     // 슬립온(면)
+                        intent.putExtra("id", "slipon");
+                        startActivity(intent);
                         break;
                 }
+
             }
         });
         grid.setAdapter(gridViewAdapter);
