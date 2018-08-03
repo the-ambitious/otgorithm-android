@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -38,7 +37,6 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -182,10 +180,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
 
-
-
-
-
         sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sigin_in_nickname = nav_header_view.findViewById(R.id.sigin_in_nickname);
@@ -224,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_contact_commentary:
-                        intent = new Intent(MainActivity.this, UploadPicture.class);
+                        intent = new Intent(MainActivity.this, UploadActivity.class);
                         startActivity(intent);
                         break;
 
@@ -370,6 +364,27 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
 
+        AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
+        alt_bld.setTitle("확인")
+                .setMessage("종료하시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("네",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // 네 클릭
+                                finish();
+                            }
+                        }).setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // 아니오 클릭. dialog 닫기.
+                        dialog.cancel();
+                    }
+                });
+        alt_bld.show();
+        //super.onBackPressed();
+
+/*
         if ( pressedTime == 0 ) {
             Toast.makeText(MainActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
             pressedTime = System.currentTimeMillis();
@@ -383,8 +398,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 super.onBackPressed();
 //                finish(); // app 종료 시키기
             }
-        }
-    }
+*/
+        }   // end of onBackPressed()
 
     public void onClick(View v) {
         Intent intent = null;

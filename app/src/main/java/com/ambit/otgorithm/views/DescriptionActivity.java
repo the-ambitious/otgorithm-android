@@ -51,7 +51,7 @@ public class DescriptionActivity extends AppCompatActivity {
                 textViewToolbarTitle.setText("이용약관");
                 break;
             case "license":
-                textViewToolbarTitle.setText("오픈소스 라이센스");
+                textViewToolbarTitle.setText("오픈소스 라이선스");
                 break;
         }
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);

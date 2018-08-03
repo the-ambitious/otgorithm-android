@@ -44,7 +44,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         // 웹뷰에 웹페이지가 출력됨(다른페이지로감)
         // webview1.loadUrl("http://google.com");
-        webView.loadUrl("http://172.22.225.33:3000/img/"+idd);
+        webView.loadUrl("http://13.125.253.250/img/"+idd);
     }
 
 }

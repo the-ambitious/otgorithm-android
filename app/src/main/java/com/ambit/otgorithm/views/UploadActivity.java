@@ -5,6 +5,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -12,15 +13,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
-import com.ambit.otgorithm.dto.ImageDTO;
 import com.ambit.otgorithm.modules.PermissionUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +44,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UploadPicture extends AppCompatActivity {
+public class UploadActivity extends AppCompatActivity {
+
+    private TextView textViewToolbarTitle;
 
     private ImageView pictureView;
     private FloatingActionButton pictureChoose;
@@ -54,10 +61,27 @@ public class UploadPicture extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRef;
     private FirebaseUser mFirebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.upload_picture);
+        setContentView(R.layout.activity_upload);
+
+        /*****************************************************************
+         * 커스텀 툴바 셋팅
+         */
+        textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        textViewToolbarTitle.setText("전투 상황 보고");
+        textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        textViewToolbarTitle.setTextColor(Color.WHITE);
+        Toolbar uploadToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
+        setSupportActionBar(uploadToolbar);    // 액션바와 같게 만들어줌
+
+        // 기본 타이틀을 보여줄 지 말 지 설정
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /****************************************************************/
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -72,7 +96,7 @@ public class UploadPicture extends AppCompatActivity {
         pictureChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UploadPicture.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UploadActivity.this);
 
                 builder
                         .setMessage("사진을 고르세요")
@@ -101,6 +125,50 @@ public class UploadPicture extends AppCompatActivity {
                 upload(path);
             }
         });
+    }   // end of onCreate()
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_upload, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_completion:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UploadActivity.this);
+                alertDialogBuilder.setTitle("데일리룩 업로드")
+                        .setMessage("업로드 하시겠습니까?")
+                        .setCancelable(false)
+                        .setPositiveButton("네",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // 사진 업로드 완료
+                                        Intent intent = new Intent(UploadActivity.this, ProfileActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).setNegativeButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // 아니오 클릭. dialog 닫기.
+                                dialog.cancel();
+                            }
+                        });
+                alertDialogBuilder.show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void startGalleryChooser(){
@@ -145,7 +213,7 @@ public class UploadPicture extends AppCompatActivity {
         // storeageRef: 스토리지의 최상위 레퍼런스
         StorageReference riversRef = storageRef.child("galleries/"+file.getLastPathSegment());
         UploadTask uploadTask = riversRef.putFile(file);
-// Register observers to listen for when the download is done or if it fails
+        // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -161,7 +229,6 @@ public class UploadPicture extends AppCompatActivity {
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
                 SimpleDateFormat sdfNow = new SimpleDateFormat("yy.MM.dd");
-
 
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
@@ -181,7 +248,7 @@ public class UploadPicture extends AppCompatActivity {
                         galleryDTO.battlefield = dataSnapshot.getValue(String.class);
 
                         database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO);
-                        Toast.makeText(UploadPicture.this,"업로드 끝",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -193,7 +260,7 @@ public class UploadPicture extends AppCompatActivity {
 
 /*
                 database.getReference().child("galleries").push().setValue(galleryDTO);
-                Toast.makeText(UploadPicture.this,"업로드 끝",Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();*/
             }
         });
 

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="다음은 출격 가능한 품목입니다."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </ScrollView>
+    <!-- 아우터(outer) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="외투(Outer)"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- 상의(inner) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="상의(Inner)"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 하의(Pants) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="하의(Pants)"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 신발(Shoes) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="신발(Shoes)"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 악세서리(Accessories) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="악세서리(Accessories)"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+
+            <ImageView
+                android:layout_width="105dp"
+                android:layout_height="92dp"
+                android:background="@drawable/btn_main_rank" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
