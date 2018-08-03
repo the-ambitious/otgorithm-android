@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
+import com.ambit.otgorithm.models.Common;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
@@ -48,6 +49,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,7 +61,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
@@ -182,8 +186,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
 
-
-
+        if(mFirebaseUser != null)
+            passPushTokenToServer();
 
 
         sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
@@ -857,4 +861,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //updateUI(currentUser);
     }
 
+    void passPushTokenToServer(){
+        String uid = mFirebaseUser.getUid();
+        Common.currentToken = FirebaseInstanceId.getInstance().getToken();
+        String token = Common.currentToken;
+        Map<String, Object> map = new HashMap<>();
+        map.put("token",token);
+
+        mUserRef.child(uid).updateChildren(map);
+
+
+    }
 }

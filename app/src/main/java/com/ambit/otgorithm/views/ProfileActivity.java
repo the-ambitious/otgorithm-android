@@ -39,6 +39,13 @@ import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
 import com.ambit.otgorithm.fragments.IntroFragment;
 
+import com.ambit.otgorithm.models.Common;
+import com.ambit.otgorithm.models.Data;
+import com.ambit.otgorithm.models.MyResponse;
+import com.ambit.otgorithm.models.Notification;
+import com.ambit.otgorithm.models.NotificationModel;
+import com.ambit.otgorithm.models.Sender;
+import com.ambit.otgorithm.remote.APIService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,10 +53,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -69,6 +86,10 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView htab_header;
 
     Uri photoUri;
+
+    UserDTO general;
+
+    APIService mService;
 
     private Handler handler = new Handler(){
         @Override
@@ -97,6 +118,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         htab_header = findViewById(R.id.htab_header);
 
+        mService = Common.getFCMClient();
+
         chatFab = findViewById(R.id.action_chat);
         chatFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,10 +131,29 @@ public class ProfileActivity extends AppCompatActivity {
                         .setPositiveButton("네",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+                                        Data data = new Data("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
+                                        Notification notification = new Notification("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
+                                        Sender sender = new Sender(general.token,data);
+                                        mService.sendNotification(sender)
+                                                .enqueue(new retrofit2.Callback<MyResponse>() {
+                                                    @Override
+                                                    public void onResponse(retrofit2.Call<MyResponse> call, retrofit2.Response<MyResponse> response) {
+                                                        if(response.body().success == 1)
+                                                            Log.d("알림", "요청 성고");
+                                                        else
+                                                            Log.d("알림", "요청 실패");
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(retrofit2.Call<MyResponse> call, Throwable t) {
+                                                            Log.e("Error",t.getMessage());
+                                                    }
+                                                });
+
                                         // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
-                                        Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
-                                        Log.v("알림", "요청 성고");
-                                        startActivity(intent);
+                                        //Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
+                                        //Log.v("알림", "요청 성고");
+                                        //startActivity(intent);
                                     }
                                 }).setNegativeButton("아니오",
                         new DialogInterface.OnClickListener() {
@@ -213,6 +255,37 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
 
+    void sendGcm(){
+        Gson gson = new Gson();
+
+        NotificationModel notificationModel = new NotificationModel();
+        notificationModel.to = general.token;
+        notificationModel.notification.title = "멘티요청";
+        notificationModel.notification.text = mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.";
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
+
+        Request request = new Request.Builder()
+                .header("Content-Type","application/json")
+                .addHeader("Authorization","key=AIzaSyCPt-jCL9p2TVXe8RCyZfbLssOwpp4BH3A")
+                .url("https://fcm.googleapis.com/fcm/send")
+                .post(requestBody)
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -240,6 +313,7 @@ public class ProfileActivity extends AppCompatActivity {
                 for(DataSnapshot children : dataSnapshot.getChildren()){
                     UserDTO userDTO = children.getValue(UserDTO.class);
                     if(userDTO.getName().equals(ranker_id)){
+                        general = userDTO;
                         rankerPhotoUrl = userDTO.getProfileUrl();
                         photoUri = Uri.parse(rankerPhotoUrl);
                         handler.sendEmptyMessage(0);

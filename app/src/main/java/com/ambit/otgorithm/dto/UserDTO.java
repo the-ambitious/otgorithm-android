@@ -6,6 +6,9 @@ public class UserDTO {
     String uid;
     String profileUrl;
     String battlefield;
+
+    public String token;
+
     boolean selection;
 
 
@@ -20,22 +23,16 @@ public class UserDTO {
         this.profileUrl = profileUrl;
     }
 
-    public UserDTO(String email, String name, String uid, String profileUrl, String battlefield, boolean selection) {
+    public UserDTO(String email, String name, String uid, String profileUrl, String battlefield, String token, boolean selection) {
         this.email = email;
         this.name = name;
         this.uid = uid;
         this.profileUrl = profileUrl;
         this.battlefield = battlefield;
+        this.token = token;
         this.selection = selection;
     }
 
-    public String getBattlefield() {
-        return battlefield;
-    }
-
-    public void setBattlefield(String battlefield) {
-        this.battlefield = battlefield;
-    }
 
     public String getEmail() {
         return email;
@@ -67,6 +64,22 @@ public class UserDTO {
 
     public void setProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
+    }
+
+    public String getBattlefield() {
+        return battlefield;
+    }
+
+    public void setBattlefield(String battlefield) {
+        this.battlefield = battlefield;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public boolean isSelection() {
