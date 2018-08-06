@@ -1,6 +1,7 @@
 package com.ambit.otgorithm.views;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.igalata.bubblepicker.rendering.Item;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -214,14 +216,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_item_favorites:
-                        intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        startActivity(intent);
+                        if(mFirebaseUser!=null){
+                            intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_LONG).show();
+                        }
                         break;
 
                     case R.id.nav_item_letterbox:
-                        intent = new Intent(MainActivity.this, ChatMain.class);
-                        startActivity(intent);
+                        if(mFirebaseUser!=null){
+                            intent = new Intent(MainActivity.this, ChatMain.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_LONG).show();
+                        }
+
                         //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+
+
                         break;
 
 

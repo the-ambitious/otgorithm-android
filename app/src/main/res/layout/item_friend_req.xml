@@ -10,7 +10,6 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/friend_req_thumbnail"
-            android:background="@mipmap/ic_launcher"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentStart="true"

@@ -298,14 +298,14 @@ public class ProfileActivity extends AppCompatActivity {
                     userDTO = children.getValue(UserDTO.class);
                     if(userDTO.getUid().equals(generalUid)){
                         final UserDTO mentor = userDTO;
-                        mMentorRef.push().setValue(mentor, new DatabaseReference.CompletionListener() {
+                        mMentorRef.child(mentor.getUid()).setValue(mentor, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                 mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         UserDTO userdto = dataSnapshot.getValue(UserDTO.class);
-                                        mUserRef.child(mentor.getUid()).child("requestFromMentee").push().setValue(userdto);
+                                        mUserRef.child(mentor.getUid()).child("requestFromMentee").child(mFirebaseUser.getUid()).setValue(userdto);
                                     }
 
                                     @Override
