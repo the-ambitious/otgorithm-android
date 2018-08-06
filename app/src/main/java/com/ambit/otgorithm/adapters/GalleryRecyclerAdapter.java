@@ -82,7 +82,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         Glide.with(context).load(uri).into(myViewHolder.imageview);
         //myViewHolder.imageview.setImageURI(uri);
         Log.d("onBindViewHolder 테스트: ", "사진 경로? : " + data.get(position).imageUrl);
-        if (data.get(position).stars.containsKey(mAuth.getCurrentUser().getUid())){
+        if (mAuth.getCurrentUser() != null && data.get(position).stars.containsKey(mAuth.getCurrentUser().getUid())){
     /*        like = true;
             handler.sendEmptyMessage(0);*/
             // Glide.with(context).load(R.drawable.baseline_favorite_black_18dp).into(myViewHolder.star);

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class DailyLookFragment extends Fragment {
 
+
     RecyclerView mRecyclerView;
     ArrayList<GalleryDTO> dailyLookDTOs;
 

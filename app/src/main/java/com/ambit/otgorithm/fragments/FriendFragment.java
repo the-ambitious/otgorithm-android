@@ -75,7 +75,7 @@ public class FriendFragment extends Fragment {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        mFriendsDBRef = mFirebaseDb.getReference("users").child(mFirebaseUser.getUid()).child("friends");
+        mFriendsDBRef = mFirebaseDb.getReference("users").child(mFirebaseUser.getUid()).child("theSameBoat");
         mUserDBRef = mFirebaseDb.getReference("users");
 
         // 1. 리얼타임데이터베이스에서 나의 친구목록을 리스터를 통하여 데이터를 가져옵니다.

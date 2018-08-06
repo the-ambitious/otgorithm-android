@@ -130,6 +130,7 @@ public class RankActivity extends AppCompatActivity {
 
                         Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
                         view.getContext().startActivity(intent);
+
                     }
 
                     @Override
