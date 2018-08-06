@@ -34,7 +34,7 @@ public class StandbyActivity extends AppCompatActivity {
     @BindView(R.id.picker)
     BubblePicker picker;
 
-    private static int selectedCount = 0;
+    private static int selectedCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,8 @@ public class StandbyActivity extends AppCompatActivity {
         /****************************************************************/
 
         ButterKnife.bind(this);
+
+        selectedCount = 0;
 
         final String[] titles = getResources().getStringArray(R.array.countries);
         final TypedArray colors = getResources().obtainTypedArray(R.array.colors);

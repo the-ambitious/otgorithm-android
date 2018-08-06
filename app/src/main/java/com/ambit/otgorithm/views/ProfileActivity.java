@@ -49,11 +49,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity {
 
     /*private ViewPager profileViewPager;*/
     private ViewPagerAdapter profileViewPagerAdapter;
     private FloatingActionButton chatFab;
+    private CircleImageView intentUpload;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -91,6 +94,17 @@ public class ProfileActivity extends AppCompatActivity {
         ranker_id = extras.getString("ranker_id");
 
         htab_header = findViewById(R.id.htab_header);
+
+
+        intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
+        intentUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                startActivity(intent);
+            }
+        });
+
         chatFab = findViewById(R.id.action_chat);
         chatFab.setOnClickListener(new View.OnClickListener() {
             @Override

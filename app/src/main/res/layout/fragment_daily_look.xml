@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -11,7 +11,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>
 
         <!--<android.support.design.widget.FloatingActionButton
@@ -24,14 +24,7 @@
             app:layout_anchor="@id/recycleView"
             app:layout_anchorGravity="bottom|end" />-->
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:layout_gravity="bottom|end"
-            android:src="@drawable/ic_camera_purple_24dp" />
-
     </android.support.design.widget.CoordinatorLayout>
 
 
-</RelativeLayout>
+</FrameLayout>

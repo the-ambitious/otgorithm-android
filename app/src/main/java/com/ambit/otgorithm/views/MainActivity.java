@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -218,8 +219,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_contact_commentary:
-                        intent = new Intent(MainActivity.this, UploadActivity.class);
-                        startActivity(intent);
+                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                     case R.id.nav_aboutUs_intro:
@@ -362,26 +362,27 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
+        } else {
 
-        AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
-        alt_bld.setTitle("확인")
-                .setMessage("종료하시겠습니까?")
-                .setCancelable(false)
-                .setPositiveButton("네",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // 네 클릭
-                                finish();
-                            }
-                        }).setNegativeButton("아니오",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // 아니오 클릭. dialog 닫기.
-                        dialog.cancel();
-                    }
-                });
-        alt_bld.show();
+            AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
+            alt_bld.setTitle("확인")
+                    .setMessage("종료하시겠습니까?")
+                    .setCancelable(false)
+                    .setPositiveButton("네",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // 네 클릭
+                                    finish();
+                                }
+                            }).setNegativeButton("아니오",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // 아니오 클릭. dialog 닫기.
+                            dialog.cancel();
+                        }
+                    });
+            alt_bld.show();
+        }
         //super.onBackPressed();
 
 /*
@@ -739,11 +740,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
-                    case 1:
-                        weather_Icon = R.drawable.rain;
-                        weathericon.setImageResource(R.drawable.rain);
-                        weatherdiscrip.setText("비가 오네요");
-                        temper.setText(currenttemper + "도");
+                    case 1:     // rainy
+                        weather_Icon = R.drawable.rainy;
+                        weathericon.setImageResource(R.drawable.rainy);
+                        //weatherdiscrip.setTextColor(Color.WHITE);
+                        weatherdiscrip.setText("센치해지는 비내림");
+                        weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
+                        //weatherDescription.setTextColor(Color.WHITE);
+                        weatherDescription.setText("혹시 기우제를 지내시는 건 아닌가요?" + "\n" +
+                                "널어 놓은 빨래를 확인해보세요!" + "\n" + "우산도 꼭 챙기시길 바랍니다.");
+                        temper.setText(currenttemper + "°");
                         break;
                     case 2:
                         weather_Icon = R.drawable.snowrain;
@@ -771,7 +777,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     weather_Icon = R.drawable.cloudy;
                     weathericon.setImageResource(R.drawable.cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게~");
-                    weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_sunny));
+                    weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
                     weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
                     temper.setText(currenttemper + "°");
                 }
