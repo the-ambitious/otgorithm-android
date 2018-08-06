@@ -1,11 +1,16 @@
 package com.ambit.otgorithm.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserDTO {
     String email;
     String name;
     String uid;
     String profileUrl;
     String battlefield;
+
+
 
     public String token;
 
@@ -21,6 +26,7 @@ public class UserDTO {
         this.email = email;
         this.name = name;
         this.profileUrl = profileUrl;
+
     }
 
     public UserDTO(String email, String name, String uid, String profileUrl, String battlefield, String token, boolean selection) {

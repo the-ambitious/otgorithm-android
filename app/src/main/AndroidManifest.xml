@@ -49,34 +49,38 @@
         </activity>
         <!-- 페북끝 -->
 
-        <!--FirebaseMessagingService를 확장하는 서비스-->
-       <!-- <service
+
+        <!-- FirebaseMessagingService를 확장하는 서비스 -->
+        <!--
+        <service
             android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-        </service>-->
+        </service>
+        -->
 
-        <!--등록 토큰 생성, 순환, 업데이트를 처리하기 위해 FirebaseInstanceIdService를 확장하는 서비스-->
-     <!--   <service
+
+        <!-- 등록 토큰 생성, 순환, 업데이트를 처리하기 위해 FirebaseInstanceIdService를 확장하는 서비스 -->
+        <!--
+        <service
             android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
-        </service>-->
+        </service>
+        -->
 
         <service android:name=".service.MyFirebaseIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.MyFirebaseMessaging">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
 
         <activity android:name=".views.SortieActivity" />
         <activity android:name=".views.GalleryActivity" />

@@ -46,6 +46,8 @@ import com.ambit.otgorithm.models.Notification;
 import com.ambit.otgorithm.models.NotificationModel;
 import com.ambit.otgorithm.models.Sender;
 import com.ambit.otgorithm.remote.APIService;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.stats.internal.G;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -58,7 +60,9 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -78,6 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mFirebaseDB;
     private DatabaseReference mUserRef;
+    private DatabaseReference mMentorRef;
 
     private String ranker_id;
 
@@ -91,11 +96,20 @@ public class ProfileActivity extends AppCompatActivity {
 
     APIService mService;
 
+    FloatingActionButton floatingActionButton;
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             //Glide.with(ProfileActivity.this).load(photoUri).apply(new RequestOptions().override(50,20)).into(htab_header);
+
+            Log.d("나나나노",Integer.toString(msg.what));
+            switch (msg.what){
+                case 1:
+                    Glide.with(ProfileActivity.this).load(R.drawable.ic_otgorithm).into(floatingActionButton);
+                    break;
+            }
 
         }
     };
@@ -117,6 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
         ranker_id = extras.getString("ranker_id");
 
         htab_header = findViewById(R.id.htab_header);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.action_chat);
 
         mService = Common.getFCMClient();
 
@@ -149,6 +164,8 @@ public class ProfileActivity extends AppCompatActivity {
                                                             Log.e("Error",t.getMessage());
                                                     }
                                                 });
+                                        handler.sendEmptyMessage(1);
+                                        beMyGeneral(general.getUid());
 
                                         // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
                                         //Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
@@ -171,6 +188,7 @@ public class ProfileActivity extends AppCompatActivity {
         mFirebaseUser = mAuth.getCurrentUser();
         mFirebaseDB = FirebaseDatabase.getInstance();
         mUserRef = mFirebaseDB.getReference("users");
+        mMentorRef = mUserRef.child(mFirebaseUser.getUid()).child("requestToMentor");
 
         addProfileListener(ranker_id);
 
@@ -255,35 +273,48 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
 
-    void sendGcm(){
-        Gson gson = new Gson();
 
-        NotificationModel notificationModel = new NotificationModel();
-        notificationModel.to = general.token;
-        notificationModel.notification.title = "멘티요청";
-        notificationModel.notification.text = mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.";
+    private void beMyGeneral(final String generalUid){
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
-
-        Request request = new Request.Builder()
-                .header("Content-Type","application/json")
-                .addHeader("Authorization","key=AIzaSyCPt-jCL9p2TVXe8RCyZfbLssOwpp4BH3A")
-                .url("https://fcm.googleapis.com/fcm/send")
-                .post(requestBody)
-                .build();
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            UserDTO userDTO = new UserDTO();
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    userDTO = children.getValue(UserDTO.class);
+                    if(userDTO.getUid().equals(generalUid)){
+                        final UserDTO mentor = userDTO;
+                        mMentorRef.push().setValue(mentor, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        UserDTO userdto = dataSnapshot.getValue(UserDTO.class);
+                                        mUserRef.child(mentor.getUid()).child("requestFromMentee").push().setValue(userdto);
+                                    }
 
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+
+                }
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
     }
+
 
 
     @Override
@@ -316,6 +347,34 @@ public class ProfileActivity extends AppCompatActivity {
                         general = userDTO;
                         rankerPhotoUrl = userDTO.getProfileUrl();
                         photoUri = Uri.parse(rankerPhotoUrl);
+                        Log.d("하1","1");
+
+                        mMentorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                    UserDTO userDTO1 = children.getValue(UserDTO.class);
+                                    if(userDTO1.getUid().equals(general.getUid()))
+                                        handler.sendEmptyMessage(1);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+              /*          if(general.getRequestFromMentee() != null){
+                            Map<String, Boolean> map = general.getRequestFromMentee();
+                            Log.d("하1","2");
+                            if(map.get(mFirebaseUser.getDisplayName()))
+                                handler.sendEmptyMessage(1);
+                            Log.d("하1","3");
+                        }*/
+
+
+
                         handler.sendEmptyMessage(0);
                         return;
                     }

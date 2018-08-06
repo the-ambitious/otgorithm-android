@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
+
                     case R.id.nav_contact_notice:
                         Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
                         break;
