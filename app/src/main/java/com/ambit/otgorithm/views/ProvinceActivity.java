@@ -85,7 +85,7 @@ public class ProvinceActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_province, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -100,10 +100,10 @@ public class ProvinceActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_gallary:
+            /*case R.id.action_gallary:
                 Intent intent = new Intent(ProvinceActivity.this, GalleryActivity.class);
                 startActivity(intent);
-                break;
+                break;*/
         }
 
         return super.onOptionsItemSelected(item);

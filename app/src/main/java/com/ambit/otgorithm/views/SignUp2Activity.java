@@ -37,7 +37,7 @@ public class SignUp2Activity extends AppCompatActivity {
             /*case R.id.nextBtn:
                 intent = new Intent(SiginUp1Activity.this, SignUp2Activity.class);
                 startActivity(intent);
-                Log.d("SignUp 테스트: ", "case R.menu.next 진입");
+                Log.d("SignUp 테스트: ", "case R.menu.menu_next 진입");
                 break;*/
             case android.R.id.home:
                 this.finish();

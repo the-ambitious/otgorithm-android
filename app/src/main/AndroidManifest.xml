@@ -90,13 +90,15 @@
         <activity android:name=".views.SignInActivity" />
         <activity android:name=".views.SiginUp1Activity" />
         <activity android:name=".views.SignUp2Activity" />
-        <activity android:name=".views.UploadPicture" />
+        <activity android:name=".views.UploadActivity" />
         <activity android:name=".views.ProfileActivity" />
         <activity android:name=".views.WebViewActivity" />
         <activity android:name=".views.ChatActivity" />
         <activity android:name=".views.ChatMain" />
         <activity android:name=".views.IntroActivity" />
         <activity android:name=".views.DescriptionActivity" />
+        <activity android:name=".views.StandbyActivity" />
+        <activity android:name=".views.FeedActivity"></activity>
     </application>
 
 </manifest>

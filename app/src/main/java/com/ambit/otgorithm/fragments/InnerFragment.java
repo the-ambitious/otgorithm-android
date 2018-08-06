@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +56,11 @@ public class InnerFragment extends android.support.v4.app.Fragment {
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = null;
+                Intent intent = new Intent(view.getContext(), WebViewActivity.class);
                 Log.d("포지션 체크: ", "위치: " + position);
+
                 switch (position) {
                     case 0:
-                        intent = new Intent(view.getContext(), WebViewActivity.class);
                         Log.d("테스트: ", "view.getContext()?" + view.getContext());
                         //context = linen.getContext();
                         Log.d("테스트: ", "linen.getContext() 머있음?" + intent);
@@ -73,12 +74,38 @@ public class InnerFragment extends android.support.v4.app.Fragment {
                         //res_id[0] = "linen";
                         // intent로 넘어가는 페이지에 key가 "id"이고 value가 res_id[1] -> (Linen)을
                         // 보내서 이동하는 BrowserDemo1에서 getExtras()로 받음
-                        intent.putExtra("id", "linen");
-
+                        intent.putExtra("id", "oxfordshirt");
+                        startActivity(intent);
+                        break;
+                    case 1:     // 면 반팔
+                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case 2:     // 면 슬리브
+                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case 3:     // 맨투맨
+                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case 4:     // 기모 맨투맨
+                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case 5:     // 네오프렌 맨투맨
+                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case 6:     // 가디건(얇은)
+                        intent.putExtra("id", "cardigan");
+                        startActivity(intent);
+                        break;
+                    case 7:     // 가디건(두꺼운)
+                        intent.putExtra("id", "cardigan");
+                        startActivity(intent);
+                        break;
+                    case 8:     // 터틀넥
+                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
                         break;
                 }
                 Log.d("테스트: ", "intent 머있음?" + intent);
-                startActivity(intent);
+                //startActivity(intent);
             }
         });
         grid.setAdapter(gridViewAdapter);

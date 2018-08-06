@@ -4,49 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.FriendFragment">
+    tools:context=".fragments.FriendRequestFragment">
 
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/search_area"
-        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/edtContent"
-            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="7"
             android:background="#fff"
-            android:layout_width="0dp"
+            android:hint="친구 이메일 검색"
             android:inputType="textMultiLine"
             android:maxLines="1"
-            android:hint="친구 이메일 검색"
-            android:layout_height="match_parent"/>
+            android:padding="5dp" />
 
         <Button
-            android:padding="5dp"
             android:id="@+id/findBtn"
-            android:layout_weight="1"
-            android:background="#fff"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:padding="5dp"
             android:text="찾기" />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/friendRecyclerView"
+            android:id="@+id/friend_req_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent" />
     </LinearLayout>
+
 </LinearLayout>

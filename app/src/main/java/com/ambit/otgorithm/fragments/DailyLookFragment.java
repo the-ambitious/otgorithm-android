@@ -66,9 +66,6 @@ public class DailyLookFragment extends Fragment {
         // Vertical Orientation By Default
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-
-
-
         return view;
     }
 

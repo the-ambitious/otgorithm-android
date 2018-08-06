@@ -75,6 +75,14 @@
 
     </android.support.v4.view.ViewPager>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/intent_upload"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_camera_purple_24dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/action_chat"
         android:layout_width="wrap_content"
@@ -82,5 +90,8 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:src="@android:drawable/sym_action_chat"
         app:layout_anchor="@id/htab_appbar"
+        app:fabSize="normal"
+        android:backgroundTint="@android:color/black"
+        app:borderWidth="0dp"
         app:layout_anchorGravity="bottom|end" />
 </android.support.design.widget.CoordinatorLayout>

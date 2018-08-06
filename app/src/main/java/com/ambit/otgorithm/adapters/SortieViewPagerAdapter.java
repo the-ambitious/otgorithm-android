@@ -9,11 +9,10 @@ import com.ambit.otgorithm.fragments.PantsFragment;
 import com.ambit.otgorithm.fragments.OuterFragment;
 import com.ambit.otgorithm.fragments.ShoesFragment;
 import com.ambit.otgorithm.fragments.InnerFragment;
-import com.ambit.otgorithm.fragments.TotalFragment;
 
 public class SortieViewPagerAdapter extends FragmentPagerAdapter {
 
-    private static int PAGE_NUMBER = 6;
+    private static int PAGE_NUMBER = 5;
 
     public SortieViewPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -22,17 +21,17 @@ public class SortieViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
        switch (position){
+           /*case 0:
+               return TotalFragment.newInstance();*/
            case 0:
-               return TotalFragment.newInstance();
-           case 1:
                return OuterFragment.newInstance();
-           case 2:
+           case 1:
                return InnerFragment.newInstance();
-           case 3:
+           case 2:
                return PantsFragment.newInstance();
-           case 4:
+           case 3:
                return ShoesFragment.newInstance();
-           case 5:
+           case 4:
                return AccessoriesFragment.newInstance();
            default:
                return null;
@@ -47,17 +46,17 @@ public class SortieViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position){
+            /*case 0:
+                return "종합";*/
             case 0:
-                return "종합";
-            case 1:
                 return "외투";
-            case 2:
+            case 1:
                 return "상의";
-            case 3:
+            case 2:
                 return "하의";
-            case 4:
+            case 3:
                 return "신발";
-            case 5:
+            case 4:
                 return "악세 사리";
             default:
                 return null;

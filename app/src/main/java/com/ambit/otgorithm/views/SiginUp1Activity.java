@@ -2,7 +2,6 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -43,7 +42,7 @@ public class SiginUp1Activity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.next, menu);
+        getMenuInflater().inflate(R.menu.menu_next, menu);
         return true;
     }
 
@@ -56,10 +55,10 @@ public class SiginUp1Activity extends AppCompatActivity {
         Intent intent = null;
 
         switch (item.getItemId()) {
-            case R.id.nextBtn:
+            case R.id.action_next:
                 intent = new Intent(SiginUp1Activity.this, SignUp2Activity.class);
                 startActivity(intent);
-                Log.d("SignUp 테스트: ", "case R.menu.next 진입");
+                Log.d("SignUp 테스트: ", "case R.menu.menu_next 진입");
                 break;
             case android.R.id.home:
                 this.finish();
