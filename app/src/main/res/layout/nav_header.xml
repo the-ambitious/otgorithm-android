@@ -1,31 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/to_sign_in"
     android:layout_width="match_parent"
     android:layout_height="176dp"
     android:background="@color/colorPrimary"
     android:gravity="bottom"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.ambit.otgorithm.modules.RoundedImageView
-        android:id="@+id/sigin_in_thumbnail"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:src="@mipmap/ic_launcher_round" />
-
-    <TextView
-        android:id="@+id/sigin_in_nickname"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Coding in Flow"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_weight="30"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/sigin_in_email"
-        android:layout_width="wrap_content"
+        <com.ambit.otgorithm.modules.RoundedImageView
+            android:id="@+id/sigin_in_thumbnail"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/thumbnail_default" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="info@codinginflow.com" />
+        android:layout_weight="70"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sign_in_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="6dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"
+            android:text="로그인이 필요합니다."
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/sigin_in_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="@string/sign_in_description"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/to_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:background="@color/colorPrimary"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <com.ambit.otgorithm.modules.RoundedImageView
+            android:id="@+id/sigin_in_thumbnail"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/thumbnail_default" />
+
+        <TextView
+            android:id="@+id/sign_in_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="지금 바로 로그인 하세요!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/sigin_in_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다양한 서비스를 이용할 수 있습니다." />
+
+    </LinearLayout>-->

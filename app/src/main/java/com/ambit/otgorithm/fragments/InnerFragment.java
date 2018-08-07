@@ -106,6 +106,7 @@ public class InnerFragment extends android.support.v4.app.Fragment {
             arrayList.add(R.drawable.ic_inner1 + i);
         }
 
+
 /*        linen = (ImageView)findViewById(R.id.linen);
         loafer = (ImageView)findViewById(R.id.loafer);
 

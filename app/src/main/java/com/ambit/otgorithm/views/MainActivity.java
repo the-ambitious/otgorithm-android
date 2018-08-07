@@ -1,24 +1,25 @@
 package com.ambit.otgorithm.views;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -50,7 +51,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.igalata.bubblepicker.rendering.Item;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -118,11 +118,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     //전장
     TextView battlefield;
 
+    // 로그인하게
+    LinearLayout navToSignIn;
+
     //프로필사진
     ImageView sigin_in_thumbnail;
 
     //닉네임
-    TextView sigin_in_nickname;
+    TextView sign_in_nickname;
 
     //이메일
     TextView sigin_in_email;
@@ -145,9 +148,30 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private DatabaseReference mUserRef;
     private FirebaseUser mFirebaseUser;
 
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo wimax = manager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
+        boolean bwimax = false;
+        if (wimax != null)
+            bwimax = wimax.isConnected(); // wimax 상태 체크
+        if (mobile != null) {
+            if (mobile.isConnected() || wifi.isConnected() || bwimax)
+                // 모바일 네트워크 체크
+                return true;
+        } else {
+            if (wifi.isConnected() || bwimax)
+                // wifi 네트워크 체크
+                return true;
+        }
+
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         setTheme(R.style.AppTheme);
         SystemClock.sleep(2000);
 
@@ -183,23 +207,29 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
-
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
 
+        // nav_header의 layout을 누르면 로그인 화면으로 넘어가는 부분
+        navToSignIn = nav_header_view.findViewById(R.id.to_sign_in);
+        navToSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 여기에 if ~ else 문 처리
+                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                startActivity(intent);
+            }
+        });
 
         if(mFirebaseUser != null)
             passPushTokenToServer();
 
-
-
         sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
-        sigin_in_nickname = nav_header_view.findViewById(R.id.sigin_in_nickname);
+        sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
         if(mFirebaseUser != null) {
             Glide.with(MainActivity.this).load(mFirebaseUser.getPhotoUrl()).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
-            sigin_in_nickname.setText(mFirebaseUser.getDisplayName());
+            sign_in_nickname.setText(mFirebaseUser.getDisplayName());
             sigin_in_email.setText(mFirebaseUser.getEmail());
         }
 
@@ -212,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.nav_item_closet:
-                        intent = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(intent);
+                        Snackbar.make(mDrawerLayout, "준비중입니다.", Snackbar.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_item_favorites:
@@ -240,10 +269,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
                     case R.id.nav_contact_notice:
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.nav_contact_commentary:
                         Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
@@ -527,15 +552,37 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 "&ny=" + (int) ny +
                 "&_type=json";
 
-        new WeatherParsing().execute(urlStr);
-    }
+        // 인터넷 연결 상태를 확인(예외처리)
+        if (isNetworkConnected(getApplicationContext())) {
+            new WeatherParsing().execute(urlStr);
+        } else {
+            // 인터넷에 연결할 수 없습니다. 연결을 확인하세요.
+            AlertDialog.Builder alert_internet_status = new AlertDialog.Builder(this);
+            alert_internet_status.setTitle("알림");
+            alert_internet_status.setMessage(
+                    "연결이 불안정하여 앱을 종료합니다." + "\n" +
+            "네트워크 연결 상태를 확인해주세요.")
+            .setCancelable(false);
+            alert_internet_status.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();   //닫기
+                    moveTaskToBack(true);
+                    finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            });
+            alert_internet_status.show();
+        }
+
+    }   // end of weatherInfo()
 
     public void findLocation() {
         // LocationManager 객체를 얻어온다
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            weatherdiscrip.setText("날씨를 받아오고 있습니다." + "\n" + "잠시만 기다려주세요 : )");
+            weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.loading_before));
+            //weatherdiscrip.setText("날씨를 받아오고 있습니다." + "\n" + "잠시만 기다려주세요 : )");
 
             // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
@@ -627,6 +674,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
                 break;
         }
+
+
     }
 
 
@@ -724,6 +773,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected void onPostExecute(StringBuffer buffer) {
+
             String json = buffer.toString();
 
             try {
@@ -763,6 +813,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     }
                 }
 
+                weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.loading_after));
+
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
                     case 1:     // rainy
@@ -799,8 +851,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     weatherdiscrip.setText("날이 맑네요");
                     temper.setText(currenttemper + "도");
                 } else if (sky == 2 || sky == 3) {
-                    weather_Icon = R.drawable.cloudy;
-                    weathericon.setImageResource(R.drawable.cloudy);
+                    weather_Icon = R.drawable.weather_cloudy;
+                    weathericon.setImageResource(R.drawable.weather_cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게~");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
                     weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");

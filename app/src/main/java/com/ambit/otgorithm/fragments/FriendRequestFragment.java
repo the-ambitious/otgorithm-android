@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.FriendRequestAdapter;
-import com.ambit.otgorithm.dto.InformationDTO;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -90,9 +89,7 @@ public class FriendRequestFragment extends Fragment {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { }
             });
         }
     }
