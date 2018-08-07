@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,16 +117,14 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
-
         pictureUpload = findViewById(R.id.picture_upload);
         pictureUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(path != null)
-                {
+                if (path != null) {
                     upload(path);
-                }else {
-                    Toast.makeText(UploadActivity.this,"사진을 올려주세요.",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadActivity.this, "사진을 올려주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -172,7 +170,6 @@ public class UploadActivity extends AppCompatActivity {
                 alertDialogBuilder.show();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -183,25 +180,22 @@ public class UploadActivity extends AppCompatActivity {
             startActivityForResult(intent,GALLERY_IMAGE_REQUEST);
         }
     }
-    public void startCamera() {
 
-    }
+    public void startCamera() { }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_IMAGE_REQUEST){
-            if(data!=null){
+        if (requestCode == GALLERY_IMAGE_REQUEST) {
+            if (data != null) {
                 path = getPath(data.getData());
-                File file =new File(path);
+                File file = new File(path);
                 pictureView.setImageURI(Uri.fromFile(file));
-            }else {
-                Toast.makeText(UploadActivity.this,"사진을 올려주세요",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(UploadActivity.this, "사진을 올려주세요", Toast.LENGTH_SHORT).show();
             }
-
         }
-
-    }
+    }   // end of onActivityResult()
 
 
     public String getPath(Uri uri){
@@ -266,14 +260,12 @@ public class UploadActivity extends AppCompatActivity {
 
                     }
                 });
-
-
 /*
                 database.getReference().child("galleries").push().setValue(galleryDTO);
                 Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();*/
             }
         });
 
-    }
+    }   // end of upload()
 
 }

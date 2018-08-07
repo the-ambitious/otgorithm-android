@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,14 +33,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
 
 import com.ambit.otgorithm.dto.UserDTO;
+import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
 import com.ambit.otgorithm.fragments.IntroFragment;
 
+import com.ambit.otgorithm.fragments.ProfileFragment;
 import com.ambit.otgorithm.models.Common;
 import com.ambit.otgorithm.models.Data;
 import com.ambit.otgorithm.models.MyResponse;
@@ -86,6 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDB;
     private DatabaseReference mUserRef;
     private DatabaseReference mMentorRef;
+    private DatabaseReference mFriendRef;
 
     private String ranker_id;
 
@@ -101,6 +107,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     FloatingActionButton floatingActionButton;
 
+    int mode;
+
+    CoordinatorLayout coordinatorLayout;
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -110,7 +120,10 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d("나나나노",Integer.toString(msg.what));
             switch (msg.what){
                 case 1:
-                    Glide.with(ProfileActivity.this).load(R.drawable.ic_otgorithm).into(floatingActionButton);
+                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(floatingActionButton);
+                    break;
+                case 2:
+                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(floatingActionButton);
                     break;
             }
 
@@ -130,6 +143,8 @@ public class ProfileActivity extends AppCompatActivity {
          * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
          */
 
+        coordinatorLayout = findViewById(R.id.htab_maincontent);
+
         Bundle extras = getIntent().getExtras();
         ranker_id = extras.getString("ranker_id");
 
@@ -139,7 +154,25 @@ public class ProfileActivity extends AppCompatActivity {
 
         mService = Common.getFCMClient();
 
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        mFirebaseDB = FirebaseDatabase.getInstance();
+        mUserRef = mFirebaseDB.getReference("users");
+        mMentorRef = mUserRef.child(mFirebaseUser.getUid()).child("requestToMentor");
+        mFriendRef = mUserRef.child(mFirebaseUser.getUid()).child("theSameBoat");
+
+
+
         intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
+        chatFab = findViewById(R.id.action_chat);
+
+
+        if(ranker_id.equals(mFirebaseUser.getDisplayName())){
+            chatFab.setVisibility(View.INVISIBLE);
+        }else {
+            intentUpload.setVisibility(View.INVISIBLE);
+        }
+
         intentUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,60 +182,78 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        chatFab = findViewById(R.id.action_chat);
+
+
+
         chatFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ProfileActivity.this);
-                alertDialogBuilder.setTitle("장군 면담 요청")
-                        .setMessage("장군의 허락을 받아야 합니다." + "\n" + "요청하시겠습니까?")
-                        .setCancelable(false)
-                        .setPositiveButton("네",
+                switch (mode){
+                    case 0:
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ProfileActivity.this);
+                        alertDialogBuilder.setTitle("장군 면담 요청")
+                                .setMessage("장군의 허락을 받아야 합니다." + "\n" + "요청하시겠습니까?")
+                                .setCancelable(false)
+                                .setPositiveButton("네",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                Data data = new Data("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
+                                                Notification notification = new Notification("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
+                                                Sender sender = new Sender(general.token,data);
+                                                mService.sendNotification(sender)
+                                                        .enqueue(new retrofit2.Callback<MyResponse>() {
+                                                            @Override
+                                                            public void onResponse(retrofit2.Call<MyResponse> call, retrofit2.Response<MyResponse> response) {
+                                                                if(response.body().success == 1)
+                                                                    Log.d("알림", "요청 성고");
+                                                                else
+                                                                    Log.d("알림", "요청 실패");
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(retrofit2.Call<MyResponse> call, Throwable t) {
+                                                                Log.e("Error",t.getMessage());
+                                                            }
+                                                        });
+                                                handler.sendEmptyMessage(1);
+                                                beMyGeneral(general.getUid());
+
+                                                // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
+                                                //Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
+                                                //Log.v("알림", "요청 성고");
+                                                //startActivity(intent);
+                                            }
+                                        }).setNegativeButton("아니오",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        Data data = new Data("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
-                                        Notification notification = new Notification("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
-                                        Sender sender = new Sender(general.token,data);
-                                        mService.sendNotification(sender)
-                                                .enqueue(new retrofit2.Callback<MyResponse>() {
-                                                    @Override
-                                                    public void onResponse(retrofit2.Call<MyResponse> call, retrofit2.Response<MyResponse> response) {
-                                                        if(response.body().success == 1)
-                                                            Log.d("알림", "요청 성고");
-                                                        else
-                                                            Log.d("알림", "요청 실패");
-                                                    }
-
-                                                    @Override
-                                                    public void onFailure(retrofit2.Call<MyResponse> call, Throwable t) {
-                                                            Log.e("Error",t.getMessage());
-                                                    }
-                                                });
-                                        handler.sendEmptyMessage(1);
-                                        beMyGeneral(general.getUid());
-
-                                        // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
-                                        //Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
-                                        //Log.v("알림", "요청 성고");
-                                        //startActivity(intent);
+                                        // 아니오 클릭. dialog 닫기.
+                                        dialog.cancel();
                                     }
-                                }).setNegativeButton("아니오",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // 아니오 클릭. dialog 닫기.
-                                dialog.cancel();
+                                });
+                        AlertDialog alert = alertDialogBuilder.create();
+                        alertDialogBuilder.show();
+                        break;
+                    case 1:
+                        Snackbar.make(coordinatorLayout,"상대방의 수락을 기다리고 있습니다",Snackbar.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                chatIntent.putExtra("uid", general.getUid());
+                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
                             }
-                        });
-                AlertDialog alert = alertDialogBuilder.create();
-                alertDialogBuilder.show();
+                        }).show();
+                        break;
+
+                }
+
+
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mAuth.getCurrentUser();
-        mFirebaseDB = FirebaseDatabase.getInstance();
-        mUserRef = mFirebaseDB.getReference("users");
-        mMentorRef = mUserRef.child(mFirebaseUser.getUid()).child("requestToMentor");
+
 
         addProfileListener(ranker_id);
 
@@ -368,8 +419,10 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot children : dataSnapshot.getChildren()){
                                     UserDTO userDTO1 = children.getValue(UserDTO.class);
-                                    if(userDTO1.getUid().equals(general.getUid()))
+                                    if(userDTO1.getUid().equals(general.getUid())){
                                         handler.sendEmptyMessage(1);
+                                        mode = 1;
+                                    }
                                 }
                             }
 
@@ -378,6 +431,25 @@ public class ProfileActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        mFriendRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                    UserDTO userDTO1 = children.getValue(UserDTO.class);
+                                    if(userDTO1.getUid().equals(general.getUid())){
+                                        handler.sendEmptyMessage(2);
+                                        mode = 2;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
 
               /*          if(general.getRequestFromMentee() != null){
                             Map<String, Boolean> map = general.getRequestFromMentee();
