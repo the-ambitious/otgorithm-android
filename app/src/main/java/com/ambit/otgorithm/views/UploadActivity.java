@@ -237,7 +237,7 @@ public class UploadActivity extends AppCompatActivity {
                 // 현재 날짜와 시간을 초기화하는 부분
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
-                SimpleDateFormat sdfNow = new SimpleDateFormat("yy.MM.dd");
+                SimpleDateFormat sdfNow = new SimpleDateFormat("MM.dd HH:mm");
 
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
