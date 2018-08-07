@@ -16,21 +16,12 @@
             android:title="@string/nav_item_letterbox" />
     </group>
 
-    <item android:title="@string/nav_contact">
+    <item android:title="@string/nav_aboutUs">
         <menu>
             <item
                 android:id="@+id/nav_contact_notice"
                 android:icon="@drawable/ic_emoticon"
                 android:title="@string/nav_contact_notice" />
-            <item
-                android:id="@+id/nav_contact_commentary"
-                android:icon="@drawable/ic_emoticon"
-                android:title="@string/nav_contact_commentary" />
-        </menu>
-    </item>
-
-    <item android:title="@string/nav_aboutUs">
-        <menu>
             <item
                 android:id="@+id/nav_aboutUs_intro"
                 android:icon="@drawable/ic_emoticon"

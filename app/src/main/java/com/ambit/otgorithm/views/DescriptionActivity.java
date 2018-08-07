@@ -44,6 +44,9 @@ public class DescriptionActivity extends AppCompatActivity {
         String target = intent.getStringExtra("description");
 
         switch (target) {
+            case "origin":
+                textViewToolbarTitle.setText("옷고리즘의 기원");
+                break;
             case "privacy":
                 textViewToolbarTitle.setText("개인정보처리방침");
                 break;
@@ -52,6 +55,9 @@ public class DescriptionActivity extends AppCompatActivity {
                 break;
             case "license":
                 textViewToolbarTitle.setText("오픈소스 라이선스");
+                break;
+            case "consultation":
+                textViewToolbarTitle.setText("이메일 문의");
                 break;
         }
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);

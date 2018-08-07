@@ -229,7 +229,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
-                fb:com_facebook_login_text="또는 Facebook으로 간편로그인"
+                fb:com_facebook_login_text="또는 Facebook으로 로그인"
                 fb:com_facebook_logout_text="로그아웃" />
         </FrameLayout>
         <!--<FrameLayout

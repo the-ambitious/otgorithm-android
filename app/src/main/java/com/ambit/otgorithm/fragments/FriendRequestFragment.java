@@ -25,6 +25,7 @@ public class FriendRequestFragment extends Fragment {
 
     // 기존에 있는 InformationDTO를 재활용; 이곳에 썸네일과 이름을 set
     ArrayList<InformationDTO> requestFriendList;
+    InformationDTO informationDTO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +61,11 @@ public class FriendRequestFragment extends Fragment {
         requestFriendList = new ArrayList<>();
         Log.d("테스트:", "initFriendRequest() 진입?: ");
 
+        informationDTO = new InformationDTO();
+        informationDTO.setImageId(1234);
+        informationDTO.setTitle("ㅇㅇ");
         // 이곳에 requestFriendList.add로 파베 정보를 넣어주면 됨
+        requestFriendList.add(informationDTO);
     }
 
 }

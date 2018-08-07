@@ -7,19 +7,20 @@
 -->
     <string name="tvSignUp"><u>회원가입</u></string>
 
+    <string name="sign_in_description">다양한 서비스를 옷고리즘과\n함께 이용해보세요!</string>
 
     <!-- 프로젝트에서 필요한 문자열들을 정의 -->
     <string name="nav_item_closet">내 옷장</string>
     <string name="nav_item_favorites">즐겨찾는 장군</string>
     <string name="nav_item_letterbox">서신함</string>
 
-    <string name="nav_contact">이용 문의</string>
-    <string name="nav_contact_notice">공지사항</string>
-    <string name="nav_contact_commentary">상소문</string>
+    <!--<string name="nav_contact">이용 문의</string>-->
 
-    <string name="nav_aboutUs">옷고리즘이란?</string>
-    <string name="nav_aboutUs_intro">옷고리즘이란?</string>
+    <string name="nav_aboutUs">옷고리즘에 대하여</string>
+    <string name="nav_contact_notice">공지사항</string>
+    <string name="nav_aboutUs_intro">애플리케이션 정보</string>
     <string name="nav_aboutUs_settings">환경 설정</string>
+    <string name="nav_aboutUs_logout">로그아웃</string>
 
     <!-- ativity_rank.xml -->
     <string name="action_search">검색</string>

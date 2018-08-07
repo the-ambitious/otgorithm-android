@@ -81,7 +81,7 @@ public class SortieActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.advertisement).into(advertisement);
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_fragment);
+        /*mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_fragment);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view2);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -107,16 +107,12 @@ public class SortieActivity extends AppCompatActivity {
                         Log.d("nav test: ", "31");
                         break;
 
-                    case R.id.nav_contact_commentary:
-                        Log.d("nav test: ", "31");
-                        break;
-
                 }
 
                 return true;
             }
-        });
-    }
+        });*/
+    }   // end of onCreate()
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
