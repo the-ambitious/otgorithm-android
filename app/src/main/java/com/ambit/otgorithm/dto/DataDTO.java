@@ -10,12 +10,12 @@ public class DataDTO {
         ArrayList<InformationDTO> data = new ArrayList<>();
 
         int[] images = {
-                R.drawable.ic_accessory2,
+               /* R.drawable.ic_accessory2,
                 R.drawable.ic_accessory3,
                 R.drawable.ic_accessory4,
                 R.drawable.ic_accessory5,
                 R.drawable.ic_accessory6,
-                R.drawable.ic_accessory7,
+                R.drawable.ic_accessory7,*/
         };
 
         String[] Categories = {"cat 2", "cat 3", "cat 4", "cat 5", "cat 6", "cat 8"};

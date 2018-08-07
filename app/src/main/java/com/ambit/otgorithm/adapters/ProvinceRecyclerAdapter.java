@@ -21,12 +21,15 @@ import com.ambit.otgorithm.dto.ItemDTO;
 import com.ambit.otgorithm.views.RankActivity;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // ProvinceActivity의 Adapter
 public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecyclerAdapter.ViewHolder> {
 
     private String url;     // 지역 이미지를 불러오기 위한 경로
+    private ArrayList<String> urlList;
+    private ArrayList<String> nameList;
     Animation ani;          // 지역명에 애니메이션 효과를 주기 위한 변수
 
     Context context;
@@ -37,6 +40,8 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
         this.context = context;
         this.items = items;
         this.item_layout = item_layout;
+        urlList = new ArrayList<>();
+        nameList = new ArrayList<>();
     }
 
     @Override
@@ -46,7 +51,7 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // 글자에 밑줄을 긋기 위한 객체 선언
         SpannableString provinceName = null;
 
@@ -119,6 +124,9 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
                 provinceName = new SpannableString("제주도");
                 break;
         }
+        urlList.add(url);
+        nameList.add(provinceName.toString());
+
         // 밑줄 긋기 작업
         provinceName.setSpan(new UnderlineSpan(), 0, provinceName.length(), 0);
         holder.provinceTitle.setText(provinceName);
@@ -132,8 +140,12 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("지역배경",urlList.get(position));
+                Log.d("지역이름",nameList.get(position));
                 Intent intent = new Intent(v.getContext(), RankActivity.class);
                 intent.putExtra("name", Integer.toString(position));
+                intent.putExtra("background",urlList.get(position));
+                intent.putExtra("provinceName",nameList.get(position));
                 v.getContext().startActivity(intent);
             }
         });

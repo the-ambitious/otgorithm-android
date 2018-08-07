@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GridViewAdapter;
+import com.ambit.otgorithm.views.MainActivity;
 import com.ambit.otgorithm.views.SortieActivity;
 import com.ambit.otgorithm.views.WebViewActivity;
 
@@ -40,6 +41,67 @@ public class InnerFragment extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.sortie_view,container,false);
 
         arrayList = new ArrayList();
+
+        if(MainActivity.currenttemper < 20){
+            // 옥스퍼드 , 폴란넬 셔츠 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= 13){
+            // 린넨셔츠 출격
+        }else {
+
+        }
+
+        //드레스 셔츠, 면 슬리브 always
+
+        if(MainActivity.currenttemper >= 15){
+            //면 반팔 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 20){
+            //니트(얇은) 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 13){
+            //니트(두꺼운), 기모, 네오프렌 맨투맨 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 15){
+            //맨투맨 출격
+        }else {
+
+        }
+
+
+
+        if(MainActivity.currenttemper <= 18){
+            //가디건(얇은) 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 14){
+            //가디건 (두꺼운),터틀넥 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= 24){
+            //피케 티셔츠 출격
+        }else {
+
+        }
+
+
+
         for (int i = 0; i < 9; i++) {
             arrayList.add(R.drawable.ic_inner1 + i);
         }
