@@ -12,9 +12,12 @@ import android.widget.GridView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GridViewAdapter;
+import com.ambit.otgorithm.views.MainActivity;
 import com.ambit.otgorithm.views.WebViewActivity;
 
 import java.util.ArrayList;
+
+import retrofit2.http.POST;
 
 public class PantsFragment extends android.support.v4.app.Fragment {
 
@@ -44,6 +47,55 @@ public class PantsFragment extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.sortie_view,container,false);
 
         arrayList = new ArrayList();
+
+        if(MainActivity.currenttemper >= 18){
+            //숏팬츠 출격
+        }else {
+
+        }
+
+        //조거팬츠 always
+
+        if(MainActivity.currenttemper <= 18){
+            //코티드 팬츠 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper < 15){
+            //기모펜츠 출격
+        }else {
+
+        }
+
+        //진 always
+
+        if(MainActivity.currenttemper >= 5){
+            //무파진 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper < 15){
+            //고르뎅팬츠 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= 14){
+            //린넨펜츠 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 15){
+            //울 슬렉스 출격
+        }else {
+
+        }
+
+        //면슬렉스,치노펜츠 always
+
         for (int i = 0; i < 10; i++) {
             arrayList.add(R.drawable.ic_pants1 + i);
         }

@@ -84,19 +84,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     // 변수 선언
     public static int TO_GRID = 0;
     public static int TO_GPS = 1;
-    static int rain;                  //POP  강수확률
 
-    static int snowrain;              //강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3)
+    public static int rain;                  //POP  강수확률
+
+    public static int snowrain;              //강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3)
     // 여기서 비/눈은 비와 눈이 섞여 오는 것을 의미 (진눈개비)
 
-    static int humidity;              //REH  습도
-    static int precipitation;         //R06  6시간 강수량
+    public static int humidity;              //REH  습도
+    public static int precipitation;         //R06  6시간 강수량
     //String lowtemper;        //TMN  아침 최저기온
     //String hightemper;       //TMX  낮 최고기온
-    static int currenttemper;         //T3H  3시간 기온
-    static int windspeed;             //WSD  풍속
-    static int sky;                     // 하늘상태(SKY) 코드 : 맑음(1), 구름조금(2), 구름많음(3), 흐림(4)
-    static int weather_Icon;
+    public static int currenttemper;         //T3H  3시간 기온
+    public static int windspeed;             //WSD  풍속
+    public static int sky;                     // 하늘상태(SKY) 코드 : 맑음(1), 구름조금(2), 구름많음(3), 흐림(4)
+    public static int weather_Icon;
 
     LocationManager lm = null;
 
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             intent = new Intent(MainActivity.this, ProfileActivity.class);
                             startActivity(intent);
                         }else {
-                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
                         }
                         break;
 
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             intent = new Intent(MainActivity.this, ChatMain.class);
                             startActivity(intent);
                         }else {
-                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
                         }
 
                         //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
@@ -239,11 +240,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
                     case R.id.nav_contact_notice:
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_contact_commentary:
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_aboutUs_intro:

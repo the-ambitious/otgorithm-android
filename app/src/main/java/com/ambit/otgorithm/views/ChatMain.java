@@ -68,7 +68,7 @@ public class ChatMain extends AppCompatActivity {
         ButterKnife.bind(this);
         mTabLayout.setupWithViewPager(mViewPager);
         setUpViewPager();
-        mFab.setOnClickListener(new View.OnClickListener() {
+   /*     mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment currentFragment = mPageAdapter.getItem(mViewPager.getCurrentItem());
@@ -83,7 +83,7 @@ public class ChatMain extends AppCompatActivity {
 
                 }
             }
-        });
+        });*/
     }
 
     @Override
