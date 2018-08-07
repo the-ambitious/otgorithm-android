@@ -27,6 +27,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
+        public TextView mTextView3;
 
         public RankerViewHolder(View itemView) {
             super(itemView);
@@ -34,6 +35,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
             mImageView = itemView.findViewById(R.id.profileThumbnail);
             mTextView1 = itemView.findViewById(R.id.userId);
             mTextView2 = itemView.findViewById(R.id.userDesc);
+            mTextView3 = itemView.findViewById(R.id.rank_number);
         }
 
     }   // end of RankerViewHolderDemo
@@ -65,6 +67,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         if (currentRanker.nickname != null)
             holder.mTextView1.setText(currentRanker.nickname);
         holder.mTextView2.setText(currentRanker.description);
+        holder.mTextView3.setText(Integer.toString(position+1));
        /* holder.mImageView.setImageResource(currentRanker.getmProfileThumbnail());
         holder.mTextView1.setText(currentRanker.getmUserId());
         holder.mTextView2.setText(currentRanker.getmUserDesc());*/

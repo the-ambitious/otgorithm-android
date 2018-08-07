@@ -51,7 +51,8 @@
                 android:gravity="center"
                 android:text="부 산"
                 android:textColor="@android:color/white"
-                android:textSize="36sp" />
+                android:textSize="36sp"
+                android:id="@+id/province_name"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,7 +60,8 @@
                 android:gravity="center_horizontal"
                 android:text="2018년 8월 1주차 현황"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:id="@+id/sysdate"/>
 
         </LinearLayout>
 

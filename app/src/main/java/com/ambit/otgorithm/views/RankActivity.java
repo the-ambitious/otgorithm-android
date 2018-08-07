@@ -2,7 +2,11 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +24,10 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.RankAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.modules.RankerItemClickListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,8 +35,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class RankActivity extends AppCompatActivity {
@@ -47,11 +57,32 @@ public class RankActivity extends AppCompatActivity {
 
     //선택한 지역이름
     String name;
+    String background;
+    String provinceName;
+
+    LinearLayout linearLayout;
+    TextView textView;
+    TextView sysdate;
+
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        linearLayout = findViewById(R.id.province_theme);
+        textView = findViewById(R.id.province_name);
+        sysdate = findViewById(R.id.sysdate);
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM");
+        String formatDate = sdfNow.format(date);
+        String[] rightNow;
+        rightNow = formatDate.split("/");
 
         Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
@@ -102,6 +133,19 @@ public class RankActivity extends AppCompatActivity {
 */
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
+        background = intent.getStringExtra("background");
+        provinceName = intent.getStringExtra("provinceName");
+        textView.setText(provinceName);
+        sysdate.setText(rightNow[0]+"년"+" "+rightNow[1]+"월 랭킹 현황");
+        Glide.with(this).load(background).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                    linearLayout.setBackground(resource);
+                }
+            }
+        });
+
 
         addGalleryListener(name);
 
@@ -120,16 +164,20 @@ public class RankActivity extends AppCompatActivity {
                 new RankerItemClickListener(getApplicationContext(), mRecyclerView, new RankerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        // 랭커마다 클릭했을 시 개인 프로필 화면 전환
-                        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                        TextView user = view.findViewById(R.id.userId);
-                        Log.d("테스트: ", "user ID? :" + user.getText());
+                        if(mAuth.getCurrentUser() != null) {
+                            // 랭커마다 클릭했을 시 개인 프로필 화면 전환
+                            Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                            TextView user = view.findViewById(R.id.userId);
+                            Log.d("테스트: ", "user ID? :" + user.getText());
 
-                        intent.putExtra("ranker_id", user.getText());
+                            intent.putExtra("ranker_id", user.getText());
 
 
-                        Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
-                        view.getContext().startActivity(intent);
+                            Toast.makeText(RankActivity.this, "인덱스: " + position, Toast.LENGTH_SHORT).show();
+                            view.getContext().startActivity(intent);
+                        }else {
+                            Toast.makeText(RankActivity.this,"로그인 후 이용가능합니다.",Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override

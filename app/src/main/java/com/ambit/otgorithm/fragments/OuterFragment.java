@@ -12,6 +12,7 @@ import android.widget.GridView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GridViewAdapter;
+import com.ambit.otgorithm.views.MainActivity;
 import com.ambit.otgorithm.views.WebViewActivity;
 
 import java.util.ArrayList;
@@ -31,6 +32,85 @@ public class OuterFragment extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.sortie_view,container,false);
 
         arrayList = new ArrayList();
+
+        if(MainActivity.currenttemper >= 6 && MainActivity.currenttemper <= 14){
+            //블루종(F/W)출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= 10 && MainActivity.currenttemper <= 20){
+            //블레이저(S/S) 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= 0 && MainActivity.currenttemper <= 13){
+            //블레이저(F/W)출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= 0 && MainActivity.currenttemper <= 10 && MainActivity.snowrain == 0){
+            //가죽자켓 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 8){
+            //무스탕, 패딩코트 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >=5 && MainActivity.currenttemper <= 13){
+            //면코트(S/S) 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 10){
+            //겨울코트(F/W), 덱자켓 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >= -3 && MainActivity.currenttemper <= 10){
+            //패딩조끼 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper >=5 && MainActivity.currenttemper <= 15){
+            //야상(S/S) 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 7){
+            //야상(F/W), 라이트다운 패딩 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 4){
+            //헤스티아급 패딩 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 0){
+            //히말라야급 패딩 출격
+        }else {
+
+        }
+
+        if(MainActivity.currenttemper <= 5){
+            //n3b 출격
+        }else {
+
+        }
+
         for (int i = 0; i < 13; i++) {
             arrayList.add(R.drawable.ic_outer1 + i);
         }

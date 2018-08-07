@@ -121,7 +121,12 @@ public class UploadActivity extends AppCompatActivity {
         pictureUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upload(path);
+                if(path != null)
+                {
+                    upload(path);
+                }else {
+                    Toast.makeText(UploadActivity.this,"사진을 올려주세요.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }   // end of onCreate()
@@ -185,9 +190,14 @@ public class UploadActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST){
-            path = getPath(data.getData());
-            File file =new File(path);
-            pictureView.setImageURI(Uri.fromFile(file));
+            if(data!=null){
+                path = getPath(data.getData());
+                File file =new File(path);
+                pictureView.setImageURI(Uri.fromFile(file));
+            }else {
+                Toast.makeText(UploadActivity.this,"사진을 올려주세요",Toast.LENGTH_SHORT).show();
+            }
+
         }
 
     }

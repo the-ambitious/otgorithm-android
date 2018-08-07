@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,6 +19,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
+import com.ambit.otgorithm.models.Common;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
@@ -49,6 +50,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,7 +62,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
@@ -80,19 +84,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     // 변수 선언
     public static int TO_GRID = 0;
     public static int TO_GPS = 1;
-    static int rain;                  //POP  강수확률
 
-    static int snowrain;              //강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3)
+    public static int rain;                  //POP  강수확률
+
+    public static int snowrain;              //강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3)
     // 여기서 비/눈은 비와 눈이 섞여 오는 것을 의미 (진눈개비)
 
-    static int humidity;              //REH  습도
-    static int precipitation;         //R06  6시간 강수량
+    public static int humidity;              //REH  습도
+    public static int precipitation;         //R06  6시간 강수량
     //String lowtemper;        //TMN  아침 최저기온
     //String hightemper;       //TMX  낮 최고기온
-    static int currenttemper;         //T3H  3시간 기온
-    static int windspeed;             //WSD  풍속
-    static int sky;                     // 하늘상태(SKY) 코드 : 맑음(1), 구름조금(2), 구름많음(3), 흐림(4)
-    static int weather_Icon;
+    public static int currenttemper;         //T3H  3시간 기온
+    public static int windspeed;             //WSD  풍속
+    public static int sky;                     // 하늘상태(SKY) 코드 : 맑음(1), 구름조금(2), 구름많음(3), 흐림(4)
+    public static int weather_Icon;
 
     LocationManager lm = null;
 
@@ -202,20 +207,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
-
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
 
+        // nav_header의 layout을 누르면 로그인 화면으로 넘어가는 부분
         navToSignIn = nav_header_view.findViewById(R.id.to_sign_in);
         navToSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 여기에 if ~ else 문 처리
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });
 
+        if(mFirebaseUser != null)
+            passPushTokenToServer();
 
         sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
@@ -235,23 +242,34 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.nav_item_closet:
-                        intent = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(intent);
+                        Snackbar.make(mDrawerLayout, "준비중입니다.", Snackbar.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_item_favorites:
-                        intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        startActivity(intent);
+                        if(mFirebaseUser!=null){
+                            intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
+                        }
                         break;
 
                     case R.id.nav_item_letterbox:
-                        intent = new Intent(MainActivity.this, ChatMain.class);
-                        startActivity(intent);
+                        if(mFirebaseUser!=null){
+                            intent = new Intent(MainActivity.this, ChatMain.class);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
+                        }
+
                         //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+
+
                         break;
 
-                    case R.id.nav_contact_notice:   // 공지사항
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+
+                    case R.id.nav_contact_notice:
+                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_aboutUs_intro:
@@ -937,4 +955,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //updateUI(currentUser);
     }
 
+    void passPushTokenToServer(){
+        String uid = mFirebaseUser.getUid();
+        Common.currentToken = FirebaseInstanceId.getInstance().getToken();
+        String token = Common.currentToken;
+        Map<String, Object> map = new HashMap<>();
+        map.put("token",token);
+
+        mUserRef.child(uid).updateChildren(map);
+
+
+    }
 }
