@@ -10,6 +10,7 @@ public class UserDTO {
     String profileUrl;
     String battlefield;
 
+    // description을 추가(FavoritesActivity)
 
 
     public String token;
