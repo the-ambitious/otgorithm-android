@@ -216,8 +216,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void onClick(View v) {
                 // 여기에 if ~ else 문 처리
-                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                startActivity(intent);
+                if(mFirebaseUser == null){
+                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.putExtra("ranker_id",mFirebaseUser.getDisplayName());
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -247,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                     case R.id.nav_item_favorites:
                         if(mFirebaseUser!=null){
-                            intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            intent = new Intent(MainActivity.this, FavoritesActivity.class);
                             startActivity(intent);
                         }else {
                             Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
