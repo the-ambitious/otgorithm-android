@@ -7,7 +7,7 @@
 -->
     <string name="tvSignUp"><u>회원가입</u></string>
 
-    <string name="sign_in_description">다양한 서비스를 옷고리즘과\n함께 이용해보세요!</string>
+    <string name="sign_in_description">다양한 서비스를 옷고리즘과\n함께 이용하실 수 있어요!</string>
 
     <!-- 프로젝트에서 필요한 문자열들을 정의 -->
     <string name="nav_item_closet">내 옷장</string>

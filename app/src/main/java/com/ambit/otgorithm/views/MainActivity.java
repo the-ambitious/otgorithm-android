@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -73,6 +74,9 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private long pressedTime = 0;
+
+    // 툴바 타이틀 명명
+    private static TextView tv;
 
     private AutoScrollViewPager autoViewPager;
     AutoScrollAdapter autoScrollAdapter;
@@ -145,42 +149,45 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     String formatDate = sdfNow.format(date);
     String[] rightNow;
 
-
     private FirebaseDatabase database;
     private DatabaseReference mUserRef;
     private FirebaseUser mFirebaseUser;
 
+    /**
+     * isNetworkConnected(): 네트워크 연결 상태 예외 처리 메서드
+     * if (wimax != null): wimax 상태 체크
+     * if (mobile != null): // 모바일 네트워크 체크
+     * if (wifi.isConnected() || bwimax): wifi 네트워크 체크
+     */
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo wimax = manager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
         boolean bwimax = false;
-        if (wimax != null)
-            bwimax = wimax.isConnected(); // wimax 상태 체크
-        if (mobile != null) {
-            if (mobile.isConnected() || wifi.isConnected() || bwimax)
-                // 모바일 네트워크 체크
-                return true;
-        } else {
-            if (wifi.isConnected() || bwimax)
-                // wifi 네트워크 체크
-                return true;
-        }
 
+        if (wimax != null) {
+            bwimax = wimax.isConnected();
+        }
+        if (mobile != null) {
+            if (mobile.isConnected() || wifi.isConnected() || bwimax) return true;
+        } else {
+            if (wifi.isConnected() || bwimax) return true;
+        }
         return false;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // 처음 로딩 시 스플래시 화면 배치
         setTheme(R.style.AppTheme);
         SystemClock.sleep(2000);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //firebase 인증객체 얻기
+        // firebase 인증 객체 얻기
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         // DB객체 싱글톤 패턴으로 얻음
@@ -199,13 +206,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             startActivity(intent);
         }
 
-        // 툴바 부분
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        /*****************************************************************
+         * 커스텀 툴바 셋팅
+         */
+        Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
+        setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
+
+        tv = (TextView) findViewById(R.id.toolbar_title);
+        tv.setText("옷고리즘");
+        tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTextColor(Color.WHITE);
+        Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
+        setSupportActionBar(galleryToolbar);
+
+        // 기본 타이틀을 보여줄 지 말 지 설정
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /****************************************************************/
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -225,15 +244,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void onClick(View v) {
                 // 여기에 if ~ else 문 처리
-                if(mFirebaseUser == null){
+                if (mFirebaseUser == null) {
                     Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent.putExtra("ranker_id",mFirebaseUser.getDisplayName());
+                    intent.putExtra("ranker_id", mFirebaseUser.getDisplayName());
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -255,37 +273,35 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 item.setChecked(true);
                 mDrawerLayout.closeDrawers();
                 Intent intent;
+
                 int id = item.getItemId();
                 switch (id) {
-                    case R.id.nav_item_closet:
+                    case R.id.nav_item_closet:      // 내 옷장
                         Snackbar.make(mDrawerLayout, "준비중입니다.", Snackbar.LENGTH_SHORT).show();
                         break;
 
-                    case R.id.nav_item_favorites:
-                        if(mFirebaseUser!=null){
+                    case R.id.nav_item_favorites:   // 즐겨찾는 장군
+                        if (mFirebaseUser != null) {
                             intent = new Intent(MainActivity.this, FavoritesActivity.class);
                             startActivity(intent);
-                        }else {
-                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
                         }
                         break;
 
                     case R.id.nav_item_letterbox:
-                        if(mFirebaseUser!=null){
+                        if (mFirebaseUser != null) {
                             intent = new Intent(MainActivity.this, ChatMain.class);
                             startActivity(intent);
-                        }else {
-                            Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
                         }
-
-                        //Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
-
-
                         break;
 
-
-                    case R.id.nav_contact_notice:
-                        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                    case R.id.nav_contact_notice:   // 임시로 컬렉션; 나중에 공지사항으로 바꿔야 함
+                        intent = new Intent(MainActivity.this, CollectionActivity.class);
+                        startActivity(intent);
+                        // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_aboutUs_intro:
@@ -327,16 +343,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        //메인 날씨띄우는 부분에 있는 view들 불러오기 이미지,온도.아이콘
+        // 메인 날씨띄우는 부분에 있는 view들 불러오기 이미지, 온도. 아이콘
         weatherBackground = (LinearLayout) findViewById(R.id.weather_background);
         weathericon = (ImageView) findViewById(R.id.weathericon);
         weatherdiscrip = (TextView) findViewById(R.id.weatherdiscrip);
         weatherDescription = (TextView) findViewById(R.id.weather_description);
         temper = (TextView) findViewById(R.id.temper);
-        current_time = (TextView)findViewById(R.id.current_time);
-        battlefield = (TextView)findViewById(R.id.battlefield);
-
-
+        current_time = (TextView) findViewById(R.id.current_time);
+        battlefield = (TextView) findViewById(R.id.battlefield);
 
         /**
          sdk23을 기준으로 허가권을 얻는 방식이 바뀜
@@ -640,32 +654,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         nx = tmp.x;
         ny = tmp.y;
 
-
         //x,y좌표를 들고 날씨정보 호출하는 함수로 간다.
         weatherInfo(tmp.x, tmp.y);
-
-
 
      /*   infomation.setText("위치정보 : " + provider + "\n위도 : " + tmp.x + "\n경도 : " + tmp.y
                 + "\n고도 : " + altitude + "\n정확도 : " + accuracy);*/
         lm.removeUpdates(this);     // 배터리가 소모되므로 manager를 해제해줘야 함
     }
 
-    public double getNx() {
-        return nx;
-    }
-
-    public void setNx(double nx) {
-        this.nx = nx;
-    }
-
-    public double getNy() {
-        return ny;
-    }
-
-    public void setNy(double ny) {
-        this.ny = ny;
-    }
+    public double getNx()           { return nx; }
+    public void setNx(double nx)    { this.nx = nx; }
+    public double getNy()           { return ny; }
+    public void setNy(double ny)    { this.ny = ny; }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -681,7 +681,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                //요청한 권한에 대한 결과값이 grantResults[]에 담김
+                // 요청한 권한에 대한 결과값이 grantResults[]에 담김
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     //권한을 허용한 경우 위치찾기 시작
                     findLocation();
@@ -691,17 +691,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
                 break;
         }
-
-
-    }
-
+    }   // end of onRequestPermissionsResult()
 
     /**
      * convertGRID_GPS() : 위도, 경도를 x, y 좌표로 변환시켜주는 메서드
-     * @param mode
-     * @param lat_X
-     * @param lng_Y
-     * @return
      */
     private LatXLngY convertGRID_GPS(int mode, double lat_X, double lng_Y) {
         double RE = 6371.00877; // 지구 반경(km)
@@ -713,12 +706,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         double XO = 43; // 기준점 X좌표(GRID)
         double YO = 136; // 기1준점 Y좌표(GRID)
 
-        //
         // LCC DFS 좌표변환 ( code : "TO_GRID"(위경도->좌표, lat_X:위도,  lng_Y:경도), "TO_GPS"(좌표->위경도,  lat_X:x, lng_Y:y) )
-        //
-
-
-
         double DEGRAD = Math.PI / 180.0;
         double RADDEG = 180.0 / Math.PI;
 
@@ -783,14 +771,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         public double x;
         public double y;
-
     }
 
+    // inner class
     class WeatherParsing extends AsyncTask<String, Void, StringBuffer> {
 
         @Override
         protected void onPostExecute(StringBuffer buffer) {
-
             String json = buffer.toString();
 
             try {
@@ -907,19 +894,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
+                        public void onCancelled(DatabaseError databaseError) { }
                     });
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-        }
+        }   // end of onPostExecute()
 
         @Override
         protected StringBuffer doInBackground(String... urls) {
@@ -934,15 +915,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 while ((line = br.readLine()) != null) {
                     buffer.append(line + "\n");
                 }
-
                 return buffer;
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
-        }
+        }   // end of doInBackground()
+
     }
 
     @Override
@@ -950,15 +929,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!=null){
-            Toast.makeText(this,"현재 회원 : "+currentUser.getEmail(),Toast.LENGTH_SHORT).show();
+        if (currentUser != null) {
+            Toast.makeText(this, "현재 회원 : " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
 
-            Log.d("이메일",currentUser.getEmail());
-            Log.d("유아이디",currentUser.getUid());
+            Log.d("이메일", currentUser.getEmail());
+            Log.d("유아이디", currentUser.getUid());
             //Log.d("폰넘버",currentUser.getPhoneNumber());
-            Log.d("디스플레이네임",currentUser.getDisplayName());
-            Log.d("프로바이더아이디",currentUser.getProviderId());
-            Log.d("포토 유알엘",currentUser.getPhotoUrl().toString());
+            Log.d("디스플레이네임", currentUser.getDisplayName());
+            Log.d("프로바이더아이디", currentUser.getProviderId());
+            Log.d("포토 유알엘", currentUser.getPhotoUrl().toString());
            /* mAuth.getCurrentUser().getPhotoUrl();
             mAuth.getCurrentUser().getEmail();
             mAuth.getCurrentUser().getUid();
@@ -966,8 +945,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             mAuth.getCurrentUser().getDisplayName();
             mAuth.getCurrentUser().getProviderId();*/
 
-        }else {
-            Toast.makeText(this,"현재 회원 : 없음",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "현재 회원 : 없음", Toast.LENGTH_SHORT).show();
         }
         //updateUI(currentUser);
     }
@@ -977,10 +956,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Common.currentToken = FirebaseInstanceId.getInstance().getToken();
         String token = Common.currentToken;
         Map<String, Object> map = new HashMap<>();
-        map.put("token",token);
+        map.put("token", token);
 
         mUserRef.child(uid).updateChildren(map);
+    }   // end of passPushTokenToServer()
 
-
-    }
 }

@@ -419,16 +419,16 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
 
-
-    private void beMyGeneral(final String generalUid){
+    private void beMyGeneral(final String generalUid) {
 
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             UserDTO userDTO = new UserDTO();
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot children : dataSnapshot.getChildren()){
+                for (DataSnapshot children : dataSnapshot.getChildren()) {
                     userDTO = children.getValue(UserDTO.class);
-                    if(userDTO.getUid().equals(generalUid)){
+                    if (userDTO.getUid().equals(generalUid)) {
                         final UserDTO mentor = userDTO;
                         mMentorRef.child(mentor.getUid()).setValue(mentor, new DatabaseReference.CompletionListener() {
                             @Override
@@ -442,31 +442,22 @@ public class ProfileActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-
                                     }
                                 });
                             }
                         });
                     }
-
-
-                }
-            }
+                }   // end of for loop
+            }   // end of onDataChange()
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
-
-    }
-
-
+    }   // end of beMyGeneral()
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     /**
@@ -489,20 +480,20 @@ public class ProfileActivity extends AppCompatActivity {
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot children : dataSnapshot.getChildren()){
+                for (DataSnapshot children : dataSnapshot.getChildren()) {
                     UserDTO userDTO = children.getValue(UserDTO.class);
-                    if(userDTO.getName().equals(ranker_id)){
+                    if (userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
                         rankerPhotoUrl = userDTO.getProfileUrl();
                         photoUri = Uri.parse(rankerPhotoUrl);
-                        Log.d("하1","1");
+                        Log.d("하1", "1");
 
                         mMentorRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                for (DataSnapshot children : dataSnapshot.getChildren()) {
                                     UserDTO userDTO1 = children.getValue(UserDTO.class);
-                                    if(userDTO1.getUid().equals(general.getUid())){
+                                    if (userDTO1.getUid().equals(general.getUid())) {
                                         handler.sendEmptyMessage(1);
                                         mode = 1;
                                     }
@@ -510,9 +501,7 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
+                            public void onCancelled(DatabaseError databaseError) { }
                         });
 
                         mFriendRef.addListenerForSingleValueEvent(new ValueEventListener() {
