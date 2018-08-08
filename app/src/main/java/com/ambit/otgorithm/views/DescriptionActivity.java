@@ -44,7 +44,7 @@ public class DescriptionActivity extends AppCompatActivity {
         String target = intent.getStringExtra("description");
 
         switch (target) {
-            case "origin":
+            case "copyright":  // origin으로 바꿔야 함; copyright test 중
                 textViewToolbarTitle.setText("옷고리즘의 기원");
                 break;
             case "privacy":

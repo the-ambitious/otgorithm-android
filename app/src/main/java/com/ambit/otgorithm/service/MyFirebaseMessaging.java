@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.ambit.otgorithm.R;
+import com.ambit.otgorithm.views.ChatMain;
 import com.ambit.otgorithm.views.MainActivity;
 import com.ambit.otgorithm.views.ProfileActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -49,12 +50,12 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
         // message, here is where that should be initiated. See sendNotification method below.
     }
     private void sendNotification(String title,String text) {
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, ChatMain.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-// Since android Oreo notification channel is needed.
+        // Since android Oreo notification channel is needed.
         String channelId = "default_channel_id";
         String channelDescription = "Default Channel";
 

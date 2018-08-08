@@ -32,7 +32,7 @@ public class IntroActivity extends AppCompatActivity {
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
         setSupportActionBar(galleryToolbar);    // 액션바와 같게 만들어줌
 
-        toolbarTitle.setText("옷고리즘이란?");
+        toolbarTitle.setText("애플리케이션 정보");
         toolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         toolbarTitle.setTextColor(Color.WHITE);
 
@@ -64,6 +64,9 @@ public class IntroActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DescriptionActivity.class);
 
         switch (v.getId()) {
+            case R.id.origin:   // origin으로 바꿔야함 copyright 테스트 중
+                intent.putExtra("description", "copyright");
+                break;
             case R.id.privacy:
                 intent.putExtra("description", "privacy");
                 break;
@@ -72,6 +75,9 @@ public class IntroActivity extends AppCompatActivity {
                 break;
             case R.id.license:
                 intent.putExtra("description", "license");
+                break;
+            case R.id.consultation:
+                intent.putExtra("description", "consultation");
                 break;
         }
         startActivity(intent);
