@@ -58,7 +58,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         TextView textview;
         ImageView imageview;
         ImageButton star;
-        ImageView weather;
+        ImageView likey;
 
         public CollectionViewHolder(View itemView) {
             super(itemView);
@@ -67,7 +67,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             textview = (TextView) itemView.findViewById(R.id.txv_row);
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
             star =  (ImageButton) itemView.findViewById(R.id.star);
-            weather = (ImageView) itemView.findViewById(R.id.weather_icon);
+            likey = (ImageView) itemView.findViewById(R.id.likey);
         }
     }   // end of class CollectionViewHolder
 
