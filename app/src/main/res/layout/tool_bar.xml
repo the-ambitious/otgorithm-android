@@ -26,10 +26,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/toolbar_logo" />
-
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
 
+</LinearLayout>
 
     <!--<FrameLayout
         android:id="@+id/fragment_container"
@@ -45,4 +45,3 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />-->
 
-</LinearLayout>

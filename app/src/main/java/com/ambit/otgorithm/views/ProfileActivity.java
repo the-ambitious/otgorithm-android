@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
 
+import com.ambit.otgorithm.dto.Chat;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
@@ -84,6 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
     /*private ViewPager profileViewPager;*/
     private ViewPagerAdapter profileViewPagerAdapter;
     private FloatingActionButton chatFab;
+    private FloatingActionButton favoritesFab;
     private CircleImageView intentUpload;
 
     private FirebaseAuth mAuth;
@@ -105,9 +107,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     APIService mService;
 
-    FloatingActionButton floatingActionButton;
+
 
     int mode;
+    int favoritesMode;
 
     CoordinatorLayout coordinatorLayout;
 
@@ -120,10 +123,16 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d("나나나노",Integer.toString(msg.what));
             switch (msg.what){
                 case 1:
-                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(floatingActionButton);
+                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(chatFab);
                     break;
                 case 2:
-                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(floatingActionButton);
+                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(chatFab);
+                    break;
+                case 3:
+                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_yellow_24dp).into(favoritesFab);
+                    break;
+                case 4:
+                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_border_black_24dp).into(favoritesFab);
                     break;
             }
 
@@ -150,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         htab_header = findViewById(R.id.htab_header);
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.action_chat);
+
 
         mService = Common.getFCMClient();
 
@@ -165,10 +174,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
         chatFab = findViewById(R.id.action_chat);
-
+        favoritesFab = findViewById(R.id.favoites_registration);
 
         if(ranker_id.equals(mFirebaseUser.getDisplayName())){
             chatFab.setVisibility(View.INVISIBLE);
+            favoritesFab.setVisibility(View.INVISIBLE);
+
         }else {
             intentUpload.setVisibility(View.INVISIBLE);
         }
@@ -240,9 +251,38 @@ public class ProfileActivity extends AppCompatActivity {
                         Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
-                                chatIntent.putExtra("uid", general.getUid());
-                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+
+                                mUserRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.d("chat2","들어옴");
+                                        for(DataSnapshot children : dataSnapshot.getChildren()){
+                                            Chat chat = children.getValue(Chat.class);
+                                            Log.d("chat22","드루어옴");
+                                            if(chat.getTitle().equals(general.getName())){
+                                                //기존방이 있을때
+                                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                                chatIntent.putExtra("chat_id", chat.getChatId());
+                                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                                Log.d("chat222","드루루어옴");
+                                                return;
+                                            }
+                                        }
+                                        //기존방이 없을때
+                                        Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                        chatIntent.putExtra("uid", general.getUid());
+                                        startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                Log.d("chat3","나옴");
+                          /*      chatIntent.putExtra("chat_id", chat.getChatId());
+                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);*/
+
                             }
                         }).show();
                         break;
@@ -253,7 +293,48 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        favoritesFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                switch (favoritesMode){
+                    case 1:
+                        mUserRef
+                                .child(mFirebaseUser.getUid())
+                                .child("favorites")
+                                .child(general.getUid())
+                                .removeValue(new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        mUserRef
+                                                .child(general.getUid())
+                                                .child("fans")
+                                                .child(mFirebaseUser.getUid())
+                                                .removeValue();
+                                    }
+                                });
+                        handler.sendEmptyMessage(4);
+                        break;
+                    case 2:
+                        mUserRef
+                                .child(mFirebaseUser.getUid())
+                                .child("favorites")
+                                .child(general.getUid())
+                                .setValue(general, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        mUserRef
+                                                .child(general.getUid())
+                                                .child("fans")
+                                                .child(mFirebaseUser.getUid())
+                                                .setValue(true);
+                                    }
+                                });
+                        handler.sendEmptyMessage(3);
+                        break;
+                }
+            }
+        });
 
         addProfileListener(ranker_id);
 
@@ -338,16 +419,16 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
 
-
-    private void beMyGeneral(final String generalUid){
+    private void beMyGeneral(final String generalUid) {
 
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             UserDTO userDTO = new UserDTO();
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot children : dataSnapshot.getChildren()){
+                for (DataSnapshot children : dataSnapshot.getChildren()) {
                     userDTO = children.getValue(UserDTO.class);
-                    if(userDTO.getUid().equals(generalUid)){
+                    if (userDTO.getUid().equals(generalUid)) {
                         final UserDTO mentor = userDTO;
                         mMentorRef.child(mentor.getUid()).setValue(mentor, new DatabaseReference.CompletionListener() {
                             @Override
@@ -361,31 +442,22 @@ public class ProfileActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-
                                     }
                                 });
                             }
                         });
                     }
-
-
-                }
-            }
+                }   // end of for loop
+            }   // end of onDataChange()
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
-
-    }
-
-
+    }   // end of beMyGeneral()
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     /**
@@ -403,23 +475,25 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void addProfileListener(final String ranker_id){
+
+
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot children : dataSnapshot.getChildren()){
+                for (DataSnapshot children : dataSnapshot.getChildren()) {
                     UserDTO userDTO = children.getValue(UserDTO.class);
-                    if(userDTO.getName().equals(ranker_id)){
+                    if (userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
                         rankerPhotoUrl = userDTO.getProfileUrl();
                         photoUri = Uri.parse(rankerPhotoUrl);
-                        Log.d("하1","1");
+                        Log.d("하1", "1");
 
                         mMentorRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                for (DataSnapshot children : dataSnapshot.getChildren()) {
                                     UserDTO userDTO1 = children.getValue(UserDTO.class);
-                                    if(userDTO1.getUid().equals(general.getUid())){
+                                    if (userDTO1.getUid().equals(general.getUid())) {
                                         handler.sendEmptyMessage(1);
                                         mode = 1;
                                     }
@@ -427,9 +501,7 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
+                            public void onCancelled(DatabaseError databaseError) { }
                         });
 
                         mFriendRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -442,6 +514,25 @@ public class ProfileActivity extends AppCompatActivity {
                                         mode = 2;
                                     }
                                 }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        mUserRef.child(mFirebaseUser.getUid()).child("favorites").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                    if(children.getKey().equals(general.getUid())){
+                                        handler.sendEmptyMessage(3);
+                                        favoritesMode = 1;
+                                        return;
+                                    }
+                                }
+                                favoritesMode = 2;
                             }
 
                             @Override

@@ -14,6 +14,13 @@ import android.widget.TextView;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.FavoritesAdapter;
 import com.ambit.otgorithm.dto.UserDTO;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -27,10 +34,20 @@ public class FavoritesActivity extends AppCompatActivity {
     private RecyclerView favoritesRecyclerView;
     private FavoritesAdapter favoritesAdapter;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mFirebaseDb;
+    private DatabaseReference mUserRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        mUserRef = mFirebaseDb.getReference("users");
 
         /*****************************************************************
          * 커스텀 툴바 셋팅
@@ -57,7 +74,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
         favoritesRecyclerView = (RecyclerView) findViewById(R.id.favorites_general);
 
-        favoritesAdapter = new FavoritesAdapter(favorList);
+        favoritesAdapter = new FavoritesAdapter(this,favorList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         favoritesRecyclerView.setLayoutManager(mLayoutManager);
         favoritesRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -68,13 +85,33 @@ public class FavoritesActivity extends AppCompatActivity {
      * InitFavorites(): 즐겨찾는 장군을 ArrayList에 담는 역할
      * @param favorList
      */
-    private void InitFavorites(ArrayList<UserDTO> favorList) {
-        UserDTO general = new UserDTO();
+    private void InitFavorites(final ArrayList<UserDTO> favorList) {
+
+        mUserRef.child(mFirebaseUser.getUid()).child("favorites").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    UserDTO general = children.getValue(UserDTO.class);
+                    favorList.add(general);
+                }
+                addList(favorList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         // 이곳에 firebase에서 가져온 데이터를 .setter로 넣어주고
         // favorList에 .add하면 됨
         // 아래는 예제
-        general.setName("coco");
+
+    }
+
+    private void addList(ArrayList<UserDTO> favorList){
+        favoritesAdapter.addition(favorList);
     }
 
     @Override

@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
+import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.AnimationUtil;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,8 +30,10 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder> {
 
@@ -38,6 +42,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     LayoutInflater inflater;
     FirebaseDatabase database;
     DatabaseReference mGalleryRef;
+    DatabaseReference mUserRef;
     String key;
     FirebaseAuth mAuth;
     ImageButton thumbs_up;
@@ -145,6 +150,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                                 Log.d("유알아이값: ", galleryDTO.imageUrl);
                                 Log.d("키값: ", dataSnapshot.getKey());
                                 onStarClicked(mGalleryRef.child(dataSnapshot.getKey()));
+                                return;
                             }
                         }
                     }   // end of onDataChange()
@@ -155,6 +161,51 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 thumbs_up = myViewHolder.star;
             }
         });
+
+
+        myViewHolder.likey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             /*   database = FirebaseDatabase.getInstance();
+                mUserRef = database.getReference().child("users");
+
+                mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot children : dataSnapshot.getChildren()){
+                            UserDTO userDTO = children.getValue(UserDTO.class);
+                            if(userDTO.getEmail().equals(data.get(currentPosition).email)){
+                                Log.d("드드드드",children.getKey());
+                                Map<String, Object> postValues = userDTO.toMap();
+
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("/users/"+mAuth.getCurrentUser().getUid()+"/favorites/"+userDTO.getUid(),postValues);
+                                map.put("/users/"+userDTO.getUid()+"/fans/"+mAuth.getCurrentUser().getUid(),mAuth.getCurrentUser().getEmail());
+                                database.getReference().updateChildren(map);
+                            }
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });*/
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
     }   // end of onBindViewHolder()
 
     @Override
@@ -167,7 +218,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         TextView textview;
         ImageView imageview;
         ImageButton star;
-        ImageView weather;
+        ImageView likey;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -175,7 +226,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             textview = (TextView) itemView.findViewById(R.id.txv_row);
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
             star =  (ImageButton) itemView.findViewById(R.id.star);
-            weather = (ImageView) itemView.findViewById(R.id.weather_icon);
+            likey = (ImageView) itemView.findViewById(R.id.likey);
         }
 
     }   // end of class MyViewHolder
@@ -241,5 +292,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             }
         });
     }
+
+
 
 }

@@ -1,5 +1,7 @@
 package com.ambit.otgorithm.adapters;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,16 +13,21 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesHolder> {
 
-    private List<UserDTO> favoritesList;
+    private ArrayList<UserDTO> favoritesList;
+    Context context;
+    LayoutInflater inflater;
 
-    public FavoritesAdapter(List<UserDTO> favoritesList) {
+    public FavoritesAdapter(Context context, ArrayList<UserDTO> favoritesList) {
         this.favoritesList = favoritesList;
+        this.context = context;
+        inflater = LayoutInflater.from(context);
     }
 
     @NonNull
@@ -37,14 +44,20 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         // 즐겨찾는 장군의 인덱스를 가져옴
         UserDTO favoritesPerson = favoritesList.get(position);
         // 프로필 이미지 설정
-        Glide.with(holder.favoritesThumbnail.getContext()).load(favoritesPerson.getProfileUrl());
-        holder.favoritesUserId.setText("울라숑");
-        holder.favoritesUserDesc.setText("favoritesPerson.getDescription을 가져오면 됨");
+        Uri uri = Uri.parse(favoritesPerson.getProfileUrl());
+        Glide.with(context).load(uri).into(holder.favoritesThumbnail);
+        holder.favoritesUserId.setText(favoritesPerson.getName());
+        holder.favoritesUserDesc.setText(favoritesPerson.getDescription());
     }
 
     @Override
     public int getItemCount() {
         return favoritesList.size();
+    }
+
+    public void addition(ArrayList<UserDTO> favoritesList){
+        this.favoritesList = favoritesList;
+        notifyDataSetChanged();
     }
 
     // inner class

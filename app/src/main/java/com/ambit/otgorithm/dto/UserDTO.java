@@ -1,21 +1,19 @@
 package com.ambit.otgorithm.dto;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserDTO {
-    String email;
-    String name;
-    String uid;
-    String profileUrl;
-    String battlefield;
-
-    // description을 추가(FavoritesActivity)
-
-
+    public String email;
+    public String name;
+    public String uid;
+    public String profileUrl;
+    public String battlefield;
+    public String description;
     public String token;
-
-    boolean selection;
+    public boolean selection;
 
 
     public UserDTO(){
@@ -30,16 +28,16 @@ public class UserDTO {
 
     }
 
-    public UserDTO(String email, String name, String uid, String profileUrl, String battlefield, String token, boolean selection) {
+    public UserDTO(String email, String name, String uid, String profileUrl, String battlefield, String description, String token, boolean selection) {
         this.email = email;
         this.name = name;
         this.uid = uid;
         this.profileUrl = profileUrl;
         this.battlefield = battlefield;
+        this.description = description;
         this.token = token;
         this.selection = selection;
     }
-
 
     public String getEmail() {
         return email;
@@ -81,6 +79,14 @@ public class UserDTO {
         this.battlefield = battlefield;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getToken() {
         return token;
     }
@@ -96,4 +102,23 @@ public class UserDTO {
     public void setSelection(boolean selection) {
         this.selection = selection;
     }
+
+
+    @Exclude
+    public Map<String, Object> toMap(){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email",email);
+        result.put("name",name);
+        result.put("uid",uid);
+        result.put("profileUrl",profileUrl);
+        result.put("battlefield",battlefield);
+        result.put("description",description);
+        result.put("token",token);
+        result.put("selection",selection);
+
+        return result;
+    }
+
+
+
 }

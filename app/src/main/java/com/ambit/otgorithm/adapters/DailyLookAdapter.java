@@ -85,7 +85,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         TextView textView;
         ImageView imageView;
         ImageButton star;
-        ImageView weather;
+        ImageView likey;
 
         // 생성자
         public MyViewHolder(View itemView) {
@@ -94,7 +94,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
             this.textView = (TextView) itemView.findViewById(R.id.txv_row);
             this.imageView = (ImageView) itemView.findViewById(R.id.img_row);
             this.star = (ImageButton) itemView.findViewById(R.id.star);
-            this.weather = (ImageView) itemView.findViewById(R.id.weather_icon);
+            this.likey = (ImageView) itemView.findViewById(R.id.likey);
         }
 
     }   // end of class MyViewHolder
