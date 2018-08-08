@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
 
+import com.ambit.otgorithm.dto.Chat;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
@@ -240,9 +241,38 @@ public class ProfileActivity extends AppCompatActivity {
                         Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
-                                chatIntent.putExtra("uid", general.getUid());
-                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+
+                                mUserRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.d("chat2","들어옴");
+                                        for(DataSnapshot children : dataSnapshot.getChildren()){
+                                            Chat chat = children.getValue(Chat.class);
+                                            Log.d("chat22","드루어옴");
+                                            if(chat.getTitle().equals(general.getName())){
+                                                //기존방이 있을때
+                                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                                chatIntent.putExtra("chat_id", chat.getChatId());
+                                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                                Log.d("chat222","드루루어옴");
+                                                return;
+                                            }
+                                        }
+                                        //기존방이 없을때
+                                        Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                        chatIntent.putExtra("uid", general.getUid());
+                                        startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                Log.d("chat3","나옴");
+                          /*      chatIntent.putExtra("chat_id", chat.getChatId());
+                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);*/
+
                             }
                         }).show();
                         break;

@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ import android.widget.LinearLayout;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.FriendListAdapter;
+import com.ambit.otgorithm.dto.Chat;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.RecyclerViewItemClickListener;
 import com.ambit.otgorithm.views.ChatActivity;
 import com.ambit.otgorithm.views.ChatMain;
+import com.ambit.otgorithm.views.ProfileActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -91,12 +94,39 @@ public class FriendFragment extends Fragment {
                 final UserDTO friend = friendListAdapter.getItem(position);
 
                 if (friendListAdapter.getSelectionMode() == FriendListAdapter.UNSELECTION_MODE) {
+
                     Snackbar.make(view, friend.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
-                            chatIntent.putExtra("uid", friend.getUid());
-                            startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+
+                            mUserDBRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Log.d("chat2","들어옴");
+                                    for(DataSnapshot children : dataSnapshot.getChildren()){
+                                        Chat chat = children.getValue(Chat.class);
+                                        Log.d("chat22","드루어옴");
+                                        if(chat.getTitle().equals(friend.getName())){
+                                            //기존방이 있을때
+                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                            chatIntent.putExtra("chat_id", chat.getChatId());
+                                            startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                            Log.d("chat222","드루루어옴");
+                                            return;
+                                        }
+                                    }
+                                    //기존방이 없을때
+                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                    chatIntent.putExtra("uid", friend.getUid());
+                                    startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                     }).show();
                 } else {
