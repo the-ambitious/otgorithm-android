@@ -21,11 +21,7 @@
     </string-array>
 
     <integer-array name="images">
-        <item>@drawable/ic_outer1</item>
-        <item>@drawable/ic_outer2</item>
-        <item>@drawable/ic_outer3</item>
-        <item>@drawable/ic_outer4</item>
-        <item>@drawable/ic_outer5</item>
+
         <item>@drawable/ic_inner1</item>
         <item>@drawable/ic_inner2</item>
         <item>@drawable/ic_inner3</item>

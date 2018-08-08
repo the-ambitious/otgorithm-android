@@ -30,6 +30,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.igalata.bubblepicker.rendering.Item;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -209,6 +211,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
+        Menu menu = navigationView.getMenu();
+        if(mFirebaseUser != null){
+            menu.findItem(R.id.nav_aboutUs_logout).setVisible(true);
+        }else {
+            menu.findItem(R.id.nav_aboutUs_logout).setVisible(false);
+        }
+
 
         // nav_header의 layout을 누르면 로그인 화면으로 넘어가는 부분
         navToSignIn = nav_header_view.findViewById(R.id.to_sign_in);
@@ -285,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_aboutUs_logout:
+
                         Log.v("알림", "LOGOUT 아이템 클릭");
                         AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
                         alt_bld.setTitle("종료")

@@ -85,6 +85,19 @@
         android:visibility="visible"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/favoites_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="80dp"
+        android:src="@drawable/ic_star_border_black_24dp"
+        app:layout_anchor="@id/htab_appbar"
+        app:fabSize="normal"
+        android:backgroundTint="@android:color/white"
+        app:borderWidth="0dp"
+        app:layout_anchorGravity="bottom|end"
+        android:visibility="visible"/>
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/action_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

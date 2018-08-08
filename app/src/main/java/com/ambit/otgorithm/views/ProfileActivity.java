@@ -85,6 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
     /*private ViewPager profileViewPager;*/
     private ViewPagerAdapter profileViewPagerAdapter;
     private FloatingActionButton chatFab;
+    private FloatingActionButton favoritesFab;
     private CircleImageView intentUpload;
 
     private FirebaseAuth mAuth;
@@ -106,9 +107,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     APIService mService;
 
-    FloatingActionButton floatingActionButton;
+
 
     int mode;
+    int favoritesMode;
 
     CoordinatorLayout coordinatorLayout;
 
@@ -121,10 +123,16 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d("나나나노",Integer.toString(msg.what));
             switch (msg.what){
                 case 1:
-                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(floatingActionButton);
+                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(chatFab);
                     break;
                 case 2:
-                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(floatingActionButton);
+                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(chatFab);
+                    break;
+                case 3:
+                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_yellow_24dp).into(favoritesFab);
+                    break;
+                case 4:
+                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_border_black_24dp).into(favoritesFab);
                     break;
             }
 
@@ -151,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         htab_header = findViewById(R.id.htab_header);
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.action_chat);
+
 
         mService = Common.getFCMClient();
 
@@ -166,10 +174,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
         chatFab = findViewById(R.id.action_chat);
-
+        favoritesFab = findViewById(R.id.favoites_registration);
 
         if(ranker_id.equals(mFirebaseUser.getDisplayName())){
             chatFab.setVisibility(View.INVISIBLE);
+            favoritesFab.setVisibility(View.INVISIBLE);
+
         }else {
             intentUpload.setVisibility(View.INVISIBLE);
         }
@@ -283,7 +293,48 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        favoritesFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                switch (favoritesMode){
+                    case 1:
+                        mUserRef
+                                .child(mFirebaseUser.getUid())
+                                .child("favorites")
+                                .child(general.getUid())
+                                .removeValue(new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        mUserRef
+                                                .child(general.getUid())
+                                                .child("fans")
+                                                .child(mFirebaseUser.getUid())
+                                                .removeValue();
+                                    }
+                                });
+                        handler.sendEmptyMessage(4);
+                        break;
+                    case 2:
+                        mUserRef
+                                .child(mFirebaseUser.getUid())
+                                .child("favorites")
+                                .child(general.getUid())
+                                .setValue(general, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        mUserRef
+                                                .child(general.getUid())
+                                                .child("fans")
+                                                .child(mFirebaseUser.getUid())
+                                                .setValue(true);
+                                    }
+                                });
+                        handler.sendEmptyMessage(3);
+                        break;
+                }
+            }
+        });
 
         addProfileListener(ranker_id);
 
@@ -433,6 +484,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void addProfileListener(final String ranker_id){
+
+
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -472,6 +525,25 @@ public class ProfileActivity extends AppCompatActivity {
                                         mode = 2;
                                     }
                                 }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        mUserRef.child(mFirebaseUser.getUid()).child("favorites").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                    if(children.getKey().equals(general.getUid())){
+                                        handler.sendEmptyMessage(3);
+                                        favoritesMode = 1;
+                                        return;
+                                    }
+                                }
+                                favoritesMode = 2;
                             }
 
                             @Override

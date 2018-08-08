@@ -56,9 +56,9 @@
                     android:background="@android:color/transparent"
                     card_view:srcCompat="@drawable/thumbs_up_off" />
 
-                <!--날씨 아이콘 불러오기-->
+                <!--즐겨찾기 -->
                 <ImageView
-                    android:id="@+id/weather_icon"
+                    android:id="@+id/likey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/txv_row"
