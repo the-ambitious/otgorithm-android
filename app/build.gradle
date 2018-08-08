@@ -68,7 +68,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
-
     //json객체를 자바 오브젝트로 변환시켜줌
     /*implementation 'com.google.code.gson:gson:2.8.5'*/
     //okhttp lib

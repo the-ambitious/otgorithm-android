@@ -11,12 +11,9 @@
      특정 네트워크를 키거나 끄는 기능이 필요한 경우에 해당 권한을 추가로 등록
     -->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-
 
     <application
         android:allowBackup="true"
@@ -107,7 +104,8 @@
         <activity android:name=".views.IntroActivity" />
         <activity android:name=".views.DescriptionActivity" />
         <activity android:name=".views.StandbyActivity" />
-        <activity android:name=".views.FeedActivity"></activity>
+        <activity android:name=".views.FeedActivity" />
+        <activity android:name=".views.FavoritesActivity"></activity>
     </application>
 
 </manifest>

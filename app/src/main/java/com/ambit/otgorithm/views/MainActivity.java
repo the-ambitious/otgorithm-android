@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                     case R.id.nav_item_favorites:
                         if(mFirebaseUser!=null){
-                            intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            intent = new Intent(MainActivity.this, FavoritesActivity.class);
                             startActivity(intent);
                         }else {
                             Toast.makeText(MainActivity.this,"로그인을 해야 이용가능합니다",Toast.LENGTH_SHORT).show();
