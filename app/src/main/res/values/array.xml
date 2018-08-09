@@ -22,10 +22,7 @@
 
     <integer-array name="images">
 
-        <item>@drawable/ic_inner1</item>
-        <item>@drawable/ic_inner2</item>
-        <item>@drawable/ic_inner3</item>
-        <item>@drawable/ic_inner4</item>
+
         <item>@drawable/ic_pants1</item>
         <item>@drawable/ic_pants2</item>
         <item>@drawable/ic_pants3</item>
