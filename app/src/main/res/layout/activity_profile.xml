@@ -93,9 +93,10 @@
         android:visibility="visible"
         app:backgroundTint="@android:color/darker_gray"
         app:borderWidth="0dp"
-        app:fabSize="mini"
+        app:fabSize="normal"
+        android:layout_margin="16dp"
         app:layout_anchor="@id/htab_appbar"
-        app:layout_anchorGravity="left"
+        app:layout_anchorGravity="bottom|end"
         app:rippleColor="@android:color/background_dark" />
 
     <android.support.design.widget.FloatingActionButton
