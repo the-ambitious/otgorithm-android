@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.views;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,8 +37,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class GalleryActivity extends AppCompatActivity
                                 implements DatePickerDialog.OnDateSetListener {
+
+    AlertDialog mDialog;
 
     RecyclerView recyclerView;
     TextView textViewToolbarTitle;
@@ -54,6 +59,9 @@ public class GalleryActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        mDialog = new SpotsDialog.Builder().setContext(GalleryActivity.this).build();
+        mDialog.show();
 
         mFirebaseDb = FirebaseDatabase.getInstance();
         mGalleryRef = mFirebaseDb.getReference().child("galleries");
@@ -220,11 +228,13 @@ public class GalleryActivity extends AppCompatActivity
                 }
                 Collections.reverse(galleryDTOList);
                 addition(galleryDTOList);
+
+                mDialog.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                mDialog.dismiss();
             }
         });
 

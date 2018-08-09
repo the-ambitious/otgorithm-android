@@ -34,8 +34,11 @@
             <item
                 android:id="@+id/nav_aboutUs_logout"
                 android:icon="@drawable/ic_emoticon"
-                android:title="로그아웃"
-                />
+                android:title="로그아웃" />
+            <item
+                android:id="@+id/nav_aboutUs_temp"
+                android:icon="@drawable/ic_emoticon"
+                android:title="임시공지사항" />
         </menu>
     </item>
 

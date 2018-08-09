@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +42,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class RankActivity extends AppCompatActivity {
+
+    // SpotsDialog 멤버 변수 선언
+    android.app.AlertDialog mDialog;
 
     private LinearLayout mProvinceTheme;
     private RecyclerView mRecyclerView;
@@ -70,6 +76,10 @@ public class RankActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+
+        // SpotsDialog 사용
+        mDialog = new SpotsDialog.Builder().setContext(RankActivity.this).build();
+        mDialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -146,7 +156,6 @@ public class RankActivity extends AppCompatActivity {
             }
         });
 
-
         addGalleryListener(name);
 
         mLayoutManager = new LinearLayoutManager(this);
@@ -214,9 +223,6 @@ public class RankActivity extends AppCompatActivity {
     }
 
     private void addGalleryListener(final String name){
-
-
-
         Query noSql = mGalleryRef.orderByChild("starCount").limitToFirst(100);
 
         noSql.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -283,15 +289,18 @@ public class RankActivity extends AppCompatActivity {
                                 galleryDTOList.add(galleryDTO);
                             break;
                     }
-
                 }
                 Collections.reverse(galleryDTOList);
                 addition(galleryDTOList);
+
+                // Dialog 끄기
+                mDialog.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // Dialog 끄기
+                mDialog.dismiss();
             }
         });
 

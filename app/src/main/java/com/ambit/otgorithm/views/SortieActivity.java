@@ -76,7 +76,6 @@ public class SortieActivity extends AppCompatActivity {
         TabLayout mTab = findViewById(R.id.tabs);
         mTab.setupWithViewPager(viewPager);
 
-
         advertisement = findViewById(R.id.advertisement);
         Glide.with(this).load(R.drawable.advertisement).into(advertisement);
 

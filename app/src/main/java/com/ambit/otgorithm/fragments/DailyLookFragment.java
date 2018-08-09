@@ -1,6 +1,7 @@
 package com.ambit.otgorithm.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.DailyLookAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
+import com.ambit.otgorithm.views.GalleryActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,8 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
+
 public class DailyLookFragment extends Fragment {
 
+    AlertDialog mDialog;
 
     RecyclerView mRecyclerView;
     ArrayList<GalleryDTO> dailyLookDTOs;
@@ -38,7 +43,6 @@ public class DailyLookFragment extends Fragment {
     // 생성자(constructor)
     public DailyLookFragment() { }
 
-
     @SuppressLint("ValidFragment")
     public DailyLookFragment(String ranker_id) {
         this.ranker_id = ranker_id;
@@ -49,6 +53,10 @@ public class DailyLookFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_daily_look, container, false);
+
+        // YourActivity.this --> getActivity()
+        mDialog = new SpotsDialog.Builder().setContext(getActivity()).build();
+        mDialog.show();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
         dailyLookDTOs = new ArrayList<>();
@@ -81,12 +89,12 @@ public class DailyLookFragment extends Fragment {
                     }
                 }
                 addition(galleryDTOS);
+
+                mDialog.dismiss();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
         });
     }
 
