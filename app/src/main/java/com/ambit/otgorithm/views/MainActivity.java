@@ -799,6 +799,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             break;
                         case "PTY":
                             snowrain = obj.getInt("fcstValue");
+                            Log.d("스노우레인",Integer.toString(snowrain));
                             break;
                         case "REH":
                             humidity = obj.getInt("fcstValue");
@@ -812,12 +813,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             break;*/
                         case "T3H":
                             currenttemper = obj.getInt("fcstValue");
+                            Log.d("현재온도",Integer.toString(currenttemper));
                             break;
                         case "WSD":
                             windspeed = obj.getInt("fcstValue");
                             break;
                         case "SKY":
                             sky = obj.getInt("fcstValue");
+                            Log.d("스카이",Integer.toString(sky));
                             break;
                     }
                 }
@@ -827,6 +830,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
                     case 1:     // rainy
+                        Log.d("날씨","비1");
                         weather_Icon = R.drawable.rainy;
                         weathericon.setImageResource(R.drawable.rainy);
                         //weatherdiscrip.setTextColor(Color.WHITE);
@@ -836,18 +840,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         weatherDescription.setText("혹시 기우제를 지내시는 건 아닌가요?" + "\n" +
                                 "널어 놓은 빨래를 확인해보세요!" + "\n" + "우산도 꼭 챙기시길 바랍니다.");
                         temper.setText(currenttemper + "°");
+                        Log.d("날씨","비2");
                         break;
                     case 2:
+                        Log.d("날씨","진눈개비1");
                         weather_Icon = R.drawable.snowrain;
                         weathericon.setImageResource(R.drawable.snowrain);
                         weatherdiscrip.setText("진눈개비가 내리네요");
                         temper.setText(currenttemper + "도");
+                        Log.d("날씨","진눈개비2");
                         break;
                     case 3:
+                        Log.d("날씨","눈1");
                         weather_Icon = R.drawable.snow;
                         weathericon.setImageResource(R.drawable.snow);
                         weatherdiscrip.setText("눈이 내립니다");
                         temper.setText(currenttemper + "도");
+                        Log.d("날씨","눈2");
                         break;
 
                     default:
@@ -855,16 +864,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
 
                 if (sky == 1) {
+                    Log.d("날씨","맑음1");
                     weather_Icon = R.drawable.sunny;
                     weathericon.setImageResource(R.drawable.sunny);
                     weatherdiscrip.setText("날이 맑네요");
                     temper.setText(currenttemper + "도");
+                    Log.d("날씨","맑음2");
                 } else if (sky == 2 || sky == 3) {
+                    Log.d("날씨","구름1");
                     weather_Icon = R.drawable.weather_cloudy;
                     weathericon.setImageResource(R.drawable.weather_cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게~");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
                     weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
+                    temper.setText(currenttemper + "°");
+                    Log.d("날씨","구름2");
+                } else if (sky == 4){
+                    weathericon.setImageResource(R.drawable.weather_bad_cloudy);
+                    weatherdiscrip.setText("먹구름이 뭉게뭉게~");
+                    weatherDescription.setText("날씨가 흐려요~" + "\n" + "컨디션 관리에 주의하세요!");
                     temper.setText(currenttemper + "°");
                 }
 
