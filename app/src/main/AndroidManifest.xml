@@ -107,7 +107,8 @@
         <activity android:name=".views.FeedActivity" />
         <activity android:name=".views.FavoritesActivity" />
         <activity android:name=".views.CollectionActivity" />
-        <activity android:name=".views.NoticeActivity"></activity>
+        <activity android:name=".views.NoticeActivity" />
+        <activity android:name=".views.InputNameActivity"></activity>
     </application>
 
 </manifest>
