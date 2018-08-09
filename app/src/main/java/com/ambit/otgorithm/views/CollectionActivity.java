@@ -5,13 +5,22 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
+import com.ambit.otgorithm.adapters.CollectionAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -22,10 +31,22 @@ public class CollectionActivity extends AppCompatActivity {
     RecyclerView mCollectionRecyclerView;
     ArrayList<GalleryDTO> mCollectionDTOS;
 
+    CollectionAdapter mCollectionAdapter;
+
+    FirebaseAuth mAuth;
+    FirebaseUser mFirebaseUser;
+    FirebaseDatabase mFirebaseDb;
+    DatabaseReference mUserRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        mUserRef = mFirebaseDb.getReference("users");
 
         /*****************************************************************
          * 커스텀 툴바 셋팅
@@ -48,7 +69,33 @@ public class CollectionActivity extends AppCompatActivity {
 
         mCollectionRecyclerView = (RecyclerView) findViewById(R.id.collection_recyclerview);
         mCollectionDTOS = new ArrayList<>();
+        mCollectionAdapter = new CollectionAdapter(mCollectionDTOS,this);
+        mCollectionRecyclerView.setAdapter(mCollectionAdapter);
+        mCollectionRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        addCollection(mCollectionDTOS);
+    }
 
+    private void addCollection(final ArrayList<GalleryDTO> mCollectionDTOS){
+        mUserRef.child(mFirebaseUser.getUid()).child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mCollectionDTOS.clear();
+                for(DataSnapshot children : dataSnapshot.getChildren()){
+                    GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
+                    mCollectionDTOS.add(galleryDTO);
+                }
+                addList(mCollectionDTOS);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addList(ArrayList<GalleryDTO> galleryDTOS){
+        mCollectionAdapter.addition(galleryDTOS);
     }
 
     @Override
