@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
+import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.models.Common;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -197,6 +198,27 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // DB 참조객체 얻음. (검색시 사용)
         mUserRef = database.getReference("users");
 
+        if(mFirebaseUser!=null){
+            mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String nickName = dataSnapshot.getValue(String.class);
+                    if(nickName == null){
+                        Intent intent = new Intent(MainActivity.this, InputNameActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+
+
         // 도움말; a는 마치 File 이름
         SharedPreferences preference = getSharedPreferences("a", MODE_PRIVATE);
         int firstviewshow = preference.getInt("First", 0);
@@ -300,8 +322,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_contact_notice:   // 임시로 컬렉션; 나중에 공지사항으로 바꿔야 함
-                        intent = new Intent(MainActivity.this, CollectionActivity.class);
-                        startActivity(intent);
+                        if (mFirebaseUser != null){
+                            intent = new Intent(MainActivity.this, CollectionActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
+                        }
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 

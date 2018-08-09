@@ -238,7 +238,7 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(final FirebaseUser firebaseUser){
         final UserDTO user = new UserDTO();
         user.setEmail(firebaseUser.getEmail());
-        user.setName(firebaseUser.getDisplayName());
+        //user.setName(firebaseUser.getDisplayName());
         user.setUid(firebaseUser.getUid());
         if ( firebaseUser.getPhotoUrl() != null )
             user.setProfileUrl(firebaseUser.getPhotoUrl().toString());
