@@ -65,7 +65,7 @@
         app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/profileComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
@@ -82,7 +82,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/profileComment"
         app:layout_constraintTop_toBottomOf="@+id/picture_view"
         app:srcCompat="@android:drawable/ic_menu_info_details" />
 
@@ -96,7 +96,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/picture_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/profileComment"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView

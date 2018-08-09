@@ -47,6 +47,7 @@ import java.util.Locale;
 public class UploadActivity extends AppCompatActivity {
 
     private TextView textViewToolbarTitle;
+    private TextView profile;
 
     private ImageView pictureView;
     private FloatingActionButton pictureChoose;
@@ -55,6 +56,7 @@ public class UploadActivity extends AppCompatActivity {
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int GALLERY_IMAGE_REQUEST = 1;
     private String path;
+    String mode;
 
     private FirebaseStorage storage;
     private FirebaseDatabase database;
@@ -92,6 +94,9 @@ public class UploadActivity extends AppCompatActivity {
         pictureChoose = findViewById(R.id.picture_choose);
         pictureView = findViewById(R.id.picture_view);
         pictureDescription = findViewById(R.id.picture_description);
+        profile = findViewById(R.id.profileComment);
+
+
 
         pictureChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +121,11 @@ public class UploadActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        Bundle bundle = getIntent().getExtras();
+        mode = (String)bundle.get("mode");
+        if(mode.equals("profile"))
+            profile.setText("프로필 사진을 올려보세요");
 
         pictureUpload = findViewById(R.id.picture_upload);
         pictureUpload.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +225,12 @@ public class UploadActivity extends AppCompatActivity {
 
         Uri file = Uri.fromFile(new File(uri));
         // storeageRef: 스토리지의 최상위 레퍼런스
-        StorageReference riversRef = storageRef.child("galleries/"+file.getLastPathSegment());
+        StorageReference riversRef=null;
+        if(mode.equals("upload")){
+            riversRef = storageRef.child("galleries/"+file.getLastPathSegment());
+        }else if (mode.equals("profile")){
+            riversRef = storageRef.child("profiles/"+file.getLastPathSegment());
+        }
         UploadTask uploadTask = riversRef.putFile(file);
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -245,21 +260,25 @@ public class UploadActivity extends AppCompatActivity {
                 galleryDTO.weatherIcon = MainActivity.weather_Icon;
                 galleryDTO.nickname = mFirebaseUser.getDisplayName();
                 galleryDTO.gid =  database.getReference().child("galleries").push().getKey();
+                if(mode.equals("upload")){
+                    mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            galleryDTO.battlefield = dataSnapshot.getValue(String.class);
 
-                mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        galleryDTO.battlefield = dataSnapshot.getValue(String.class);
+                            database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO);
+                            Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();
+                        }
 
-                        database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO);
-                        Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }else {
+                    database.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
+                }
 
-                    }
-                });
 /*
                 database.getReference().child("galleries").push().setValue(galleryDTO);
                 Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();*/

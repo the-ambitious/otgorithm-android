@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.views;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.FavoritesAdapter;
 import com.ambit.otgorithm.dto.UserDTO;
+import com.ambit.otgorithm.modules.RankerItemClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -79,6 +81,21 @@ public class FavoritesActivity extends AppCompatActivity {
         favoritesRecyclerView.setLayoutManager(mLayoutManager);
         favoritesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         favoritesRecyclerView.setAdapter(favoritesAdapter);
+
+        favoritesRecyclerView.addOnItemTouchListener(new RankerItemClickListener(getApplicationContext(), favoritesRecyclerView, new RankerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                TextView user = view.findViewById(R.id.fav_user_id);
+                intent.putExtra("ranker_id", user.getText());
+                view.getContext().startActivity(intent);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
     }
 
     /**

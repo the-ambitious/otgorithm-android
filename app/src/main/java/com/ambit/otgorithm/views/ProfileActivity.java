@@ -86,6 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ViewPagerAdapter profileViewPagerAdapter;
     private FloatingActionButton chatFab;
     private FloatingActionButton favoritesFab;
+    private FloatingActionButton profileFab;
     private CircleImageView intentUpload;
 
     private FirebaseAuth mAuth;
@@ -175,12 +176,14 @@ public class ProfileActivity extends AppCompatActivity {
         intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
         chatFab = findViewById(R.id.action_chat);
         favoritesFab = findViewById(R.id.favoites_registration);
+        profileFab = findViewById(R.id.profile);
 
         if(ranker_id.equals(mFirebaseUser.getDisplayName())){
             chatFab.setVisibility(View.INVISIBLE);
             favoritesFab.setVisibility(View.INVISIBLE);
 
         }else {
+            profileFab.setVisibility(View.INVISIBLE);
             intentUpload.setVisibility(View.INVISIBLE);
         }
 
@@ -188,11 +191,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                intent.putExtra("mode","upload");
                 startActivity(intent);
             }
         });
 
-
+        profileFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                intent.putExtra("mode","profile");
+                startActivity(intent);
+            }
+        });
 
 
 

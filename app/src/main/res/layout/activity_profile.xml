@@ -85,6 +85,20 @@
         android:visibility="visible"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
+        android:src="@android:drawable/ic_menu_camera"
+        android:visibility="visible"
+        app:backgroundTint="@android:color/darker_gray"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/htab_appbar"
+        app:layout_anchorGravity="left"
+        app:rippleColor="@android:color/background_dark" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/favoites_registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
