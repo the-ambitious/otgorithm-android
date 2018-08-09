@@ -321,8 +321,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_contact_notice:   // 임시로 컬렉션; 나중에 공지사항으로 바꿔야 함
-                        intent = new Intent(MainActivity.this, CollectionActivity.class);
-                        startActivity(intent);
+                        if (mFirebaseUser != null){
+                            intent = new Intent(MainActivity.this, CollectionActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
+                        }
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 

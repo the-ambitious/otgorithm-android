@@ -64,6 +64,8 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         holder.textView.setText(dailyLookList.get(position).sysdate);
         Uri uri = Uri.parse(dailyLookList.get(position).imageUrl);
         Glide.with(context).load(uri).into(holder.imageView);
+
+        //좋아요 , 즐겨찾기 버튼 없앤 부분
         holder.likey.setVisibility(View.INVISIBLE);
         holder.star.setVisibility(View.INVISIBLE);
         if (position > previousPosition) {      // // We are scrolling DOWN
