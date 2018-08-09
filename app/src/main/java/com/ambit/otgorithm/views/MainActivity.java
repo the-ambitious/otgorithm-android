@@ -109,31 +109,31 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     // 날씨 배경
     LinearLayout weatherBackground;
-    //날씨 아이콘
+    // 날씨 아이콘
     ImageView weathericon;
-    //날씨 설명
+    // 날씨 설명
     TextView weatherdiscrip;
     // 날씨 기술
     TextView weatherDescription;
-    //온도
+    // 온도
     TextView temper;
 
-    //현재시간
+    // 현재시간
     TextView current_time;
 
-    //전장
+    // 전장
     TextView battlefield;
 
     // 로그인하게
     LinearLayout navToSignIn;
 
-    //프로필사진
+    // 프로필사진
     ImageView sigin_in_thumbnail;
 
-    //닉네임
+    // 닉네임
     TextView sign_in_nickname;
 
-    //이메일
+    // 이메일
     TextView sigin_in_email;
 
     private double nx;
@@ -306,6 +306,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                     case R.id.nav_aboutUs_intro:
                         intent = new Intent(MainActivity.this, IntroActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.nav_aboutUs_temp:
+                        intent = new Intent(MainActivity.this, NoticeActivity.class);
                         startActivity(intent);
                         break;
 
