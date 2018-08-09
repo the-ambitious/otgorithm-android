@@ -224,23 +224,28 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     }
 
     private void addFavoritesListener(final MyViewHolder myViewHolder, final GalleryDTO galleryDTO){
-        mUserRef.child(mFirebaseUser.getUid()).child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot children : dataSnapshot.getChildren()){
-                    GalleryDTO gallery = children.getValue(GalleryDTO.class);
-                    if(gallery.gid.equals(galleryDTO.gid)){
-                        myViewHolder.likey.setImageResource(R.drawable.ic_star_yellow_24dp);
-                        return;
+        if(mFirebaseUser!=null){
+            mUserRef.child(mFirebaseUser.getUid()).child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot children : dataSnapshot.getChildren()){
+                        GalleryDTO gallery = children.getValue(GalleryDTO.class);
+                        if(gallery.gid.equals(galleryDTO.gid)){
+                            myViewHolder.likey.setImageResource(R.drawable.ic_star_yellow_24dp);
+                            return;
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
+
+
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

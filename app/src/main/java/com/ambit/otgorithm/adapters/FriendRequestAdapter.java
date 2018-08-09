@@ -2,6 +2,7 @@ package com.ambit.otgorithm.adapters;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
-
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.models.Common;
 import com.ambit.otgorithm.models.Data;
 import com.ambit.otgorithm.models.MyResponse;
-import com.ambit.otgorithm.models.Notification;
 import com.ambit.otgorithm.models.Sender;
 import com.ambit.otgorithm.remote.APIService;
 import com.bumptech.glide.Glide;
@@ -29,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,7 +51,7 @@ public class FriendRequestAdapter
         this.mFriendRequestList = friendRequestList;
     }
 
-    public void updateList(ArrayList<UserDTO> userDTOS){
+    public void updateList(ArrayList<UserDTO> userDTOS) {
         mFriendRequestList = userDTOS;
         notifyDataSetChanged();
     }
@@ -102,7 +100,7 @@ public class FriendRequestAdapter
         Glide.with(holder.itemView).load(myUri).into(holder.friendRequestThumbnail);
         holder.friendRequestId.setText(mFriendRequestList.get(position).getName());
 
-        if(mFriendRequestList!=null) {
+        if (mFriendRequestList != null) {
             holder.friendRequestAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,13 +128,13 @@ public class FriendRequestAdapter
                             .setValue(client);
 
 
-                    Data data = new Data("친구승낙",mFirebaseUser.getDisplayName()+"님과 친구가 되었습니다.");
-                    Sender sender = new Sender(mFriendRequestList.get(position).getToken(),data);
+                    Data data = new Data("친구승낙", mFirebaseUser.getDisplayName() + "님과 친구가 되었습니다.");
+                    Sender sender = new Sender(mFriendRequestList.get(position).getToken(), data);
                     mService.sendNotification(sender)
                             .enqueue(new retrofit2.Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(retrofit2.Call<MyResponse> call, retrofit2.Response<MyResponse> response) {
-                                    if(response.body().success == 1)
+                                    if (response.body().success == 1)
                                         Log.d("알림", "요청 성고");
                                     else
                                         Log.d("알림", "요청 실패");
@@ -144,11 +142,12 @@ public class FriendRequestAdapter
 
                                 @Override
                                 public void onFailure(retrofit2.Call<MyResponse> call, Throwable t) {
-                                    Log.e("Error",t.getMessage());
+                                    Log.e("Error", t.getMessage());
                                 }
                             });
                 }
             });
+            // 친구 요청을 거절할 경우
             holder.friendRequestDecline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -174,6 +173,9 @@ public class FriendRequestAdapter
 
     // ViewHolder
     public static class FriendRequestViewHolder extends RecyclerView.ViewHolder {
+
+        CoordinatorLayout mContent;
+
         public CircleImageView friendRequestThumbnail;
         public TextView friendRequestId;
         public Button friendRequestAccept;

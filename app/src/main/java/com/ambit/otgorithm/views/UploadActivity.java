@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,7 +46,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import dmax.dialog.SpotsDialog;
+
 public class UploadActivity extends AppCompatActivity {
+
+    android.app.AlertDialog mDialog;
+    ConstraintLayout uploadLayout;
 
     private TextView textViewToolbarTitle;
     private TextView profile;
@@ -85,6 +92,8 @@ public class UploadActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
+        uploadLayout = (ConstraintLayout) findViewById(R.id.upload_content);
+
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -95,8 +104,6 @@ public class UploadActivity extends AppCompatActivity {
         pictureView = findViewById(R.id.picture_view);
         pictureDescription = findViewById(R.id.picture_description);
         profile = findViewById(R.id.profileComment);
-
-
 
         pictureChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +140,8 @@ public class UploadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (path != null) {
                     upload(path);
+                    mDialog = new SpotsDialog.Builder().setContext(UploadActivity.this).build();
+                    mDialog.show();
                 } else {
                     Toast.makeText(UploadActivity.this, "사진을 올려주세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -259,26 +268,29 @@ public class UploadActivity extends AppCompatActivity {
                 galleryDTO.weather = MainActivity.sky;
                 galleryDTO.weatherIcon = MainActivity.weather_Icon;
                 galleryDTO.nickname = mFirebaseUser.getDisplayName();
-                galleryDTO.gid =  database.getReference().child("galleries").push().getKey();
-                if(mode.equals("upload")){
+                galleryDTO.gid = database.getReference().child("galleries").push().getKey();
+                if (mode.equals("upload")) {
                     mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             galleryDTO.battlefield = dataSnapshot.getValue(String.class);
 
                             database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO);
-                            Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();
+
+                            mDialog.dismiss();
+                            Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
+
+                            finish();
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
+                            mDialog.dismiss();
                         }
                     });
-                }else {
+                } else {
                     database.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
                 }
-
 /*
                 database.getReference().child("galleries").push().setValue(galleryDTO);
                 Toast.makeText(UploadActivity.this,"업로드 끝",Toast.LENGTH_SHORT).show();*/

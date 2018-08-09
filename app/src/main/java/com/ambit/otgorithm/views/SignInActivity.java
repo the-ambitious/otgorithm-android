@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.views;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -38,8 +39,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import dmax.dialog.SpotsDialog;
+
 
 public class SignInActivity extends AppCompatActivity {
+
+    // Spots Dialog
+    AlertDialog mDialog;
 
     // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
@@ -73,8 +79,7 @@ public class SignInActivity extends AppCompatActivity {
         // DB 참조객체 얻음. (검색시 사용)
         mUserRef = database.getReference("users");
 
-
-        //구글 아이디연동 부분
+        // 구글 아이디연동 부분
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -86,25 +91,29 @@ public class SignInActivity extends AppCompatActivity {
 
         SignInButton signInGoogle = (SignInButton)findViewById(R.id.sign_in_google);
 
-
         signInGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
+
+                // SpotsDialog 사용
+                mDialog = new SpotsDialog.Builder().setContext(SignInActivity.this).build();
+                mDialog.show();
             }
         });
 
-        //페이스북 아이디연동 부분
+        // 페이스북 아이디연동 부분
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton signInFacebook = findViewById(R.id.sign_in_facebook);
         signInFacebook.setReadPermissions("email", "public_profile");
         signInFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+
+
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -136,7 +145,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //페북
+        // 페북
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -196,8 +205,6 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
-
-
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -210,8 +217,6 @@ public class SignInActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.d("테스트: ", "페이스북 로그인 성공");
                             updateUI(user);
-
-
 
                      /*       Intent intent = new Intent(SignInActivity.this,MainActivity.class);
                             startActivity(intent);*/
@@ -244,9 +249,10 @@ public class SignInActivity extends AppCompatActivity {
                     mUserRef.child(user.getUid()).setValue(user, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
                             if ( databaseError == null ) {
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                // Spots Dialog
+                                mDialog.dismiss();
                                 finish();
                             }
                         }
@@ -256,21 +262,15 @@ public class SignInActivity extends AppCompatActivity {
                     finish();
                 }
 
+
 /*                Bundle eventBundle = new Bundle();
                 eventBundle.putString("email", user.getEmail());
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, eventBundle);*/
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
         });
-
-
-
-
-
 
        /* ValueEventListener eventListener = new ValueEventListener() {
             @Override
