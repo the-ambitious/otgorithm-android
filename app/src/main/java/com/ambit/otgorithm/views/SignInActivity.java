@@ -252,7 +252,6 @@ public class SignInActivity extends AppCompatActivity {
                             if ( databaseError == null ) {
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                 // Spots Dialog
-                                mDialog.dismiss();
                                 finish();
                             }
                         }
