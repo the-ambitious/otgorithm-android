@@ -207,6 +207,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
                 intent.putExtra("mode","profile");
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -498,7 +499,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot children : dataSnapshot.getChildren()) {
                     UserDTO userDTO = children.getValue(UserDTO.class);
-                    if (userDTO.getName().equals(ranker_id)) {
+                    if (userDTO.getName()!=null && userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
 
 

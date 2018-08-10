@@ -293,7 +293,9 @@ public class UploadActivity extends AppCompatActivity {
                     database.getReference().child("users").child(mFirebaseUser.getUid()).child("profileUrl").setValue(galleryDTO.imageUrl);
                     mDialog.dismiss();
                     Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
-
+                    Intent intent = new Intent(UploadActivity.this,ProfileActivity.class);
+                    intent.putExtra("ranker_id",MainActivity.nickName);
+                    startActivity(intent);
                     finish();
                 }
 /*

@@ -128,7 +128,7 @@ public class SortieActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_next, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -143,10 +143,6 @@ public class SortieActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_next:
-                Intent intent = new Intent(SortieActivity.this, StandbyActivity.class);
-                startActivity(intent);
-                break;
         }
 
         return super.onOptionsItemSelected(item);

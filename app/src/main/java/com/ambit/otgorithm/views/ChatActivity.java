@@ -54,7 +54,7 @@ import dmax.dialog.SpotsDialog;
 
 public class ChatActivity extends AppCompatActivity {
 
-    AlertDialog mDialog;
+
 
     private String mChatId;
 
@@ -85,8 +85,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_chat);
 
-        mDialog = new SpotsDialog.Builder().setContext(ChatActivity.this).build();
-        mDialog.show();
+
 
         ButterKnife.bind(this);
         mChatId = getIntent().getStringExtra("chat_id");
@@ -130,11 +129,11 @@ public class ChatActivity extends AppCompatActivity {
                     long totalMessageCount =  dataSnapshot.getChildrenCount();
                     mMessageEventListener.setTotalMessageCount(totalMessageCount);
 
-                    mDialog.dismiss();
+
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
+                public void onCancelled(DatabaseError databaseError) {  }
             });
             messageListAdapter.clearItem();
             addChatListener();
@@ -156,12 +155,12 @@ public class ChatActivity extends AppCompatActivity {
                 if ( title != null ) {
                     mToolbar.setTitle(title);
 
-                    mDialog.dismiss();
+
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
+            public void onCancelled(DatabaseError databaseError) {  }
         });
     }
 
@@ -294,7 +293,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-
+    //블랙리스트 차단
     @OnClick(R.id.senderBtn)
     public void onSendEvent(View v){
 
@@ -305,6 +304,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    //블랙리스트 차단
     @OnClick(R.id.photoSend)
     public void onPhotoSendEvent(View v) {
         // 안드로이드 파일창 오픈 (갤러리 오픈)
@@ -385,7 +385,7 @@ public class ChatActivity extends AppCompatActivity {
         message.setChatId(mChatId);
         message.setMessageId(messageId);
         message.setMessageType(mMessageType);
-        message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, mFirebaseUser.getPhotoUrl().toString()));
+        message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
         message.setReadUserList(Arrays.asList(new String[]{mFirebaseUser.getUid()}));
 
         String [] uids = getIntent().getStringArrayExtra("uids");
@@ -439,11 +439,11 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
-                mDialog.dismiss();
+
             }   // end of onDataChange()
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
+            public void onCancelled(DatabaseError databaseError) {  }
         });
     }
 
@@ -505,11 +505,11 @@ public class ChatActivity extends AppCompatActivity {
                                     }
                                 }   // end of onComplete()
                             });
-                    mDialog.dismiss();
+
                 }   // end of onDataChange()
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
+                public void onCancelled(DatabaseError databaseError) {  }
             });
         }
         // users > {uid} > chats > {chat_uid}

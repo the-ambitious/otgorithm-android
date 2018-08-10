@@ -22,12 +22,6 @@
 
     <integer-array name="images">
 
-
-        <item>@drawable/ic_pants1</item>
-        <item>@drawable/ic_pants2</item>
-        <item>@drawable/ic_pants3</item>
-
-
     </integer-array>
 
     <integer-array name="colors">

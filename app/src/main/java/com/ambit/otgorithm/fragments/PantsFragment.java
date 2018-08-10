@@ -50,55 +50,64 @@ public class PantsFragment extends android.support.v4.app.Fragment {
 
         if(MainActivity.currenttemper >= 18){
             //숏팬츠 출격
+            arrayList.add(R.drawable.pants_permission_short);
         }else {
-
+            arrayList.add(R.drawable.pants_black_short);
         }
 
         //조거팬츠 always
+        arrayList.add(R.drawable.pants_permission_jogger);
 
         if(MainActivity.currenttemper <= 18){
             //코티드 팬츠 출격
+            arrayList.add(R.drawable.pants_permission_coated);
         }else {
-
+            arrayList.add(R.drawable.pants_black_coated);
         }
 
         if(MainActivity.currenttemper < 15){
             //기모펜츠 출격
+            arrayList.add(R.drawable.pants_permission_fleece_lined);
         }else {
-
+            arrayList.add(R.drawable.pants_black_fleece_lined);
         }
 
         //진 always
+        arrayList.add(R.drawable.pants_permission_jeans);
 
         if(MainActivity.currenttemper >= 5){
             //무파진 출격
+            arrayList.add(R.drawable.pants_permission_destroyed_jeans);
         }else {
-
+            arrayList.add(R.drawable.pants_black_destroyed_jeans);
         }
 
         if(MainActivity.currenttemper < 15){
             //고르뎅팬츠 출격
+            arrayList.add(R.drawable.pants_permission_corduroy);
         }else {
-
+            arrayList.add(R.drawable.pants_black_corduroy);
         }
 
         if(MainActivity.currenttemper >= 14){
             //린넨펜츠 출격
+            arrayList.add(R.drawable.pants_permission_linen);
         }else {
-
+            arrayList.add(R.drawable.pants_black_linen);
         }
 
         if(MainActivity.currenttemper <= 15){
             //울 슬렉스 출격
+            arrayList.add(R.drawable.pants_permission_wool_slacks);
         }else {
-
+            arrayList.add(R.drawable.pants_black_wool_slacks);
         }
 
         //면슬렉스,치노펜츠 always
+        arrayList.add(R.drawable.pants_permission_cotton_slacks);
+        arrayList.add(R.drawable.pants_permission_chinos);
 
-        for (int i = 0; i < 10; i++) {
-            arrayList.add(R.drawable.ic_pants1 + i);
-        }
+
 
         grid = view.findViewById(R.id.grid);
         gridViewAdapter = new GridViewAdapter(getActivity(),arrayList,R.layout.square_view);

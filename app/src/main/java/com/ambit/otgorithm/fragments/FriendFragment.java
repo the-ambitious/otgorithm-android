@@ -273,7 +273,9 @@ public class FriendFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                UserDTO friend = dataSnapshot.getValue(UserDTO.class);
+                // 2. 가져온 데이터를 통해서 recyclerview의 아답터에 아이템을 추가 시켜줍니다. (UI)갱신
+                drawUI(friend);
             }
 
             @Override

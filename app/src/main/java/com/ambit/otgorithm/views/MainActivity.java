@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     TextView sigin_in_email;
 
     public static String nickName;
+    public static Uri userUri;
 
     private double nx;
     private double ny;
@@ -199,24 +200,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // DB 참조객체 얻음. (검색시 사용)
         mUserRef = database.getReference("users");
 
-        if(mFirebaseUser!=null){
-            mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    nickName = dataSnapshot.getValue(String.class);
-                    if(nickName == null){
-                        Intent intent = new Intent(MainActivity.this, InputNameActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
 
 
 
@@ -293,12 +277,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
         if(mFirebaseUser != null) {
-            mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+            mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String uri = dataSnapshot.getValue(String.class);
                     Uri myUri = Uri.parse(uri);
+                    userUri = myUri;
                     Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+
                 }
 
                 @Override
@@ -306,9 +292,32 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 }
             });
-            sign_in_nickname.setText(MainActivity.nickName);
+
             sigin_in_email.setText(mFirebaseUser.getEmail());
         }
+
+        if(mFirebaseUser!=null){
+            mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    nickName = dataSnapshot.getValue(String.class);
+                    if(nickName == null){
+                        Intent intent = new Intent(MainActivity.this, InputNameActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    sign_in_nickname.setText(MainActivity.nickName);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

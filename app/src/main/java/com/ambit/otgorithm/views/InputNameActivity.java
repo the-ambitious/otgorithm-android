@@ -102,8 +102,8 @@ public class InputNameActivity extends AppCompatActivity {
         okok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                check_nickname.setClickable(false);
-                check_nickname.setFocusable(false);
+                /*check_nickname.setClickable(false);
+                check_nickname.setFocusable(false);*/
                 okok.setVisibility(View.INVISIBLE);
                 check_duplication.setVisibility(View.INVISIBLE);
                 gogo.setVisibility(View.VISIBLE);
