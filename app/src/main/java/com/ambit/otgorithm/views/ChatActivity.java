@@ -385,7 +385,7 @@ public class ChatActivity extends AppCompatActivity {
         message.setChatId(mChatId);
         message.setMessageId(messageId);
         message.setMessageType(mMessageType);
-        message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), mFirebaseUser.getDisplayName(), mFirebaseUser.getPhotoUrl().toString()));
+        message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, mFirebaseUser.getPhotoUrl().toString()));
         message.setReadUserList(Arrays.asList(new String[]{mFirebaseUser.getUid()}));
 
         String [] uids = getIntent().getStringArrayExtra("uids");

@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Contacts;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,7 +56,6 @@ public class InputNameActivity extends AppCompatActivity {
                     break;
                 case 2:
                     confirm_possibility.setText("사용 가능한 닉네임입니다.");
-
                     okok.setVisibility(View.VISIBLE);
                     break;
             }
@@ -67,6 +68,8 @@ public class InputNameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_input_name);
 
         mDialog = new SpotsDialog.Builder().setContext(InputNameActivity.this).build();
+        final InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+
 
 
         check_nickname = (EditText)findViewById(R.id.check_nickname);
@@ -83,11 +86,14 @@ public class InputNameActivity extends AppCompatActivity {
         check_duplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                okok.setVisibility(View.INVISIBLE);
                 if(check_nickname.getText().toString().replace(" ", "").equals("")){
+                    inputMethodManager.hideSoftInputFromWindow(check_duplication.getWindowToken(),0);
                     Toast.makeText(InputNameActivity.this,"닉네임을 입력해주세요",Toast.LENGTH_SHORT).show();
                     check_nickname.setText("");
                 }else {
                     mDialog.show();
+                    inputMethodManager.hideSoftInputFromWindow(check_duplication.getWindowToken(),0);
                     checkPosibility(check_nickname.getText().toString());
                 }
             }
@@ -96,7 +102,8 @@ public class InputNameActivity extends AppCompatActivity {
         okok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                check_nickname.setFocusableInTouchMode(false);
+                check_nickname.setClickable(false);
+                check_nickname.setFocusable(false);
                 okok.setVisibility(View.INVISIBLE);
                 check_duplication.setVisibility(View.INVISIBLE);
                 gogo.setVisibility(View.VISIBLE);
@@ -107,9 +114,10 @@ public class InputNameActivity extends AppCompatActivity {
         gogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(check_nickname.getText().toString());
+                mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(check_nickname.getText().toString());
                 Intent intent = new Intent(InputNameActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -145,4 +153,8 @@ public class InputNameActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(InputNameActivity.this,"닉네임을 입력해주세요",Toast.LENGTH_SHORT).show();
+    }
 }

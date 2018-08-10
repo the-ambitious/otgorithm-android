@@ -267,7 +267,7 @@ public class UploadActivity extends AppCompatActivity {
                 galleryDTO.sysdate = sdfNow.format(date);
                 galleryDTO.weather = MainActivity.sky;
                 galleryDTO.weatherIcon = MainActivity.weather_Icon;
-                galleryDTO.nickname = mFirebaseUser.getDisplayName();
+                galleryDTO.nickname = MainActivity.nickName;
                 galleryDTO.gid = database.getReference().child("galleries").push().getKey();
                 if (mode.equals("upload")) {
                     mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -290,6 +290,11 @@ public class UploadActivity extends AppCompatActivity {
                     });
                 } else {
                     database.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
+                    database.getReference().child("users").child(mFirebaseUser.getUid()).child("profileUrl").setValue(galleryDTO.imageUrl);
+                    mDialog.dismiss();
+                    Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
+
+                    finish();
                 }
 /*
                 database.getReference().child("galleries").push().setValue(galleryDTO);

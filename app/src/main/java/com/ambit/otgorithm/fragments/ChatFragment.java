@@ -23,6 +23,7 @@ import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.RecyclerViewItemClickListener;
 
 import com.ambit.otgorithm.views.ChatActivity;
+import com.ambit.otgorithm.views.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -249,7 +250,7 @@ public class ChatFragment extends Fragment {
                         final ExitMessage exitMessage = new ExitMessage();
                         String messageId = messageRef.push().getKey();
 
-                        exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), mFirebaseUser.getDisplayName(), mFirebaseUser.getPhotoUrl().toString()));
+                        exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, mFirebaseUser.getPhotoUrl().toString()));
                         exitMessage.setMessageDate(new Date());
                         exitMessage.setMessageId(messageId);
                         exitMessage.setChatId(chat.getChatId());
