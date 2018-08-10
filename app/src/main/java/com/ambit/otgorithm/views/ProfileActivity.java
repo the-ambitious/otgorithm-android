@@ -39,6 +39,7 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
 
 import com.ambit.otgorithm.dto.Chat;
+import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
@@ -86,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ViewPagerAdapter profileViewPagerAdapter;
     private FloatingActionButton chatFab;
     private FloatingActionButton favoritesFab;
+    private FloatingActionButton profileFab;
     private CircleImageView intentUpload;
 
     private FirebaseAuth mAuth;
@@ -94,10 +96,11 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mUserRef;
     private DatabaseReference mMentorRef;
     private DatabaseReference mFriendRef;
+    private DatabaseReference mProfileRef;
 
     private String ranker_id;
 
-    String rankerPhotoUrl;
+
 
     ImageView htab_header;
 
@@ -122,6 +125,9 @@ public class ProfileActivity extends AppCompatActivity {
 
             Log.d("나나나노",Integer.toString(msg.what));
             switch (msg.what){
+                case 0:
+                    Glide.with(ProfileActivity.this).load(photoUri).into(htab_header);
+                    break;
                 case 1:
                     Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(chatFab);
                     break;
@@ -169,18 +175,20 @@ public class ProfileActivity extends AppCompatActivity {
         mUserRef = mFirebaseDB.getReference("users");
         mMentorRef = mUserRef.child(mFirebaseUser.getUid()).child("requestToMentor");
         mFriendRef = mUserRef.child(mFirebaseUser.getUid()).child("theSameBoat");
-
+        mProfileRef = mFirebaseDB.getReference("profiles");
 
 
         intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
         chatFab = findViewById(R.id.action_chat);
         favoritesFab = findViewById(R.id.favoites_registration);
+        profileFab = findViewById(R.id.profile);
 
         if(ranker_id.equals(mFirebaseUser.getDisplayName())){
             chatFab.setVisibility(View.INVISIBLE);
             favoritesFab.setVisibility(View.INVISIBLE);
 
         }else {
+            profileFab.setVisibility(View.INVISIBLE);
             intentUpload.setVisibility(View.INVISIBLE);
         }
 
@@ -188,11 +196,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                intent.putExtra("mode","upload");
                 startActivity(intent);
             }
         });
 
-
+        profileFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                intent.putExtra("mode","profile");
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -484,9 +500,27 @@ public class ProfileActivity extends AppCompatActivity {
                     UserDTO userDTO = children.getValue(UserDTO.class);
                     if (userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
-                        rankerPhotoUrl = userDTO.getProfileUrl();
-                        photoUri = Uri.parse(rankerPhotoUrl);
-                        Log.d("하1", "1");
+
+
+
+
+                        mProfileRef.child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                GalleryDTO profileDTO = dataSnapshot.getValue(GalleryDTO.class);
+                                if(profileDTO != null)
+                                {
+                                    photoUri = Uri.parse(profileDTO.imageUrl);
+                                    handler.sendEmptyMessage(0);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
                         mMentorRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

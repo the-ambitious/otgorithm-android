@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ambit.otgorithm">
 
-    <!-- WebView를 띄우기 위해 INTERNET 사용 권한 추가 -->
+    <!-- AdMob, WebView를 띄우기 위해 INTERNET 사용 권한 추가 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -36,6 +36,11 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <!-- AdMob -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -107,6 +112,8 @@
         <activity android:name=".views.FeedActivity" />
         <activity android:name=".views.FavoritesActivity" />
         <activity android:name=".views.CollectionActivity" />
+        <activity android:name=".views.NoticeActivity" />
+        <activity android:name=".views.InputNameActivity"></activity>
     </application>
 
 </manifest>

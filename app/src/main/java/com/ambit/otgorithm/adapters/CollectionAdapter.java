@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.adapters;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,16 +15,21 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder> {
 
-    private List<GalleryDTO> collectionList;
-
+    private ArrayList<GalleryDTO> collectionList;
+    Context context;
+    LayoutInflater inflater;
     // 생성자
     public CollectionAdapter() { }
-    public CollectionAdapter(List<GalleryDTO> collectionList) {
+
+    public CollectionAdapter(ArrayList<GalleryDTO> collectionList, Context context) {
         this.collectionList = collectionList;
+        this.context = context;
+        inflater = LayoutInflater.from(context);
     }
 
     @NonNull
@@ -41,14 +47,21 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         GalleryDTO collectionItem = collectionList.get(position);
 
         // 컬렉션에 담을 이미지 사진들을 불러오기
-        holder.textview.setText(collectionList.get(position).sysdate);
-        Uri uri = Uri.parse(collectionList.get(position).imageUrl);
-        // Glide.with(context).load(uri).into(CollectionViewHolder.imageview);
+        holder.textview.setText(collectionItem.sysdate);
+        Uri uri = Uri.parse(collectionItem.imageUrl);
+         Glide.with(context).load(uri).into(holder.imageview);
+         Glide.with(context).load(R.drawable.ic_star_yellow_24dp).into(holder.likey);
+         holder.star.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public int getItemCount() {
         return collectionList.size();
+    }
+
+    public void addition(ArrayList<GalleryDTO> galleryDTOS){
+        collectionList = galleryDTOS;
+        notifyDataSetChanged();
     }
 
     // inner class

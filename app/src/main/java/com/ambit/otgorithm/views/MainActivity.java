@@ -41,10 +41,12 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
+import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.models.Common;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -109,31 +111,31 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     // 날씨 배경
     LinearLayout weatherBackground;
-    //날씨 아이콘
+    // 날씨 아이콘
     ImageView weathericon;
-    //날씨 설명
+    // 날씨 설명
     TextView weatherdiscrip;
     // 날씨 기술
     TextView weatherDescription;
-    //온도
+    // 온도
     TextView temper;
 
-    //현재시간
+    // 현재시간
     TextView current_time;
 
-    //전장
+    // 전장
     TextView battlefield;
 
     // 로그인하게
     LinearLayout navToSignIn;
 
-    //프로필사진
+    // 프로필사진
     ImageView sigin_in_thumbnail;
 
-    //닉네임
+    // 닉네임
     TextView sign_in_nickname;
 
-    //이메일
+    // 이메일
     TextView sigin_in_email;
 
     private double nx;
@@ -195,6 +197,27 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         // DB 참조객체 얻음. (검색시 사용)
         mUserRef = database.getReference("users");
+
+        if(mFirebaseUser!=null){
+            mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String nickName = dataSnapshot.getValue(String.class);
+                    if(nickName == null){
+                        Intent intent = new Intent(MainActivity.this, InputNameActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+
 
         // 도움말; a는 마치 File 이름
         SharedPreferences preference = getSharedPreferences("a", MODE_PRIVATE);
@@ -299,13 +322,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
 
                     case R.id.nav_contact_notice:   // 임시로 컬렉션; 나중에 공지사항으로 바꿔야 함
-                        intent = new Intent(MainActivity.this, CollectionActivity.class);
-                        startActivity(intent);
+                        if (mFirebaseUser != null){
+                            intent = new Intent(MainActivity.this, CollectionActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
+                        }
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_aboutUs_intro:
                         intent = new Intent(MainActivity.this, IntroActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.nav_aboutUs_temp:
+                        intent = new Intent(MainActivity.this, NoticeActivity.class);
                         startActivity(intent);
                         break;
 
@@ -794,6 +826,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             break;
                         case "PTY":
                             snowrain = obj.getInt("fcstValue");
+                            Log.d("스노우레인",Integer.toString(snowrain));
                             break;
                         case "REH":
                             humidity = obj.getInt("fcstValue");
@@ -807,12 +840,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             break;*/
                         case "T3H":
                             currenttemper = obj.getInt("fcstValue");
+                            Log.d("현재온도",Integer.toString(currenttemper));
                             break;
                         case "WSD":
                             windspeed = obj.getInt("fcstValue");
                             break;
                         case "SKY":
                             sky = obj.getInt("fcstValue");
+                            Log.d("스카이",Integer.toString(sky));
                             break;
                     }
                 }
@@ -822,6 +857,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
                     case 1:     // rainy
+                        Log.d("날씨","비1");
                         weather_Icon = R.drawable.rainy;
                         weathericon.setImageResource(R.drawable.rainy);
                         //weatherdiscrip.setTextColor(Color.WHITE);
@@ -831,18 +867,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         weatherDescription.setText("혹시 기우제를 지내시는 건 아닌가요?" + "\n" +
                                 "널어 놓은 빨래를 확인해보세요!" + "\n" + "우산도 꼭 챙기시길 바랍니다.");
                         temper.setText(currenttemper + "°");
+                        Log.d("날씨","비2");
                         break;
                     case 2:
+                        Log.d("날씨","진눈개비1");
                         weather_Icon = R.drawable.snowrain;
                         weathericon.setImageResource(R.drawable.snowrain);
                         weatherdiscrip.setText("진눈개비가 내리네요");
                         temper.setText(currenttemper + "도");
+                        Log.d("날씨","진눈개비2");
                         break;
                     case 3:
+                        Log.d("날씨","눈1");
                         weather_Icon = R.drawable.snow;
                         weathericon.setImageResource(R.drawable.snow);
                         weatherdiscrip.setText("눈이 내립니다");
                         temper.setText(currenttemper + "도");
+                        Log.d("날씨","눈2");
                         break;
 
                     default:
@@ -850,16 +891,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
 
                 if (sky == 1) {
+                    Log.d("날씨","맑음1");
                     weather_Icon = R.drawable.sunny;
                     weathericon.setImageResource(R.drawable.sunny);
                     weatherdiscrip.setText("날이 맑네요");
                     temper.setText(currenttemper + "도");
+                    Log.d("날씨","맑음2");
                 } else if (sky == 2 || sky == 3) {
+                    Log.d("날씨","구름1");
                     weather_Icon = R.drawable.weather_cloudy;
                     weathericon.setImageResource(R.drawable.weather_cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게~");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
                     weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
+                    temper.setText(currenttemper + "°");
+                    Log.d("날씨","구름2");
+                } else if (sky == 4){
+                    weathericon.setImageResource(R.drawable.weather_bad_cloudy);
+                    weatherdiscrip.setText("먹구름이 뭉게뭉게~");
+                    weatherDescription.setText("날씨가 흐려요~" + "\n" + "컨디션 관리에 주의하세요!");
                     temper.setText(currenttemper + "°");
                 }
 

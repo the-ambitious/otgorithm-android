@@ -21,6 +21,7 @@ import com.ambit.otgorithm.modules.AnimationUtil;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,21 +44,34 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     FirebaseDatabase database;
     DatabaseReference mGalleryRef;
     DatabaseReference mUserRef;
+    FirebaseUser mFirebaseUser;
     String key;
     FirebaseAuth mAuth;
     ImageButton thumbs_up;
+    ImageView favorites;
 
-    boolean like;
+
 
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(like){
-                Glide.with(context).load(R.drawable.thumbs_up_on).into(thumbs_up);
-            }else {
-                Glide.with(context).load(R.drawable.thumbs_up_off).into(thumbs_up);
+
+            switch (msg.what){
+                case 1:
+                    Glide.with(context).load(R.drawable.thumbs_up_on).into(thumbs_up);
+                    break;
+                case 2:
+                    Glide.with(context).load(R.drawable.thumbs_up_off).into(thumbs_up);
+                    break;
+                case 3:
+                    Glide.with(context).load(R.drawable.ic_star_border_black_24dp).into(favorites);
+                    break;
+                case 4:
+                    Glide.with(context).load(R.drawable.ic_star_yellow_24dp).into(favorites);
+                    break;
             }
+
         }
     };
 
@@ -77,6 +91,10 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         View view = inflater.inflate(R.layout.list_item_row, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        mGalleryRef = database.getReference().child("galleries");
+        mFirebaseUser = mAuth.getCurrentUser();
+        mUserRef = database.getReference("users");
         return holder;
     }
 
@@ -107,6 +125,8 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         final int currentPosition = position;
         final GalleryDTO infoData = data.get(position);
 
+        addFavoritesListener(myViewHolder,infoData);
+
         myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,8 +152,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 //data.get(currentPosition).imageUrl
 
                 // onStarClicked(mGalleryRef.child(key));
-                database = FirebaseDatabase.getInstance();
-                mGalleryRef = database.getReference().child("galleries");
+
 
                 mGalleryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -166,51 +185,67 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         myViewHolder.likey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             /*   database = FirebaseDatabase.getInstance();
-                mUserRef = database.getReference().child("users");
+              favorites = myViewHolder.likey;
+              mUserRef.child(mFirebaseUser.getUid())
+                       .child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(DataSnapshot dataSnapshot) {
+                      for(DataSnapshot children : dataSnapshot.getChildren()){
+                          GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
+                          if(galleryDTO.gid.equals(data.get(currentPosition).gid)){
+                              mUserRef.child(mFirebaseUser.getUid())
+                                      .child("collection")
+                                      .child(galleryDTO.gid)
+                                      .removeValue();
+                              handler.sendEmptyMessage(3);
+                              return;
+                          }
+                      }
+                      mUserRef.child(mFirebaseUser.getUid())
+                              .child("collection")
+                              .child(data.get(currentPosition).gid)
+                              .setValue(data.get(currentPosition));
+                      handler.sendEmptyMessage(4);
+                  }
 
-                mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot children : dataSnapshot.getChildren()){
-                            UserDTO userDTO = children.getValue(UserDTO.class);
-                            if(userDTO.getEmail().equals(data.get(currentPosition).email)){
-                                Log.d("드드드드",children.getKey());
-                                Map<String, Object> postValues = userDTO.toMap();
+                  @Override
+                  public void onCancelled(DatabaseError databaseError) {
 
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("/users/"+mAuth.getCurrentUser().getUid()+"/favorites/"+userDTO.getUid(),postValues);
-                                map.put("/users/"+userDTO.getUid()+"/fans/"+mAuth.getCurrentUser().getUid(),mAuth.getCurrentUser().getEmail());
-                                database.getReference().updateChildren(map);
-                            }
+                  }
+              });
 
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });*/
             }
         });
-
-
-
-
-
-
-
-
-
-
-
     }   // end of onBindViewHolder()
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    private void addFavoritesListener(final MyViewHolder myViewHolder, final GalleryDTO galleryDTO){
+        if(mFirebaseUser!=null){
+            mUserRef.child(mFirebaseUser.getUid()).child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot children : dataSnapshot.getChildren()){
+                        GalleryDTO gallery = children.getValue(GalleryDTO.class);
+                        if(gallery.gid.equals(galleryDTO.gid)){
+                            myViewHolder.likey.setImageResource(R.drawable.ic_star_yellow_24dp);
+                            return;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -267,15 +302,13 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                     Log.d("두번째 if문","하이");
                     p.starCount = p.starCount - 1;
                     p.stars.remove(mAuth.getCurrentUser().getUid());
-                    like = false;
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(2);
                 } else {
                     // Star the post and add self to stars
                     Log.d("세번째 if문","하이");
                     p.starCount = p.starCount + 1;
                     p.stars.put(mAuth.getCurrentUser().getUid(), true);
-                    like = true;
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(1);
                 }
 
                 // Set value and report transaction success

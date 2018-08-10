@@ -78,6 +78,11 @@ dependencies {
 
     implementation 'com.github.igalata:Bubble-Picker:v0.2.4'
 
+    // SpotsDialog
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
+
+    // AdMob
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -5,15 +5,11 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +20,13 @@ import android.widget.TextView;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.SortieViewPagerAdapter;
 import com.ambit.otgorithm.fragments.PantsFragment;
-import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class SortieActivity extends AppCompatActivity {
+
+    private AdView mAdView;
 
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
@@ -43,7 +43,19 @@ public class SortieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sortie);
+        setContentView(R.layout.activity_sortie);
+
+        // .initialize(): 배너를 사용하기 위해서 초기화를 해준다. 한번만 실행하면 된다.
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+
+        // set ads size
+//        AdSize customAdSize = new AdSize(320, 100);
+//        mAdView.setAdSize(customAdSize);
+
+        // 초기화만 해서는 배너가 표시되지 않는다. 로드를 해주면 배너가 표시된다.
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         tv = (TextView) findViewById(R.id.toolbar_title);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -76,9 +88,8 @@ public class SortieActivity extends AppCompatActivity {
         TabLayout mTab = findViewById(R.id.tabs);
         mTab.setupWithViewPager(viewPager);
 
-
-        advertisement = findViewById(R.id.advertisement);
-        Glide.with(this).load(R.drawable.advertisement).into(advertisement);
+//        advertisement = findViewById(R.id.advertisement);
+//        Glide.with(this).load(R.drawable.advertisement).into(advertisement);
 
 
         /*mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_fragment);

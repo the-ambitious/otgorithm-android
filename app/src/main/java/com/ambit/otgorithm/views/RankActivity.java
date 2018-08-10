@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,9 @@ import com.ambit.otgorithm.modules.RankerItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +45,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class RankActivity extends AppCompatActivity {
+
+    private AdView mAdView;
+
+    // SpotsDialog 멤버 변수 선언
+    android.app.AlertDialog mDialog;
 
     private LinearLayout mProvinceTheme;
     private RecyclerView mRecyclerView;
@@ -70,6 +81,18 @@ public class RankActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+
+        // .initialize(): 배너를 사용하기 위해서 초기화를 해준다. 한번만 실행하면 된다.
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        mAdView = findViewById(R.id.adView);
+
+        // 초기화만 해서는 배너가 표시되지 않는다. 로드를 해주면 배너가 표시된다.
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        // SpotsDialog 사용
+        mDialog = new SpotsDialog.Builder().setContext(RankActivity.this).build();
+        mDialog.show();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -146,7 +169,6 @@ public class RankActivity extends AppCompatActivity {
             }
         });
 
-
         addGalleryListener(name);
 
         mLayoutManager = new LinearLayoutManager(this);
@@ -214,9 +236,6 @@ public class RankActivity extends AppCompatActivity {
     }
 
     private void addGalleryListener(final String name){
-
-
-
         Query noSql = mGalleryRef.orderByChild("starCount").limitToFirst(100);
 
         noSql.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -283,15 +302,18 @@ public class RankActivity extends AppCompatActivity {
                                 galleryDTOList.add(galleryDTO);
                             break;
                     }
-
                 }
                 Collections.reverse(galleryDTOList);
                 addition(galleryDTOList);
+
+                // Dialog 끄기
+                mDialog.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // Dialog 끄기
+                mDialog.dismiss();
             }
         });
 

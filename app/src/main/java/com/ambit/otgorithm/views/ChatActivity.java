@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.views;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -49,8 +50,11 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 
 public class ChatActivity extends AppCompatActivity {
+
+    AlertDialog mDialog;
 
     private String mChatId;
 
@@ -76,19 +80,21 @@ public class ChatActivity extends AppCompatActivity {
     private StorageReference mImageStorageRef;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_chat);
+
+        mDialog = new SpotsDialog.Builder().setContext(ChatActivity.this).build();
+        mDialog.show();
+
         ButterKnife.bind(this);
         mChatId = getIntent().getStringExtra("chat_id");
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mUserRef = mFirebaseDb.getReference("users");
         mToolbar.setTitleTextColor(Color.WHITE);
-        if ( mChatId != null ) {
+        if (mChatId != null) {
             mChatRef = mFirebaseDb.getReference("users").child(mFirebaseUser.getUid()).child("chats").child(mChatId);
             mChatMessageRef = mFirebaseDb.getReference("chat_messages").child(mChatId);
             mChatMemeberRef = mFirebaseDb.getReference("chat_members").child(mChatId);
@@ -123,12 +129,12 @@ public class ChatActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     long totalMessageCount =  dataSnapshot.getChildrenCount();
                     mMessageEventListener.setTotalMessageCount(totalMessageCount);
+
+                    mDialog.dismiss();
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
             });
             messageListAdapter.clearItem();
             addChatListener();
@@ -149,13 +155,13 @@ public class ChatActivity extends AppCompatActivity {
                 String title = dataSnapshot.getValue(String.class);
                 if ( title != null ) {
                     mToolbar.setTitle(title);
+
+                    mDialog.dismiss();
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
         });
     }
 
@@ -393,14 +399,14 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 //unreadCount 셋팅하기 위한 대화 상대의 수를 가져 옵니다.
                 long memberCount = dataSnapshot.getChildrenCount();
-                message.setUnreadCount((int)memberCount - 1);
+                message.setUnreadCount((int) memberCount - 1);
                 mChatMessageRef.child(message.getMessageId()).setValue(message, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
                         mFirebaseAnalytics.logEvent("sendMessage", bundle);
                         Iterator<DataSnapshot> memberIterator = dataSnapshot.getChildren().iterator();
-                        while( memberIterator.hasNext()) {
+                        while (memberIterator.hasNext()) {
                             UserDTO chatMember = memberIterator.next().getValue(UserDTO.class);
                             mUserRef
                                     .child(chatMember.getUid())
@@ -409,7 +415,7 @@ public class ChatActivity extends AppCompatActivity {
                                     .child("lastMessage")
                                     .setValue(message);
 
-                            if ( !chatMember.getUid().equals(mFirebaseUser.getUid())) {
+                            if (!chatMember.getUid().equals(mFirebaseUser.getUid())) {
                                 // 공유되는 증가카운트의 경우 transaction을 이용하여 처리합니다.
                                 mUserRef
                                         .child(chatMember.getUid())
@@ -433,14 +439,11 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-            }
+                mDialog.dismiss();
+            }   // end of onDataChange()
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
         });
     }
 
@@ -499,25 +502,17 @@ public class ChatActivity extends AppCompatActivity {
                                         bundle.putString("roomId", mChatId);
                                         mFirebaseAnalytics.logEvent("createChat", bundle);
                                         ChatFragment.JOINED_ROOM = mChatId;
-
                                     }
-
-                                }
+                                }   // end of onComplete()
                             });
-
-                }
+                    mDialog.dismiss();
+                }   // end of onDataChange()
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
             });
         }
         // users > {uid} > chats > {chat_uid}
     }
 
-
-
-
 }
-

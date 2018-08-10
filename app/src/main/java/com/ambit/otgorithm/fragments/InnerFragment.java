@@ -44,67 +44,93 @@ public class InnerFragment extends android.support.v4.app.Fragment {
 
         if(MainActivity.currenttemper < 20){
             // 옥스퍼드 , 폴란넬 셔츠 출격
+            arrayList.add(R.drawable.inner_permission_oxford_shirts);
+            arrayList.add(R.drawable.inner_permission_flannel_shirts);
         }else {
-
+            arrayList.add(R.drawable.inner_black_oxford_shirts);
+            arrayList.add(R.drawable.inner_black_flannel_shirts);
         }
 
         if(MainActivity.currenttemper >= 13){
             // 린넨셔츠 출격
+            arrayList.add(R.drawable.inner_permission_linen_shirts);
         }else {
-
+            arrayList.add(R.drawable.inner_black_linen_shirts);
         }
 
-        //드레스 셔츠, 면 슬리브 always
+        //드레스 셔츠 always
+        arrayList.add(R.drawable.inner_permission_dress_shirts);
 
         if(MainActivity.currenttemper >= 15){
             //면 반팔 출격
+            arrayList.add(R.drawable.inner_permission_cotton_short_sleeves);
         }else {
-
+            arrayList.add(R.drawable.inner_black_cotton_short_sleeves);
         }
+
+        // 면 슬리브 always
+        arrayList.add(R.drawable.inner_permission_cotton_sleeves);
 
         if(MainActivity.currenttemper <= 20){
             //니트(얇은) 출격
+            arrayList.add(R.drawable.inner_permission_knitwear_thin);
         }else {
-
+            arrayList.add(R.drawable.inner_black_knitwear_thin);
         }
 
         if(MainActivity.currenttemper <= 13){
-            //니트(두꺼운), 기모, 네오프렌 맨투맨 출격
+            //니트(두꺼운) 출격
+            arrayList.add(R.drawable.inner_permission_knitwear_thick);
         }else {
-
+            arrayList.add(R.drawable.inner_black_knitwear_thick);
         }
 
         if(MainActivity.currenttemper <= 15){
             //맨투맨 출격
+            arrayList.add(R.drawable.inner_permission_sweatshirt);
         }else {
-
+            arrayList.add(R.drawable.inner_black_sweatshirt);
         }
 
+        if(MainActivity.currenttemper <= 13){
+            //기모 맨투맨 출격
+            arrayList.add(R.drawable.inner_permission_fleece_lined_sweatshirt);
+        }else {
+            arrayList.add(R.drawable.inner_black_fleece_lined_sweatshirt);
+        }
+
+        if(MainActivity.currenttemper <= 13){
+            //네오프렌 맨투맨 출격
+            arrayList.add(R.drawable.inner_permission_neoprene_sweatshirt);
+        }else {
+            arrayList.add(R.drawable.inner_black_neoprene_sweatshirt);
+        }
 
 
         if(MainActivity.currenttemper <= 18){
             //가디건(얇은) 출격
+            arrayList.add(R.drawable.inner_permission_cardigan_thin);
         }else {
-
+            arrayList.add(R.drawable.inner_black_cardigan_thin);
         }
 
         if(MainActivity.currenttemper <= 14){
             //가디건 (두꺼운),터틀넥 출격
+            arrayList.add(R.drawable.inner_permission_cardigan_thick);
+            arrayList.add(R.drawable.inner_permission_turtleneck);
         }else {
-
+            arrayList.add(R.drawable.inner_black_cardigan_thick);
+            arrayList.add(R.drawable.inner_black_turtleneck);
         }
 
         if(MainActivity.currenttemper >= 24){
             //피케 티셔츠 출격
+            arrayList.add(R.drawable.inner_permission_pique_shirts);
         }else {
-
+            arrayList.add(R.drawable.inner_black_pique_shirts);
         }
 
 
-
-        for (int i = 0; i < 9; i++) {
-            arrayList.add(R.drawable.ic_inner1 + i);
-        }
 
 
 /*        linen = (ImageView)findViewById(R.id.linen);

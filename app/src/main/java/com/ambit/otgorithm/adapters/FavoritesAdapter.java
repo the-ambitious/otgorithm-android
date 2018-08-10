@@ -48,6 +48,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         Glide.with(context).load(uri).into(holder.favoritesThumbnail);
         holder.favoritesUserId.setText(favoritesPerson.getName());
         holder.favoritesUserDesc.setText(favoritesPerson.getDescription());
+
     }
 
     @Override
