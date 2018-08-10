@@ -42,12 +42,10 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
-import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.models.Common;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,7 +54,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.igalata.bubblepicker.rendering.Item;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
