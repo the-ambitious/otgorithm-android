@@ -83,6 +83,9 @@ dependencies {
 
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:15.0.0'
+
+    // CircleIndicator
+    implementation 'me.relex:circleindicator:1.2.2@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'
