@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
@@ -50,7 +51,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     FirebaseAuth mAuth;
     ImageButton thumbs_up;
     ImageView favorites;
-
+    int collectionCount;
 
 
     private Handler handler = new Handler(){
@@ -134,6 +135,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         final GalleryDTO infoData = data.get(position);
 
         addFavoritesListener(myViewHolder,infoData);
+        getCollectionCount();
 
         myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,26 +162,21 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 //data.get(currentPosition).imageUrl
 
                 // onStarClicked(mGalleryRef.child(key));
-
-
-                mGalleryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                mGalleryRef.child(infoData.gid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterator<DataSnapshot> galleryIterator = dataSnapshot.getChildren().iterator();
-
-                        while (galleryIterator.hasNext()) {
                             Log.d("테스트: ", "iterator 진입");
-                            dataSnapshot = galleryIterator.next();
                             GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
-                            if (galleryDTO.imageUrl.equals(data.get(currentPosition).imageUrl)) {
+                            if (galleryDTO != null) {
                                 //onStarClicked(mGalleryRef.child(dataSnapshot.getKey()));
 
                                 Log.d("유알아이값: ", galleryDTO.imageUrl);
                                 Log.d("키값: ", dataSnapshot.getKey());
                                 onStarClicked(mGalleryRef.child(dataSnapshot.getKey()));
-                                return;
+                            }else {
+                                Toast.makeText(context,"삭제된 게시물입니다.",Toast.LENGTH_SHORT).show();
                             }
-                        }
+
                     }   // end of onDataChange()
 
                     @Override
@@ -193,35 +190,35 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         myViewHolder.likey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
               favorites = myViewHolder.likey;
               mUserRef.child(mFirebaseUser.getUid())
-                       .child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
+                       .child("collection").child(infoData.gid).addListenerForSingleValueEvent(new ValueEventListener() {
                   @Override
                   public void onDataChange(DataSnapshot dataSnapshot) {
-                      for(DataSnapshot children : dataSnapshot.getChildren()){
-                          GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
-                          if(galleryDTO.gid.equals(data.get(currentPosition).gid)){
+                          GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
+                          if(collectionCount>3){
+                              Toast.makeText(context,"컬랙션이 꽉 찼습니다",Toast.LENGTH_SHORT).show();
+                              return;
+                          }
+                          if(galleryDTO != null){
                               mUserRef.child(mFirebaseUser.getUid())
                                       .child("collection")
                                       .child(galleryDTO.gid)
                                       .removeValue();
                               handler.sendEmptyMessage(3);
-                              return;
+                          }else {
+                              mUserRef.child(mFirebaseUser.getUid())
+                                      .child("collection")
+                                      .child(data.get(currentPosition).gid)
+                                      .setValue(data.get(currentPosition));
+                              handler.sendEmptyMessage(4);
                           }
-                      }
-                      mUserRef.child(mFirebaseUser.getUid())
-                              .child("collection")
-                              .child(data.get(currentPosition).gid)
-                              .setValue(data.get(currentPosition));
-                      handler.sendEmptyMessage(4);
                   }
 
                   @Override
-                  public void onCancelled(DatabaseError databaseError) {
-
-                  }
+                  public void onCancelled(DatabaseError databaseError) {}
               });
-
             }
         });
     }   // end of onBindViewHolder()
@@ -231,31 +228,37 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         return data.size();
     }
 
+    public void getCollectionCount(){
+        mUserRef.child(mFirebaseUser.getUid()).child("collection").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                collectionCount = (int)dataSnapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void addFavoritesListener(final MyViewHolder myViewHolder, final GalleryDTO galleryDTO){
         if(mFirebaseUser!=null){
-            mUserRef.child(mFirebaseUser.getUid()).child("collection").addListenerForSingleValueEvent(new ValueEventListener() {
+            mUserRef.child(mFirebaseUser.getUid()).child("collection").child(galleryDTO.gid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot children : dataSnapshot.getChildren()){
-                        GalleryDTO gallery = children.getValue(GalleryDTO.class);
-                        if(gallery.gid.equals(galleryDTO.gid)){
+                        GalleryDTO gallery = dataSnapshot.getValue(GalleryDTO.class);
+                        if(gallery != null){
                             myViewHolder.likey.setImageResource(R.drawable.ic_star_yellow_24dp);
-                            return;
                         }
-                    }
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) {}
             });
         }else {
             myViewHolder.likey.setVisibility(View.INVISIBLE);
         }
-
-
-
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

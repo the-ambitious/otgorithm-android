@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="10dp"
-    android:id="@+id/rootView"
+    android:id="@+id/friend_rootView"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
     android:weightSum="5"

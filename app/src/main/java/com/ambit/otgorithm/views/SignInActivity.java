@@ -1,6 +1,5 @@
 package com.ambit.otgorithm.views;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -44,8 +43,7 @@ import dmax.dialog.SpotsDialog;
 
 public class SignInActivity extends AppCompatActivity {
 
-    // Spots Dialog
-    AlertDialog mDialog;
+
 
     // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
@@ -97,9 +95,7 @@ public class SignInActivity extends AppCompatActivity {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
 
-                // SpotsDialog 사용
-                mDialog = new SpotsDialog.Builder().setContext(SignInActivity.this).build();
-                mDialog.show();
+
             }
         });
 
@@ -262,7 +258,7 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
+            public void onCancelled(DatabaseError databaseError) {  }
         });
 
        /* ValueEventListener eventListener = new ValueEventListener() {

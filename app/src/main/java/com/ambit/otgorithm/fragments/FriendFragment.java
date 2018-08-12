@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -85,63 +87,66 @@ public class FriendFragment extends Fragment {
         addFriendListener();
         // 2. 가져온 데이터를 통해서 recyclerview의 아답터에 아이템을 추가 시켜줍니다. (UI)갱신
         friendListAdapter = new FriendListAdapter();
+        friendListAdapter.setFragment(this);
         mRecyclerView.setAdapter(friendListAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // 3. 아이템별로 (친구) 클릭이벤트를 주어서 선택한 친구와 대화를 할 수 있도록 한다.
         mRecyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(getContext(), new RecyclerViewItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                final UserDTO friend = friendListAdapter.getItem(position);
+                if (friendListAdapter.getItem(position) != null) {
+                    final UserDTO friend = friendListAdapter.getItem(position);
 
-                if (friendListAdapter.getSelectionMode() == FriendListAdapter.UNSELECTION_MODE) {
+                    if (friendListAdapter.getSelectionMode() == FriendListAdapter.UNSELECTION_MODE) {
 
-                    Snackbar.make(view, friend.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                        Snackbar.make(view, friend.getName() + "님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                            mUserDBRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Log.d("chat2","들어옴");
-                                    for(DataSnapshot children : dataSnapshot.getChildren()){
-                                        Chat chat = children.getValue(Chat.class);
-                                        Log.d("chat22","드루어옴");
-                                        if(chat.getTitle().equals(friend.getName())){
-                                            //기존방이 있을때
-                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                            chatIntent.putExtra("chat_id", chat.getChatId());
-                                            startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                                            Log.d("chat222","드루루어옴");
-                                            return;
+                                mUserDBRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.d("chat2", "들어옴");
+                                        for (DataSnapshot children : dataSnapshot.getChildren()) {
+                                            Chat chat = children.getValue(Chat.class);
+                                            Log.d("chat22", "드루어옴");
+                                            if (chat.getTitle().equals(friend.getName())) {
+                                                //기존방이 있을때
+                                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                chatIntent.putExtra("chat_id", chat.getChatId());
+                                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                                Log.d("chat222", "드루루어옴");
+                                                return;
+                                            }
                                         }
+                                        //기존방이 없을때
+                                        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                        chatIntent.putExtra("uid", friend.getUid());
+                                        startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
                                     }
-                                    //기존방이 없을때
-                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                    chatIntent.putExtra("uid", friend.getUid());
-                                    startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                                }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    }
+                                });
 
-                        }
-                    }).show();
-                } else {
-                    friend.setSelection(friend.isSelection() ? false : true);
-                    int selectedUserCount = friendListAdapter.getSelectionUsersCount();
-                    Snackbar.make(view, selectedUserCount+"명과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
-                            chatIntent.putExtra("uids", friendListAdapter.getSelectedUids());
-                            startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                        }
-                    }).show();
+                            }
+                        }).show();
+                    } else {
+                        friend.setSelection(friend.isSelection() ? false : true);
+                        int selectedUserCount = friendListAdapter.getSelectionUsersCount();
+                        Snackbar.make(view, selectedUserCount + "명과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
+                                chatIntent.putExtra("uids", friendListAdapter.getSelectedUids());
+                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                            }
+                        }).show();
+                    }
+
                 }
-
             }
         }));
 
@@ -261,26 +266,48 @@ public class FriendFragment extends Fragment {
     }
 
     private void addFriendListener(){
+        mFriendsDBRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    clearList();
+                    Log.d("dataSnapshot사이즈",Long.toString(dataSnapshot.getChildrenCount()));
+                    if((int)dataSnapshot.getChildrenCount() != 0){
+                        for(DataSnapshot children : dataSnapshot.getChildren()){
+                            UserDTO friend = children.getValue(UserDTO.class);
+                            drawUI(friend);
+                        }
+                    }else {
+                        friendListAdapter.notifyDataSetChanged();
+                    }
 
-        mFriendsDBRef.addChildEventListener(new ChildEventListener() {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+      /*  mFriendsDBRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 UserDTO friend = dataSnapshot.getValue(UserDTO.class);
                 // 2. 가져온 데이터를 통해서 recyclerview의 아답터에 아이템을 추가 시켜줍니다. (UI)갱신
                 drawUI(friend);
+                Log.d("테스트1","1");
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                UserDTO friend = dataSnapshot.getValue(UserDTO.class);
-                // 2. 가져온 데이터를 통해서 recyclerview의 아답터에 아이템을 추가 시켜줍니다. (UI)갱신
-                drawUI(friend);
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                UserDTO friend = dataSnapshot.getValue(UserDTO.class);
+                // 2. 가져온 데이터를 통해서 recyclerview의 아답터에 아이템을 추가 시켜줍니다. (UI)갱신
+                eraseUI(friend);
+                Log.d("테스트3","3");
             }
 
             @Override
@@ -292,12 +319,30 @@ public class FriendFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
+    }
+
+    private void clearList(){
+        friendListAdapter.clearList();
     }
 
     private void drawUI(UserDTO friend){
         friendListAdapter.addItem(friend);
+    }
 
+    private void eraseUI(UserDTO friend){
+        friendListAdapter.removeItem(friend);
+    }
+
+    public void blackList(final UserDTO friend){
+        Snackbar.make(getView(),friend.getName()+"을 차단하시겠습니까?",Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUserDBRef.child(mFirebaseUser.getUid()).child("theSameBoat").child(friend.getUid()).removeValue();
+                mUserDBRef.child(mFirebaseUser.getUid()).child("blacklist").child(friend.getUid()).setValue(friend);
+                mUserDBRef.child(friend.getUid()).child("theSameBoat").child(mFirebaseUser.getUid()).removeValue();
+            }
+        }).show();
     }
 
 }
