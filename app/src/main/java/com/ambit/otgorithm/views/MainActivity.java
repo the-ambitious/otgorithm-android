@@ -26,7 +26,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -71,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private static TextView tv;
 
     private AutoScrollViewPager autoViewPager;
+    private CircleIndicator mIndicator;
+
     AutoScrollAdapter autoScrollAdapter;
 
     // 툴바 변수 선언
@@ -202,9 +204,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
 
-
-
-
         // 도움말; a는 마치 File 이름
         SharedPreferences preference = getSharedPreferences("a", MODE_PRIVATE);
         int firstviewshow = preference.getInt("First", 0);
@@ -235,17 +234,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_content);
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
         Menu menu = navigationView.getMenu();
-        if(mFirebaseUser != null){
-            menu.findItem(R.id.nav_aboutUs_logout).setVisible(true);
-        }else {
-            menu.findItem(R.id.nav_aboutUs_logout).setVisible(false);
-        }
-
+        if (mFirebaseUser != null) { menu.findItem(R.id.nav_aboutUs_logout).setVisible(true); }
+        else { menu.findItem(R.id.nav_aboutUs_logout).setVisible(false); }
 
         // nav_header의 layout을 누르면 로그인 화면으로 넘어가는 부분
         navToSignIn = nav_header_view.findViewById(R.id.to_sign_in);
@@ -262,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         intent.putExtra("ranker_id", nickName);
                         startActivity(intent);
                     }else {
-                        Intent intent = new Intent(MainActivity.this, InputNameActivity.class);
+                        Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         startActivity(intent);
                     }
 
@@ -302,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     nickName = dataSnapshot.getValue(String.class);
                     if(nickName == null){
-                        Intent intent = new Intent(MainActivity.this, InputNameActivity.class);
+                        Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -316,7 +311,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
             });
         }
-
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -358,6 +352,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
                         }
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.nav_aboutUs_settings:
+                        intent = new Intent(MainActivity.this, SettingActivity.class);
+                        startActivity(intent);
                         break;
 
                     case R.id.nav_aboutUs_intro:
@@ -449,9 +448,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         bannerList.add("http://13.125.253.250/banners/banner3.png");
 
         autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
+        mIndicator = (CircleIndicator) findViewById(R.id.main_indicator);
+
         // AutoScrollAdapter에 사진을 담은 arrayList 전달
         AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getLayoutInflater(), bannerList, MainActivity.this);
+
         autoViewPager.setAdapter(scrollAdapter);    // Auto Viewpager에 Adapter 장착
+        mIndicator.setViewPager(autoViewPager);
         autoViewPager.setInterval(5000);            // 페이지 넘어갈 시간 간격 설정
         autoViewPager.startAutoScroll();            // Auto Scroll 시작
 

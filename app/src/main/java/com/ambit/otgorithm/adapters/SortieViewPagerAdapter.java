@@ -20,23 +20,22 @@ public class SortieViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-       switch (position){
-           /*case 0:
-               return TotalFragment.newInstance();*/
-           case 0:
-               return OuterFragment.newInstance();
-           case 1:
-               return InnerFragment.newInstance();
-           case 2:
-               return PantsFragment.newInstance();
-           case 3:
-               return ShoesFragment.newInstance();
-           case 4:
-               return AccessoriesFragment.newInstance();
-           default:
-               return null;
-       }
-    }
+        switch (position) {
+            // case 0: return TotalFragment.newInstance();
+            case 0:
+                return OuterFragment.newInstance();
+            case 1:
+                return InnerFragment.newInstance();
+            case 2:
+                return PantsFragment.newInstance();
+            case 3:
+                return ShoesFragment.newInstance();
+            case 4:
+                return AccessoriesFragment.newInstance();
+            default:
+                return null;
+        }
+    }   // end of getItem()
 
     @Override
     public int getCount() {
@@ -45,9 +44,8 @@ public class SortieViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
-            /*case 0:
-                return "종합";*/
+        switch (position) {
+            // case 0: return "종합";
             case 0:
                 return "외투";
             case 1:
@@ -57,11 +55,10 @@ public class SortieViewPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return "신발";
             case 4:
-                return "악세 사리";
+                return "악세사리";
             default:
                 return null;
         }
-    }
-
+    }   // end of getPageTitle()
 
 }

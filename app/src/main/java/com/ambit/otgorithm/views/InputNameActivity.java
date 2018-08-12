@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import dmax.dialog.SpotsDialog;
 
+/*
 public class InputNameActivity extends AppCompatActivity {
 
     EditText check_nickname;
@@ -102,8 +103,10 @@ public class InputNameActivity extends AppCompatActivity {
         okok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*check_nickname.setClickable(false);
-                check_nickname.setFocusable(false);*/
+                */
+/*check_nickname.setClickable(false);
+                check_nickname.setFocusable(false);*//*
+
                 okok.setVisibility(View.INVISIBLE);
                 check_duplication.setVisibility(View.INVISIBLE);
                 gogo.setVisibility(View.VISIBLE);
@@ -158,3 +161,4 @@ public class InputNameActivity extends AppCompatActivity {
         Toast.makeText(InputNameActivity.this,"닉네임을 입력해주세요",Toast.LENGTH_SHORT).show();
     }
 }
+*/

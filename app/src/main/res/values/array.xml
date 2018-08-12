@@ -65,4 +65,35 @@
         <item>A family of confections made with sugar or honey, roasted nuts, whipped egg whites, and sometimes chopped candied fruit. The consistency of nougat is chewy, and it is used in a variety of candy bars and chocolates.</item>
     </string-array>
 
+    <string-array name="BackgroundColor">
+        <item>honeydew</item>
+        <item>mistyrose</item>
+        <item>lavender</item>
+        <item>default</item>
+    </string-array>
+
+
+    <string-array name="BackgroundColor_Values">
+        <item>#F0FFF0</item>
+        <item>#FFE4E1</item>
+        <item>#E6E6FA</item>
+        <item>#00000000</item>
+    </string-array>
+
+
+
+    <string-array name="TextColor">
+        <item>maroon</item>
+        <item>indigo</item>
+        <item>darkslategray</item>
+        <item>default</item>
+    </string-array>
+
+    <string-array name="TextColor_Values">
+        <item>#800000</item>
+        <item>#4B0082</item>
+        <item>#2F4F4F</item>
+        <item>#ffffff</item>
+    </string-array>
+
 </resources>

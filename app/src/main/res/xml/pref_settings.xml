@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="key_useUserName"
+        android:summaryOff="사용자의 이름을 사용하지 않습니다."
+        android:summaryOn="사용자의 이름을 사용합니다."
+        android:title="사용자 이름 사용" />
+
+    <EditTextPreference
+        android:defaultValue="Mir"
+        android:dependency="key_useUserName"
+        android:key="key_userName"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="사용자 이름 설정" />
+
+
+    <PreferenceCategory android:title="글꼴 지정">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_backgroundcolor"
+            android:summary="배경색을 지정합니다."
+            android:title="배경색 사용" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dependency="key_backgroundcolor"
+            android:entries="@array/BackgroundColor"
+            android:entryValues="@array/BackgroundColor_Values"
+            android:key="key_dialog_backgroundcolor"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="배경색설정" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/TextColor"
+            android:entryValues="@array/TextColor_Values"
+            android:key="key_textcolor"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="글씨색설정" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="초기화">
+
+        <Preference
+            android:key="key_all_memo_clear"
+            android:summary="모든 메모를 삭제합니다."
+            android:title="메모 초기화" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="어플 정보">
+
+        <Preference
+            android:summary="개발자 정보를 확인합니다"
+            android:title="개발자 정보">
+
+            <intent
+                android:targetClass="com.example.androide.MadeByActivity"
+                android:targetPackage="com.example.androide" />
+        </Preference>
+
+        <Preference
+            android:summary="개발자에게 메일을 보냅니다"
+            android:title="메일보내기">
+
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:hellocatca@naver.com" />
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>
