@@ -78,6 +78,7 @@
 
 
                 <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/profile_upload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -140,21 +141,21 @@
             android:paddingBottom="8dp">
 
             <TextView
-                android:textSize="18sp"
-                android:text="생일 및 성별"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:textStyle="bold"/>
+                android:text="생일 및 성별"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="8dp"
                 android:weightSum="10">
 
                 <EditText
@@ -162,58 +163,66 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.6" />
+
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:text="년"
-                    android:textSize="18sp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
+                    android:textSize="18sp" />
 
                 <EditText
+                    android:id="@+id/til_month"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2" />
+
                 <TextView
-                    android:textSize="18sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:text="월"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
+                    android:textSize="18sp" />
 
                 <EditText
+                    android:id="@+id/til_day"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2" />
-                <TextView
-                    android:textSize="18sp"
-                    android:text="일"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
+                    android:layout_weight="0.5"
+                    android:text="일"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5" />
 
                 <Button
+                    android:id="@+id/male"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/btn_gender_man"
                     android:text="남"
                     android:textColor="#fff"
-                    android:textSize="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/btn_gender_man"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16dp" />
+
                 <Button
+                    android:id="@+id/female"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/btn_gender_woman"
                     android:text="여"
                     android:textColor="#fff"
-                    android:textSize="16dp"
-                    android:background="@drawable/btn_gender_woman"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -245,7 +254,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+     <!--   <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -272,7 +281,7 @@
                 android:text="확정"
                 android:visibility="invisible" />
 
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
 </LinearLayout>

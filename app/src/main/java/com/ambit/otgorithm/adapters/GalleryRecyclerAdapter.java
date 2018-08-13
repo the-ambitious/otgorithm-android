@@ -135,7 +135,8 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         final GalleryDTO infoData = data.get(position);
 
         addFavoritesListener(myViewHolder,infoData);
-        getCollectionCount();
+        if(mFirebaseUser!=null)
+            getCollectionCount();
 
         myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
             @Override

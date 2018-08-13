@@ -276,9 +276,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String uri = dataSnapshot.getValue(String.class);
-                    Uri myUri = Uri.parse(uri);
-                    userUri = myUri;
-                    Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                    if(uri != null){
+                        Uri myUri = Uri.parse(uri);
+                        userUri = myUri;
+                        Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                    }else {
+                        Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                    }
 
                 }
 

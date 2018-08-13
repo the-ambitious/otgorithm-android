@@ -230,8 +230,6 @@ public class SignInActivity extends AppCompatActivity {
         final UserDTO user = new UserDTO();
         user.setEmail(firebaseUser.getEmail());
         user.setUid(firebaseUser.getUid());
-        if ( firebaseUser.getPhotoUrl() != null )
-            user.setProfileUrl(firebaseUser.getPhotoUrl().toString());
         mUserRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

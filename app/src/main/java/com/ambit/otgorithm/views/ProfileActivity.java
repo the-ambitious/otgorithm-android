@@ -580,8 +580,10 @@ public class ProfileActivity extends AppCompatActivity {
                                 GalleryDTO profileDTO = dataSnapshot.getValue(GalleryDTO.class);
                                 if(profileDTO != null)
                                 {
-                                    photoUri = Uri.parse(profileDTO.imageUrl);
-                                    handler.sendEmptyMessage(0);
+                                    if(profileDTO.imageUrl!=null){
+                                        photoUri = Uri.parse(profileDTO.imageUrl);
+                                        handler.sendEmptyMessage(0);
+                                    }
                                 }
 
                             }
