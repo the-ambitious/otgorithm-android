@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -137,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     // 이메일
     TextView sigin_in_email;
 
+    public static String nickName;
+    public static Uri userUri;
+
     private double nx;
     private double ny;
 
@@ -197,22 +201,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // DB 참조객체 얻음. (검색시 사용)
         mUserRef = database.getReference("users");
 
-        if(mFirebaseUser!=null){
-            mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String nickName = dataSnapshot.getValue(String.class);
-                    if(nickName == null){
-                        Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
-                        startActivity(intent);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) { }
-            });
-        }
-
         // 도움말; a는 마치 File 이름
         SharedPreferences preference = getSharedPreferences("a", MODE_PRIVATE);
         int firstviewshow = preference.getInt("First", 0);
@@ -261,9 +249,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent.putExtra("ranker_id", mFirebaseUser.getDisplayName());
-                    startActivity(intent);
+                    if(nickName != null){
+                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        intent.putExtra("ranker_id", nickName);
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
+                        startActivity(intent);
+                    }
+
                 }
             }
         });
@@ -275,10 +269,47 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
         if(mFirebaseUser != null) {
-            Glide.with(MainActivity.this).load(mFirebaseUser.getPhotoUrl()).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
-            sign_in_nickname.setText(mFirebaseUser.getDisplayName());
+            mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String uri = dataSnapshot.getValue(String.class);
+                    Uri myUri = Uri.parse(uri);
+                    userUri = myUri;
+                    Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             sigin_in_email.setText(mFirebaseUser.getEmail());
         }
+
+        if(mFirebaseUser!=null){
+            mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    nickName = dataSnapshot.getValue(String.class);
+                    if(nickName == null){
+                        Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    sign_in_nickname.setText(MainActivity.nickName);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -980,24 +1011,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Toast.makeText(this, "현재 회원 : " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
-
-            Log.d("이메일", currentUser.getEmail());
-            Log.d("유아이디", currentUser.getUid());
-            //Log.d("폰넘버",currentUser.getPhoneNumber());
-            Log.d("디스플레이네임", currentUser.getDisplayName());
-            Log.d("프로바이더아이디", currentUser.getProviderId());
-            Log.d("포토 유알엘", currentUser.getPhotoUrl().toString());
-           /* mAuth.getCurrentUser().getPhotoUrl();
-            mAuth.getCurrentUser().getEmail();
-            mAuth.getCurrentUser().getUid();
-            mAuth.getCurrentUser().getPhoneNumber();
-            mAuth.getCurrentUser().getDisplayName();
-            mAuth.getCurrentUser().getProviderId();*/
-
         } else {
             Toast.makeText(this, "현재 회원 : 없음", Toast.LENGTH_SHORT).show();
         }
-        //updateUI(currentUser);
     }
 
     void passPushTokenToServer(){

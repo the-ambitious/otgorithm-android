@@ -1,6 +1,8 @@
 package com.ambit.otgorithm.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,19 +12,30 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder> {
 
     private ArrayList<GalleryDTO> collectionList;
     Context context;
     LayoutInflater inflater;
+
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDb;
+    private DatabaseReference mUserRef;
+    private FirebaseUser mFirebaseUser;
+
     // 생성자
     public CollectionAdapter() { }
 
@@ -39,12 +52,17 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_row, parent, false);
 
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        mUserRef = mFirebaseDb.getReference("users");
+
         return new CollectionViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CollectionViewHolder holder, int position) {
-        GalleryDTO collectionItem = collectionList.get(position);
+        final GalleryDTO collectionItem = collectionList.get(position);
 
         // 컬렉션에 담을 이미지 사진들을 불러오기
         holder.textview.setText(collectionItem.sysdate);
@@ -52,11 +70,51 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
          Glide.with(context).load(uri).into(holder.imageview);
          Glide.with(context).load(R.drawable.ic_star_yellow_24dp).into(holder.likey);
          holder.star.setVisibility(View.INVISIBLE);
+
+        final CharSequence[] oitems = {"삭제","취소"};
+        final AlertDialog.Builder oDialog = new AlertDialog.Builder(context,android.R.style.Theme_DeviceDefault_Dialog_Alert);
+
+         holder.imageview.setOnLongClickListener(new View.OnLongClickListener() {
+             @Override
+             public boolean onLongClick(View v) {
+                oDialog.setTitle("").setItems(oitems, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0){
+                            oDialog.setMessage("정말로 삭제하시겠습니까?")
+                                    .setTitle("삭제")
+                                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(context,"삭제",Toast.LENGTH_SHORT).show();
+                                            mUserRef.child(mFirebaseUser.getUid()).child("collection").child(collectionItem.gid).removeValue();
+                                            removeItem(collectionItem);
+                                        }
+                                    }).setNeutralButton("아니오", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                        }
+                    }
+                }).show();
+
+
+                 return true;
+             }
+         });
     }
 
     @Override
     public int getItemCount() {
         return collectionList.size();
+    }
+
+    private void removeItem(GalleryDTO infoData) {
+        int CurrPosition = collectionList.indexOf(infoData);
+        collectionList.remove(CurrPosition);
+        notifyItemRemoved(CurrPosition);
     }
 
     public void addition(ArrayList<GalleryDTO> galleryDTOS){

@@ -18,6 +18,7 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.AnimationUtil;
+import com.ambit.otgorithm.views.MainActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
@@ -111,6 +112,13 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             // Glide.with(context).load(R.drawable.baseline_favorite_black_18dp).into(myViewHolder.star);
             // 기존에 누른 사람들 기록 유지하기 위함
             myViewHolder.star.setImageResource(R.drawable.thumbs_up_on);
+        }else if (mAuth.getCurrentUser() == null){
+            myViewHolder.star.setVisibility(View.INVISIBLE);
+        }
+
+        if(data.get(position).nickname.equals(MainActivity.nickName)){
+            myViewHolder.star.setVisibility(View.INVISIBLE);
+            myViewHolder.likey.setVisibility(View.INVISIBLE);
         }
 
         if (position > previousPosition) {      // // We are scrolling DOWN
@@ -242,6 +250,8 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
                 }
             });
+        }else {
+            myViewHolder.likey.setVisibility(View.INVISIBLE);
         }
 
 

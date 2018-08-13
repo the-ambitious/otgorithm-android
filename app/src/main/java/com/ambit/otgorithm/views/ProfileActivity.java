@@ -183,7 +183,7 @@ public class ProfileActivity extends AppCompatActivity {
         favoritesFab = findViewById(R.id.favoites_registration);
         profileFab = findViewById(R.id.profile);
 
-        if(ranker_id.equals(mFirebaseUser.getDisplayName())){
+        if(ranker_id.equals(MainActivity.nickName)){
             chatFab.setVisibility(View.INVISIBLE);
             favoritesFab.setVisibility(View.INVISIBLE);
 
@@ -207,6 +207,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
                 intent.putExtra("mode","profile");
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -224,8 +225,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 .setPositiveButton("네",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-                                                Data data = new Data("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
-                                                Notification notification = new Notification("친구요청",mFirebaseUser.getDisplayName()+"님이 멘티요청을 하였습니다.");
+                                                Data data = new Data("친구요청",MainActivity.nickName+"님이 멘티요청을 하였습니다.");
+                                                Notification notification = new Notification("친구요청",MainActivity.nickName+"님이 멘티요청을 하였습니다.");
                                                 Sender sender = new Sender(general.token,data);
                                                 mService.sendNotification(sender)
                                                         .enqueue(new retrofit2.Callback<MyResponse>() {
@@ -498,7 +499,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot children : dataSnapshot.getChildren()) {
                     UserDTO userDTO = children.getValue(UserDTO.class);
-                    if (userDTO.getName().equals(ranker_id)) {
+                    if (userDTO.getName()!=null && userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
 
 
@@ -574,18 +575,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                             }
                         });
-
-
-              /*          if(general.getRequestFromMentee() != null){
-                            Map<String, Boolean> map = general.getRequestFromMentee();
-                            Log.d("하1","2");
-                            if(map.get(mFirebaseUser.getDisplayName()))
-                                handler.sendEmptyMessage(1);
-                            Log.d("하1","3");
-                        }*/
-
-
-
                         handler.sendEmptyMessage(0);
                         return;
                     }

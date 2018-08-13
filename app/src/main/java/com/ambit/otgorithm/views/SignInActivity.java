@@ -183,12 +183,7 @@ public class SignInActivity extends AppCompatActivity {
                             Log.d("테스트2:",task.getResult().getUser().getEmail());
                             updateUI(user);
 
-                            //mAuth.getCurrentUser().getPhotoUrl();
-                            //mAuth.getCurrentUser().getEmail();
-                            //mAuth.getCurrentUser().getUid();
-                            //mAuth.getCurrentUser().getPhoneNumber();
-                            //mAuth.getCurrentUser().getDisplayName();
-                            //mAuth.getCurrentUser().getProviderId();
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -238,7 +233,6 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(final FirebaseUser firebaseUser){
         final UserDTO user = new UserDTO();
         user.setEmail(firebaseUser.getEmail());
-        //user.setName(firebaseUser.getDisplayName());
         user.setUid(firebaseUser.getUid());
         if ( firebaseUser.getPhotoUrl() != null )
             user.setProfileUrl(firebaseUser.getPhotoUrl().toString());
@@ -287,7 +281,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 UserDTO userDTO = new UserDTO();
                 userDTO.setEmail(user.getEmail());
-                userDTO.setName(user.getDisplayName());
                 userDTO.setUid(user.getUid());
                 rootRef.child("users").push().setValue(userDTO);
 

@@ -142,11 +142,6 @@ public class SortieActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_next:
-//                Intent intent = new Intent(SortieActivity.this, StandbyActivity.class);
-//                startActivity(intent);
-                Snackbar.make(mContent, "다음 버전에 업데이트 예정입니다.", Snackbar.LENGTH_SHORT).show();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }   // end of onOptionsItemSelected()
