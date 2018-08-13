@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -28,8 +29,7 @@ public class SortieActivity extends AppCompatActivity {
 
     private AdView mAdView;
 
-    // 툴바 변수 선언
-    private DrawerLayout mDrawerLayout;
+    DrawerLayout mContent;
 
     // 변수 선언
     FragmentManager fm;
@@ -57,6 +57,8 @@ public class SortieActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        mContent = (DrawerLayout) findViewById(R.id.sortie_content);
+
         tv = (TextView) findViewById(R.id.toolbar_title);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
         setSupportActionBar(galleryToolbar);    // 액션바와 같게 만들어줌
@@ -79,7 +81,6 @@ public class SortieActivity extends AppCompatActivity {
         /*ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0);
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();*/
-
 
         SortieViewPagerAdapter pagerAdapter = new SortieViewPagerAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.pager);
@@ -117,9 +118,7 @@ public class SortieActivity extends AppCompatActivity {
                     case R.id.nav_contact_notice:
                         Log.d("nav test: ", "31");
                         break;
-
                 }
-
                 return true;
             }
         });*/
@@ -128,7 +127,7 @@ public class SortieActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_next, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -143,14 +142,16 @@ public class SortieActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_next:
-                Intent intent = new Intent(SortieActivity.this, StandbyActivity.class);
-                startActivity(intent);
-                break;
-        }
 
+            case R.id.action_next:
+//                Intent intent = new Intent(SortieActivity.this, StandbyActivity.class);
+//                startActivity(intent);
+                Snackbar.make(mContent, "다음 버전에 업데이트 예정입니다.", Snackbar.LENGTH_SHORT).show();
+                break;
+
+        }
         return super.onOptionsItemSelected(item);
-    }
+    }   // end of onOptionsItemSelected()
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {

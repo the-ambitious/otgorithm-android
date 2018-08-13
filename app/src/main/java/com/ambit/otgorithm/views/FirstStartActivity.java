@@ -2,6 +2,7 @@ package com.ambit.otgorithm.views;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 
+import me.relex.circleindicator.CircleIndicator;
+
 public class FirstStartActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
+    private CircleIndicator mIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,9 @@ public class FirstStartActivity extends AppCompatActivity {
 
         // 레이아웃에 작성했던 pager를 가져옴
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        mIndicator = findViewById(R.id.manual_indicator);
         mViewPager.setAdapter(new MyPagerAdapter(getApplicationContext()));
+        mIndicator.setViewPager(mViewPager);
     }
 
     // 도움말 화면의 가장 마지막에 위치한 버튼에 적용하여, 이 버튼을 클릭하면 도움말 화면을 다시 실행하지 않게 함

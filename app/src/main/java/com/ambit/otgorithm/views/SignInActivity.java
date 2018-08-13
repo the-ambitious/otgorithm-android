@@ -1,6 +1,5 @@
 package com.ambit.otgorithm.views;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -44,8 +43,7 @@ import dmax.dialog.SpotsDialog;
 
 public class SignInActivity extends AppCompatActivity {
 
-    // Spots Dialog
-    AlertDialog mDialog;
+
 
     // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
@@ -97,9 +95,7 @@ public class SignInActivity extends AppCompatActivity {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
 
-                // SpotsDialog 사용
-                mDialog = new SpotsDialog.Builder().setContext(SignInActivity.this).build();
-                mDialog.show();
+
             }
         });
 
@@ -183,12 +179,7 @@ public class SignInActivity extends AppCompatActivity {
                             Log.d("테스트2:",task.getResult().getUser().getEmail());
                             updateUI(user);
 
-                            //mAuth.getCurrentUser().getPhotoUrl();
-                            //mAuth.getCurrentUser().getEmail();
-                            //mAuth.getCurrentUser().getUid();
-                            //mAuth.getCurrentUser().getPhoneNumber();
-                            //mAuth.getCurrentUser().getDisplayName();
-                            //mAuth.getCurrentUser().getProviderId();
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -238,7 +229,6 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(final FirebaseUser firebaseUser){
         final UserDTO user = new UserDTO();
         user.setEmail(firebaseUser.getEmail());
-        //user.setName(firebaseUser.getDisplayName());
         user.setUid(firebaseUser.getUid());
         if ( firebaseUser.getPhotoUrl() != null )
             user.setProfileUrl(firebaseUser.getPhotoUrl().toString());
@@ -268,7 +258,7 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { mDialog.dismiss(); }
+            public void onCancelled(DatabaseError databaseError) {  }
         });
 
        /* ValueEventListener eventListener = new ValueEventListener() {
@@ -287,7 +277,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 UserDTO userDTO = new UserDTO();
                 userDTO.setEmail(user.getEmail());
-                userDTO.setName(user.getDisplayName());
                 userDTO.setUid(user.getUid());
                 rootRef.child("users").push().setValue(userDTO);
 

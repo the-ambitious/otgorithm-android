@@ -22,12 +22,6 @@
 
     <integer-array name="images">
 
-
-        <item>@drawable/ic_pants1</item>
-        <item>@drawable/ic_pants2</item>
-        <item>@drawable/ic_pants3</item>
-
-
     </integer-array>
 
     <integer-array name="colors">
@@ -69,6 +63,37 @@
         <item>A type of confectionery consisting of a sweetmeat of hard candy or water-ice mounted on a stick and intended for sucking or licking. Different informal terms are used in different places, including lolly, sucker, sticky-pop, etc.</item>
         <item>A sugar-based confection that, in its modern form, typically consists of sugar, water and gelatin which is whipped to a spongy consistency, molded into small cylindrical pieces, and coated with corn starch.</item>
         <item>A family of confections made with sugar or honey, roasted nuts, whipped egg whites, and sometimes chopped candied fruit. The consistency of nougat is chewy, and it is used in a variety of candy bars and chocolates.</item>
+    </string-array>
+
+    <string-array name="BackgroundColor">
+        <item>honeydew</item>
+        <item>mistyrose</item>
+        <item>lavender</item>
+        <item>default</item>
+    </string-array>
+
+
+    <string-array name="BackgroundColor_Values">
+        <item>#F0FFF0</item>
+        <item>#FFE4E1</item>
+        <item>#E6E6FA</item>
+        <item>#00000000</item>
+    </string-array>
+
+
+
+    <string-array name="TextColor">
+        <item>maroon</item>
+        <item>indigo</item>
+        <item>darkslategray</item>
+        <item>default</item>
+    </string-array>
+
+    <string-array name="TextColor_Values">
+        <item>#800000</item>
+        <item>#4B0082</item>
+        <item>#2F4F4F</item>
+        <item>#ffffff</item>
     </string-array>
 
 </resources>

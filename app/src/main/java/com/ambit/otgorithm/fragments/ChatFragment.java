@@ -23,6 +23,7 @@ import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.RecyclerViewItemClickListener;
 
 import com.ambit.otgorithm.views.ChatActivity;
+import com.ambit.otgorithm.views.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -108,6 +109,7 @@ public class ChatFragment extends Fragment {
                 // 방에 대한 정보를 얻어오고
                 // 기존의 방제목과 방 멤버의 이름들을 가져와서 타이틀화 시켰을때 같지 않은 경우 방제목을 업데이트 시켜줍니다.
                 drawUI(chatDataSnapshot, DrawType.ADD);
+                Log.d("채팅","후");
             }
 
             @Override
@@ -125,6 +127,8 @@ public class ChatFragment extends Fragment {
                 // 방에 대한 정보를 얻어오고
                 drawUI(chatDataSnapshot, DrawType.UPDATE);
                 final Chat updatedChat = chatDataSnapshot.getValue(Chat.class);
+
+                Log.d("채팅","하");
 
                 if (updatedChat.getLastMessage() != null ) {
                     if ( updatedChat.getLastMessage().getMessageType() == Message.MessageType.EXIT ) {
@@ -249,7 +253,7 @@ public class ChatFragment extends Fragment {
                         final ExitMessage exitMessage = new ExitMessage();
                         String messageId = messageRef.push().getKey();
 
-                        exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), mFirebaseUser.getDisplayName(), mFirebaseUser.getPhotoUrl().toString()));
+                        exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
                         exitMessage.setMessageDate(new Date());
                         exitMessage.setMessageId(messageId);
                         exitMessage.setChatId(chat.getChatId());

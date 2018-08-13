@@ -9,6 +9,10 @@
     <color name="text_color">#212121</color>
     <color name="menu_color">#FFFFFF</color>
 
+
+    <color name="myGray">#6a6a6a</color>
+
+
     <!-- StandbyActivity -->
     <color name="blueStart">#4EFFF3</color>
     <color name="blueEnd">#0ca6f9</color>

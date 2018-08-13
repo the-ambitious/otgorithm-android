@@ -18,6 +18,7 @@ import com.ambit.otgorithm.models.Data;
 import com.ambit.otgorithm.models.MyResponse;
 import com.ambit.otgorithm.models.Sender;
 import com.ambit.otgorithm.remote.APIService;
+import com.ambit.otgorithm.views.MainActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -128,7 +129,7 @@ public class FriendRequestAdapter
                             .setValue(client);
 
 
-                    Data data = new Data("친구승낙", mFirebaseUser.getDisplayName() + "님과 친구가 되었습니다.");
+                    Data data = new Data("친구승낙", MainActivity.nickName + "님과 친구가 되었습니다.");
                     Sender sender = new Sender(mFriendRequestList.get(position).getToken(), data);
                     mService.sendNotification(sender)
                             .enqueue(new retrofit2.Callback<MyResponse>() {
