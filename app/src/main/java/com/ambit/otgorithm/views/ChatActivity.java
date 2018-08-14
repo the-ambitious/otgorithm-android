@@ -1,10 +1,14 @@
 package com.ambit.otgorithm.views;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,9 +40,11 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -293,7 +299,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    //블랙리스트 차단
     @OnClick(R.id.senderBtn)
     public void onSendEvent(View v){
 
@@ -304,7 +309,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    //블랙리스트 차단
     @OnClick(R.id.photoSend)
     public void onPhotoSendEvent(View v) {
         // 안드로이드 파일창 오픈 (갤러리 오픈)
@@ -329,10 +333,26 @@ public class ChatActivity extends AppCompatActivity {
                 // 이미지 업로드가 완료된 경우
                 // 실제 web 에 업로드 된 주소를 받아서 photoUrl로 저장
                 // 그다음 포토메세지 발송
+
+                //사진이미지 사이즈 줄이기
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                Bitmap src = BitmapFactory.decodeFile(data.getData().toString(), options);
+                //Bitmap resized = Bitmap.createScaledBitmap(src, dstWidth, dstHeight, true);
+
+
+
                 uploadImage(data.getData());
 
             }
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     private String mPhotoUrl = null;
@@ -385,7 +405,12 @@ public class ChatActivity extends AppCompatActivity {
         message.setChatId(mChatId);
         message.setMessageId(messageId);
         message.setMessageType(mMessageType);
-        message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
+        if(MainActivity.userUri!=null){
+            message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
+        }else {
+            message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, null));
+        }
+
         message.setReadUserList(Arrays.asList(new String[]{mFirebaseUser.getUid()}));
 
         String [] uids = getIntent().getStringArrayExtra("uids");

@@ -76,12 +76,8 @@ public class AddInfoActivity extends AppCompatActivity {
 
     FloatingActionButton profile_upload;
     Button check_duplication;
-    Button male;
-    Button female;
 
-    EditText til_year;
-    EditText til_month;
-    EditText til_day;
+
 
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
@@ -93,7 +89,7 @@ public class AddInfoActivity extends AppCompatActivity {
 
     AlertDialog mDialog;
 
-    String gender;
+
 
     /** 한글,영어,숫자만 받기 **/
     public InputFilter filter = new InputFilter() {
@@ -164,13 +160,8 @@ public class AddInfoActivity extends AppCompatActivity {
         tieNickname = findViewById(R.id.tie_nickname);
         tilDescription = findViewById(R.id.til_description);
         tieDescription = findViewById(R.id.tie_description);
-        til_year = findViewById(R.id.til_year);
-        til_month = findViewById(R.id.til_month);
-        til_day = findViewById(R.id.til_day);
         profile_upload = findViewById(R.id.profile_upload);
         pictureView = findViewById(R.id.user_image);
-        male = findViewById(R.id.male);
-        female = findViewById(R.id.female);
 
         tieNickname.setFilters(new InputFilter[]{filter});
 
@@ -216,19 +207,7 @@ public class AddInfoActivity extends AppCompatActivity {
             }
         });
 
-        male.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gender = "남";
-            }
-        });
 
-        female.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gender = "여";
-            }
-        });
         profile_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,7 +229,6 @@ public class AddInfoActivity extends AppCompatActivity {
 
     private void checkPosibility(final String nickname){
         Log.d("nickname",nickname+"하하");
-
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -348,8 +326,6 @@ public class AddInfoActivity extends AppCompatActivity {
                     mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                            mUserRef.child(mFirebaseUser.getUid()).child("birth").setValue((til_year.getText().toString()+"년"+til_month.getText().toString()+"월"+til_day.getText().toString()+"일"));
-                            mUserRef.child(mFirebaseUser.getUid()).child("gender").setValue(gender);
 
                             if(path!=null){
                                 upload(path);
@@ -413,6 +389,7 @@ public class AddInfoActivity extends AppCompatActivity {
         galleryDTO.gid = mFirebaseDb.getReference().child("profiles").push().getKey();
 
         mFirebaseDb.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
+        mUserRef.child(mFirebaseUser.getUid()).child("description").setValue(galleryDTO.description);
         mDialog.dismiss();
     }
 
@@ -445,6 +422,7 @@ public class AddInfoActivity extends AppCompatActivity {
                 galleryDTO.gid = mFirebaseDb.getReference().child("profiles").push().getKey();
 
                 mFirebaseDb.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
+                mUserRef.child(mFirebaseUser.getUid()).child("description").setValue(galleryDTO.description);
                 mFirebaseDb.getReference().child("users").child(mFirebaseUser.getUid()).child("profileUrl").setValue(galleryDTO.imageUrl);
                 mDialog.dismiss();
             }
