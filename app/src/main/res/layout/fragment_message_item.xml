@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="2dp"
+        android:paddingLeft="6dp"
         android:visibility="gone">
 
         <com.ambit.otgorithm.modules.RoundedImageView
@@ -70,7 +71,6 @@
         </LinearLayout>
     </LinearLayout>
 
-
     <!-- 방 나갈을-->
     <LinearLayout
         android:id="@+id/exitArea"
@@ -95,8 +95,7 @@
     </LinearLayout>
 
 
-    <!-- 내가 ㅆㄴ글-->
-
+    <!-- 내가 쓴 글-->
     <LinearLayout
         android:id="@+id/myChatArea"
         android:layout_width="wrap_content"
@@ -140,7 +139,7 @@
             android:background="@drawable/rouned_my_chat_message"
             android:maxWidth="250dp"
             android:padding="7dp"
-            android:textColor="#fff"
+            android:textColor="@android:color/black"
             android:textSize="15dp" />
 
         <ImageView
@@ -156,7 +155,6 @@
             android:padding="3dp"
             android:scaleType="fitCenter"
             android:visibility="gone" />
-
 
     </LinearLayout>
 

@@ -249,11 +249,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                     startActivity(intent);
                 } else {
-                    if(nickName != null){
+                    if (nickName != null) {
                         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         intent.putExtra("ranker_id", nickName);
                         startActivity(intent);
-                    }else {
+                    } else {
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         finish();
                         startActivity(intent);
@@ -304,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         finish();
                     }
                     sign_in_nickname.setText(MainActivity.nickName);
-
                 }
 
                 @Override
@@ -314,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             });
         }
 
-
+        // 네비게이션 뷰
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -928,9 +927,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     Log.d("날씨","구름1");
                     weather_Icon = R.drawable.weather_cloudy;
                     weathericon.setImageResource(R.drawable.weather_cloudy);
-                    weatherdiscrip.setText("구름이 뭉게뭉게~");
+                    weatherdiscrip.setText("구름이 뭉게뭉게");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
-                    weatherDescription.setText("남해안 중심 강한 바람 주의" + "\n" + "안전 관리에 주의하세요!");
+                    weatherDescription.setText("오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
                     temper.setText(currenttemper + "°");
                     Log.d("날씨","구름2");
                 } else if (sky == 4){

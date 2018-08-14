@@ -4,15 +4,34 @@
     <PreferenceCategory android:title="알림 설정">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="key_backgroundcolor"
+            android:key="push_alarm"
             android:summary="면담(친구) 요청을 알림으로 받습니다."
             android:title="면담 요청 알림" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="친구 관리">
+        <Preference
+            android:key="blacklist"
+            android:title="차단친구 관리" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="애플리케이션 정보">
-        <Preference android:title="이용약관" />
-        <Preference android:title="개인정보취급방침" />
-        <Preference android:title="오픈소스 라이선스" />
+        <Preference
+            android:key="terms"
+            android:title="이용약관">
+
+            <!--<intent android:action="android.intent.action.">
+                <extra android:name="description" android:value="terms" />
+            </intent>-->
+        </Preference>
+
+        <Preference
+            android:key="privacy"
+            android:title="개인정보취급방침" />
+
+        <Preference
+            android:key="license"
+            android:title="오픈 소스 라이브러리" />
     </PreferenceCategory>
 
     <!--<CheckBoxPreference

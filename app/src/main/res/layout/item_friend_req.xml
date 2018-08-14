@@ -33,7 +33,7 @@
 
         <Button
             android:id="@+id/friend_req_accept"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="36dp"
             android:layout_alignStart="@+id/friend_req_id"
             android:layout_below="@+id/friend_req_id"
@@ -44,7 +44,7 @@
 
         <Button
             android:id="@+id/friend_req_decline"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="36dp"
             android:layout_alignRight="@+id/friend_req_accept"
             android:layout_alignParentEnd="true"

@@ -15,11 +15,9 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:background="@color/main_mint"
+            android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
-
-
         </android.support.v7.widget.Toolbar>
 
         <android.support.v7.widget.RecyclerView
@@ -37,12 +35,12 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:background="@color/main_bg"
+        android:background="#fff"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/photoSend"
-            android:src="@mipmap/camera_icon"
+            android:src="@drawable/ic_add_circle_outline_gray_24dp"
             android:layout_gravity="center"
             android:layout_width="48dp"
             android:padding="8dp"
@@ -53,23 +51,21 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:layout_weight="8"
-            android:background="#fff"
             android:layout_width="0dp"
             android:inputType="textMultiLine"
             android:maxLines="3"
-            android:hint="메시지"
+            android:hint="채팅을 입력하세요"
             android:layout_height="match_parent"/>
 
         <ImageView
             android:id="@+id/senderBtn"
-            android:src="@mipmap/send_message"
+            android:src="@drawable/ic_send_gray_24dp"
             android:layout_width="48dp"
             android:padding="8dp"
             android:layout_gravity="center"
             android:enabled="false"
             android:clickable="true"
-            android:layout_height="48dp"
-            />
+            android:layout_height="48dp" />
     </LinearLayout>
 
 </LinearLayout>

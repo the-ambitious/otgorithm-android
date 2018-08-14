@@ -1,5 +1,6 @@
 package com.ambit.otgorithm.views;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -8,10 +9,13 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
+import android.provider.Settings;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 
@@ -28,6 +32,10 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
     private static final String BACKGROUND_COLOR = "key_dialog_backgroundcolor";
     private static final String TEXT_COLOR = "key_textcolor";
     private static final String ALL_REMOVE_MEMO = "key_all_memo_clear";
+
+    private static final String PUSH_ALARM = "push_alarm";
+
+    private SwitchPreference mPushAlarm;
 
     private PreferenceScreen screen;
     private CheckBoxPreference mUseUsername;
@@ -60,6 +68,49 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         //
         addPreferencesFromResource(R.xml.pref_settings);
 
+        // 차단친구 관리
+        findPreference("blacklist").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getApplicationContext(), FavoritesActivity.class);
+                intent.putExtra("blacknwhite", "blacklist");
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        // 이용약관
+        findPreference("terms").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
+                intent.putExtra("description", "terms");
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        // 개인정보취급방침
+        findPreference("privacy").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
+                intent.putExtra("description", "privacy");
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        // 오픈 소스 라이브러리(url 수정 필요)
+        findPreference("license").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
+                intent.putExtra("description", "license");
+                startActivity(intent);
+                return false;
+            }
+        });
 
 
         screen = getPreferenceScreen();
@@ -69,7 +120,24 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         mUsername = (EditTextPreference) screen.findPreference(USER_NAME);
         mbackgroundcolor = (ListPreference) screen.findPreference(BACKGROUND_COLOR);
         mTextcolor = (ListPreference) screen.findPreference(TEXT_COLOR);
+        mPushAlarm = (SwitchPreference) screen.findPreference(PUSH_ALARM);
 
+        mPushAlarm.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                // 푸시 알람 스위치 on/off를 알려주는 변수
+                boolean alarmIsNotChecked = mPushAlarm.isChecked();
+
+                if (!alarmIsNotChecked) {
+                    // 푸시 알람이 on일 경우
+                    Toast.makeText(SettingActivity.this, "switch on", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 푸시 알람이 off일 경우
+                    Toast.makeText(SettingActivity.this, "switch off", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
         //변화 이벤트가 일어났을 시 동작
 /*        mUsername.setOnPreferenceChangeListener(this);
         mbackgroundcolor.setOnPreferenceChangeListener(this);
@@ -101,15 +169,15 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         Log.i(TAG, "preference : " + preference +", newValue : "+ newValue);
 
         String value = (String) newValue;
-        if(preference == mUsername){
+        if (preference == mUsername) {
             Log.i(TAG, "mUsername onPreferenceChange");
             mUsername.setSummary(value);
-        }else if(preference == mbackgroundcolor){
+        } else if (preference == mbackgroundcolor) {
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(value);
             mbackgroundcolor.setSummary(index >= 0 ? listPreference.getEntries()[index]
                     : null);    // entries 값 대신 이에 해당하는 entryValues값 set
-        }else if(preference == mTextcolor){
+        } else if (preference == mTextcolor) {
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(value);
             mTextcolor.setSummary(index >= 0 ? listPreference.getEntries()[index]

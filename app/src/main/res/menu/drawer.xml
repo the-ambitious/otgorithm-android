@@ -7,12 +7,12 @@
             android:title="@string/nav_item_letterbox" />
         <item
             android:id="@+id/nav_item_favorites"
-            android:icon="@drawable/ic_face_black_24dp"
+            android:icon="@drawable/ic_face_yellow_24dp"
             android:title="@string/nav_item_favorites" />
         <item
             android:id="@+id/nav_item_collection"
             android:checked="true"
-            android:icon="@drawable/ic_image"
+            android:icon="@drawable/ic_insert_photo_black_24dp"
             android:title="@string/nav_item_collection" />
     </group>
 

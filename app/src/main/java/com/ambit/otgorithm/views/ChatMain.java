@@ -53,7 +53,7 @@ public class ChatMain extends AppCompatActivity {
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
         tv = (TextView) findViewById(R.id.toolbar_title);
-        tv.setText("친구");
+        tv.setText("나의 서신함");
         tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
         tv.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);

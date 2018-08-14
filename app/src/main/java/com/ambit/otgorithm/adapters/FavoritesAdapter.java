@@ -21,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesHolder> {
 
     private ArrayList<UserDTO> favoritesList;
+    private ArrayList<UserDTO> blackList;
     Context context;
     LayoutInflater inflater;
 
@@ -41,6 +42,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesHolder holder, int position) {
+        //
+
         // 즐겨찾는 장군의 인덱스를 가져옴
         UserDTO favoritesPerson = favoritesList.get(position);
         // 프로필 이미지 설정
