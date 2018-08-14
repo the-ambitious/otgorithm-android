@@ -1,27 +1,41 @@
 package com.ambit.otgorithm.views;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
+import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
+import com.ambit.otgorithm.modules.PermissionUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,12 +43,28 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 
 public class AddInfoActivity extends AppCompatActivity {
 
     LinearLayout mContent;
+
+    private static final int GALLERY_PERMISSIONS_REQUEST = 0;
+    private static final int GALLERY_IMAGE_REQUEST = 1;
+    private String path;
 
     TextView textViewToolbarTitle;
 
@@ -44,17 +74,38 @@ public class AddInfoActivity extends AppCompatActivity {
     TextInputLayout tilDescription;
     TextInputEditText tieDescription;
 
+    FloatingActionButton profile_upload;
     Button check_duplication;
-    TextView confirm_possibility;
-    Button gogo;
-    Button okok;
+    Button male;
+    Button female;
+
+    EditText til_year;
+    EditText til_month;
+    EditText til_day;
 
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
     FirebaseDatabase mFirebaseDb;
     DatabaseReference mUserRef;
+    FirebaseStorage storage;
+
+    CircleImageView pictureView;
 
     AlertDialog mDialog;
+
+    String gender;
+
+    /** 한글,영어,숫자만 받기 **/
+    public InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Pattern ps = Pattern.compile("^[ㄱ-ㅣ가-힣0-9a-zA-Z]*$");
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
 
     private Handler handler = new Handler(){
         @Override
@@ -63,14 +114,11 @@ public class AddInfoActivity extends AppCompatActivity {
 
             switch (msg.what){
                 case 1:
-                    confirm_possibility.setText("이미 사용하고 있는 닉네임입니다,");
+                    Toast.makeText(AddInfoActivity.this,"이미 사용하고 있는 닉네임입니다,",Toast.LENGTH_SHORT).show();
                     tieNickname.setText("");
-                    gogo.setVisibility(View.INVISIBLE);
                     break;
                 case 2:
-                    confirm_possibility.setText("사용 가능한 닉네임입니다.");
-
-                    okok.setVisibility(View.VISIBLE);
+                    Toast.makeText(AddInfoActivity.this,"사용 가능한 닉네임입니다.",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -82,6 +130,8 @@ public class AddInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_info);
 
         mDialog = new SpotsDialog.Builder().setContext(AddInfoActivity.this).build();
+
+
 
         /*****************************************************************
          * 커스텀 툴바 셋팅
@@ -114,6 +164,16 @@ public class AddInfoActivity extends AppCompatActivity {
         tieNickname = findViewById(R.id.tie_nickname);
         tilDescription = findViewById(R.id.til_description);
         tieDescription = findViewById(R.id.tie_description);
+        til_year = findViewById(R.id.til_year);
+        til_month = findViewById(R.id.til_month);
+        til_day = findViewById(R.id.til_day);
+        profile_upload = findViewById(R.id.profile_upload);
+        pictureView = findViewById(R.id.user_image);
+        male = findViewById(R.id.male);
+        female = findViewById(R.id.female);
+
+        tieNickname.setFilters(new InputFilter[]{filter});
+
 
         tilNickname.setCounterEnabled(true);
         tilNickname.setCounterMaxLength(20);
@@ -121,48 +181,61 @@ public class AddInfoActivity extends AppCompatActivity {
         tilDescription.setCounterMaxLength(50);
 
         check_duplication = (Button)findViewById(R.id.check_duplication);
-        confirm_possibility = (TextView)findViewById(R.id.confirm_possibility);
-        gogo = (Button)findViewById(R.id.gogo);
-        okok = (Button)findViewById(R.id.okok);
+        //confirm_possibility = (TextView)findViewById(R.id.confirm_possibility);
+        //gogo = (Button)findViewById(R.id.gogo);
+        //okok = (Button)findViewById(R.id.okok);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mFirebaseDb = FirebaseDatabase.getInstance();
         mUserRef = mFirebaseDb.getReference("users");
+        storage = FirebaseStorage.getInstance();
 
         check_duplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tieNickname.getText().toString().replace(" ", "").equals("")) {
-                    // showMessage();
-//                    Toast.makeText(AddInfoActivity.this,"닉네임을 입력해주세요",Toast.LENGTH_SHORT).show();
-                    tieNickname.setText("");
-                } else {
-                    mDialog.show();
-                    checkPosibility(tieNickname.getText().toString());
-                }
+                /*  if(tieNickname.getText().toString().contains(" ")){
+                    Toast.makeText(AddInfoActivity.this,"닉네임에 공백을 입력할 수 없습니다.",Toast.LENGTH_SHORT).show();
+                    return;
+                }*/
+
+                    if(!emptyCheck())
+                        Toast.makeText(AddInfoActivity.this,"닉네임을 입력해주세요.",Toast.LENGTH_SHORT).show();
+
+                    if(!lengthCheck())
+                        Toast.makeText(AddInfoActivity.this,"10자 이내로 입력해주세요.",Toast.LENGTH_SHORT).show();
+
+                    if(emptyCheck()&&lengthCheck()){
+                        mDialog.show();
+                        checkPosibility(tieNickname.getText().toString());
+                    }
+
+
+
+
             }
         });
 
-        okok.setOnClickListener(new View.OnClickListener() {
+        male.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tieNickname.setFocusableInTouchMode(false);
-                okok.setVisibility(View.INVISIBLE);
-                check_duplication.setVisibility(View.INVISIBLE);
-                gogo.setVisibility(View.VISIBLE);
-
+                gender = "남";
             }
         });
 
-        gogo.setOnClickListener(new View.OnClickListener() {
+        female.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString());
-                Intent intent = new Intent(AddInfoActivity.this,MainActivity.class);
-                startActivity(intent);
+                gender = "여";
             }
         });
+        profile_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGalleryChooser();
+            }
+        });
+
     }
 
     private void showMessage() {
@@ -175,12 +248,10 @@ public class AddInfoActivity extends AppCompatActivity {
         tilNickname.setError(null);
     }
 
-    private void checkPosibility(String temp){
-        final String nickname = temp.replace(" ", "");
-
+    private void checkPosibility(final String nickname){
         Log.d("nickname",nickname+"하하");
 
-        mUserRef.addValueEventListener(new ValueEventListener() {
+        mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot children : dataSnapshot.getChildren()){
@@ -223,12 +294,161 @@ public class AddInfoActivity extends AppCompatActivity {
             case R.id.action_completion:
                 // 이곳에 유효성 검사하여 모두 true를 만족할 때 Intent를 전환하는 코드 작성
                 // 코드가 길어짐으로 인해 메서드를 따로 빼기
-
-                Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
-                startActivity(intent);
+                mDialog.show();
+                goToBattleField();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(AddInfoActivity.this,"닉네임을 입력해주세요",Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean emptyCheck(){
+        if (tieNickname.getText().toString().equals("")) {
+            //showMessage();
+            tieNickname.setText("");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean lengthCheck(){
+        if(tieNickname.getText().toString().length()>10){
+            tieNickname.setText("");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean descriptionlengthCheck(){
+        if(tieDescription.getText().toString().length()>50){
+            return false;
+        }
+        return true;
+    }
+
+    private void goToBattleField(){
+        if(!descriptionlengthCheck()){
+            Toast.makeText(AddInfoActivity.this,"50자 이내로 써주세요",Toast.LENGTH_SHORT).show();
+        }else {
+            mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot children : dataSnapshot.getChildren()){
+                        UserDTO userDTO = children.getValue(UserDTO.class);
+                        if(userDTO.getName() != null && userDTO.getName().equals(tieNickname.getText().toString())){
+                            Toast.makeText(AddInfoActivity.this,"회원가입에 실패했습니다.",Toast.LENGTH_SHORT).show();
+                            mDialog.dismiss();
+                            return;
+                        }
+                    }
+                    mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            mUserRef.child(mFirebaseUser.getUid()).child("birth").setValue((til_year.getText().toString()+"년"+til_month.getText().toString()+"월"+til_day.getText().toString()+"일"));
+                            mUserRef.child(mFirebaseUser.getUid()).child("gender").setValue(gender);
+
+                            if(path!=null){
+                                upload(path);
+                            }else {
+                                inputDes();
+                            }
+                            Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+    }
+    public void startGalleryChooser(){
+        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)){
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+            startActivityForResult(intent,GALLERY_IMAGE_REQUEST);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_IMAGE_REQUEST) {
+            if (data != null) {
+                path = getPath(data.getData());
+                File file = new File(path);
+                pictureView.setImageURI(Uri.fromFile(file));
+            } else {
+                Toast.makeText(AddInfoActivity.this, "사진을 올려주세요", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }   // end of onActivityResult()
+
+    public String getPath(Uri uri){
+        String [] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader cursorLoader = new CursorLoader(this,uri,proj,null,null,null);
+
+        Cursor cursor = cursorLoader.loadInBackground();
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        return cursor.getString(index);
+    }
+
+    private void inputDes(){
+        final GalleryDTO galleryDTO = new GalleryDTO();
+        galleryDTO.description = tieDescription.getText().toString();
+        galleryDTO.email = mAuth.getCurrentUser().getEmail();
+        galleryDTO.nickname = tieNickname.getText().toString();
+        galleryDTO.gid = mFirebaseDb.getReference().child("profiles").push().getKey();
+
+        mFirebaseDb.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
+        mDialog.dismiss();
+    }
+
+    private void upload(String uri){
+        StorageReference storageRef = storage.getReference();
+
+        Uri file = Uri.fromFile(new File(uri));
+        // storeageRef: 스토리지의 최상위 레퍼런스
+        StorageReference riversRef=null;
+        riversRef = storageRef.child("profiles/"+file.getLastPathSegment());
+        UploadTask uploadTask = riversRef.putFile(file);
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                final GalleryDTO galleryDTO = new GalleryDTO();
+                galleryDTO.description = tieDescription.getText().toString();
+                galleryDTO.imageUrl = downloadUrl.toString();
+                galleryDTO.email = mAuth.getCurrentUser().getEmail();
+                galleryDTO.nickname = tieNickname.getText().toString();
+                galleryDTO.gid = mFirebaseDb.getReference().child("profiles").push().getKey();
+
+                mFirebaseDb.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
+                mFirebaseDb.getReference().child("users").child(mFirebaseUser.getUid()).child("profileUrl").setValue(galleryDTO.imageUrl);
+                mDialog.dismiss();
+            }
+        });
+
+    }   // end of upload()
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sign_in_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -15,8 +16,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        >
+        android:layout_marginRight="50dp">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -145,7 +145,8 @@
                     android:gravity="right"
                     android:paddingRight="40dp"
                     android:paddingBottom="10dp"
-                    android:text="비밀번호를 잊으셨나요?"
+                    android:onClick="onClick"
+                    android:text="@string/forgotten_password"
                     android:textSize="13sp" />
 
                 <LinearLayout
@@ -173,6 +174,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button"
             android:text="로그인"
+            android:onClick="onClick"
             android:textColor="#FFFFFF"
             android:textSize="17sp" />
 
@@ -196,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
                 android:paddingLeft="5dp"
-                android:text="@string/tvSignUp"
+                android:text="@string/to_sign_up"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>

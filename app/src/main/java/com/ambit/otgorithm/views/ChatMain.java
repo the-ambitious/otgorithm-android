@@ -33,8 +33,8 @@ public class ChatMain extends AppCompatActivity {
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
 
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
+//    @BindView(R.id.fab)
+//    FloatingActionButton mFab;
 
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
@@ -109,16 +109,14 @@ public class ChatMain extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     private void setUpViewPager(){
         mPageAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mPageAdapter.addFragment(new ChatFragment(), "채팅");
-        mPageAdapter.addFragment(new FriendFragment(), "친구");
         mPageAdapter.addFragment(new FriendRequestFragment(), "친구요청");
+        mPageAdapter.addFragment(new FriendFragment(), "친구");
+        mPageAdapter.addFragment(new ChatFragment(), "채팅");
+        mPageAdapter.addFragment(new ChatFragment(), "차단");
         mViewPager.setAdapter(mPageAdapter);
     }
-
-
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 

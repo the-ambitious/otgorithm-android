@@ -16,6 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +45,9 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 
@@ -71,6 +74,15 @@ public class UploadActivity extends AppCompatActivity {
     private DatabaseReference mUserRef;
     private FirebaseUser mFirebaseUser;
 
+    long now = System.currentTimeMillis();
+    private Date date = new Date(now);
+    private SimpleDateFormat sdfNow = new SimpleDateFormat("MMdd");
+    private String formatDate = sdfNow.format(date);
+    int uploadCount;
+
+    private SimpleDateFormat sdfNow2 = new SimpleDateFormat("yyMM");
+    private String formatDate2 = sdfNow2.format(date);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +92,7 @@ public class UploadActivity extends AppCompatActivity {
          * 커스텀 툴바 셋팅
          */
         textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        textViewToolbarTitle.setText("전투 상황 보고");
+        textViewToolbarTitle.setText("출격 상황 알림");
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar uploadToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -147,12 +159,14 @@ public class UploadActivity extends AppCompatActivity {
                 }
             }
         });
+
+        setUploadCount();
     }   // end of onCreate()
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_completion, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -167,6 +181,7 @@ public class UploadActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            // will be updated since ver 2.0
             case R.id.action_completion:
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UploadActivity.this);
                 alertDialogBuilder.setTitle("데일리룩 업로드")
@@ -275,11 +290,20 @@ public class UploadActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             galleryDTO.battlefield = dataSnapshot.getValue(String.class);
 
-                            database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO);
+                            database.getReference().child("galleries").child(galleryDTO.gid).setValue(galleryDTO, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    Map<String,Object> map = new HashMap<>();
+                                    map.put(formatDate,uploadCount-1);
+                                    mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").setValue(map);
+                                }
+                            });
 
                             mDialog.dismiss();
                             Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
-
+                            Intent intent = new Intent(UploadActivity.this,ProfileActivity.class);
+                            intent.putExtra("ranker_id",MainActivity.nickName);
+                            startActivity(intent);
                             finish();
                         }
 
@@ -306,4 +330,28 @@ public class UploadActivity extends AppCompatActivity {
 
     }   // end of upload()
 
+    private void setUploadCount(){
+        mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").child(formatDate).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer upload_count = dataSnapshot.getValue(Integer.class);
+                if(upload_count == null){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put(formatDate,3);
+                    mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").setValue(map);
+                }else {
+                    uploadCount = upload_count;
+                    if (uploadCount == 0) {
+                        Toast.makeText(UploadActivity.this,"일일 업로드 횟수를 모두 사용하였습니다.",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

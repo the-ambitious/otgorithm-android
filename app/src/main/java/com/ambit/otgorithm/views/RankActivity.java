@@ -169,7 +169,7 @@ public class RankActivity extends AppCompatActivity {
             }
         });
 
-        addGalleryListener(name);
+        addGalleryListener(name,rightNow[1]);
 
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new RankAdapter(this, rankerList);
@@ -213,7 +213,7 @@ public class RankActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rank, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -226,6 +226,7 @@ public class RankActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            // will be updated since ver 2.0
             case R.id.action_gallary:
                 Intent intent = new Intent(RankActivity.this, GalleryActivity.class);
                 startActivity(intent);
@@ -235,7 +236,7 @@ public class RankActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addGalleryListener(final String name){
+    private void addGalleryListener(final String name, final String month){
         Query noSql = mGalleryRef.orderByChild("starCount").limitToFirst(100);
 
         noSql.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -247,58 +248,59 @@ public class RankActivity extends AppCompatActivity {
                     GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
                     switch (name){
                         case "0":    //전국구
-                            galleryDTOList.add(galleryDTO);
+                            if(galleryDTO.sysdate.substring(0,2).equals(month))
+                               galleryDTOList.add(galleryDTO);
                             break;
                         case "1":    //서울
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("서울특별시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("서울특별시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "2":    // 인천
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("인천광역시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("인천광역시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "3":    // 대전
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("대전광역시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("대전광역시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "4":    // 대구
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("대구광역시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("대구광역시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "5":    // 광주
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("광주광역시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("광주광역시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "6":    // 부산
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("부산광역시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("부산광역시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "7":    // 울산
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("울산광역시"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("울산광역시") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "8":    // 경기
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("경기도"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("경기도") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "9":    // 강원
-                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("강원도"))
+                            if(galleryDTO.battlefield != null && galleryDTO.battlefield.equals("강원도") && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "10":   // 충청
-                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("충청남도") || galleryDTO.battlefield.equals("충청북도")))
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("충청남도") || galleryDTO.battlefield.equals("충청북도")) && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "11":   // 경상
-                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("경상남도") || galleryDTO.battlefield.equals("경상북도")))
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("경상남도") || galleryDTO.battlefield.equals("경상북도")) && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "12":   // 전라
-                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("전라남도") || galleryDTO.battlefield.equals("전라북도")))
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("전라남도") || galleryDTO.battlefield.equals("전라북도")) && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                         case "13":   // 제주
-                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("제주특별자치도")))
+                            if(galleryDTO.battlefield != null && (galleryDTO.battlefield.equals("제주특별자치도")) && galleryDTO.sysdate.substring(0,2).equals(month))
                                 galleryDTOList.add(galleryDTO);
                             break;
                     }

@@ -1,10 +1,12 @@
 package com.ambit.otgorithm.views;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,6 +73,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -100,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String ranker_id;
 
-
+    AlertDialog mDialog;
 
     ImageView htab_header;
 
@@ -109,11 +112,6 @@ public class ProfileActivity extends AppCompatActivity {
     UserDTO general;
 
     APIService mService;
-
-
-
-    int mode;
-    int favoritesMode;
 
     CoordinatorLayout coordinatorLayout;
 
@@ -140,6 +138,9 @@ public class ProfileActivity extends AppCompatActivity {
                 case 4:
                     Glide.with(ProfileActivity.this).load(R.drawable.ic_star_border_black_24dp).into(favoritesFab);
                     break;
+                case 5:
+                    Glide.with(ProfileActivity.this).load(android.R.drawable.sym_action_chat).into(chatFab);
+                    break;
             }
 
         }
@@ -157,6 +158,8 @@ public class ProfileActivity extends AppCompatActivity {
          * Remove shadow from the action bar(커스텀 툴바 셋팅)
          * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
          */
+
+        mDialog = new SpotsDialog.Builder().setContext(ProfileActivity.this).build();
 
         coordinatorLayout = findViewById(R.id.htab_maincontent);
 
@@ -198,6 +201,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
                 intent.putExtra("mode","upload");
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -216,140 +220,16 @@ public class ProfileActivity extends AppCompatActivity {
         chatFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (mode){
-                    case 0:
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ProfileActivity.this);
-                        alertDialogBuilder.setTitle("장군 면담 요청")
-                                .setMessage("장군의 허락을 받아야 합니다." + "\n" + "요청하시겠습니까?")
-                                .setCancelable(false)
-                                .setPositiveButton("네",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                Data data = new Data("친구요청",MainActivity.nickName+"님이 멘티요청을 하였습니다.");
-                                                Notification notification = new Notification("친구요청",MainActivity.nickName+"님이 멘티요청을 하였습니다.");
-                                                Sender sender = new Sender(general.token,data);
-                                                mService.sendNotification(sender)
-                                                        .enqueue(new retrofit2.Callback<MyResponse>() {
-                                                            @Override
-                                                            public void onResponse(retrofit2.Call<MyResponse> call, retrofit2.Response<MyResponse> response) {
-                                                                if(response.body().success == 1)
-                                                                    Log.d("알림", "요청 성고");
-                                                                else
-                                                                    Log.d("알림", "요청 실패");
-                                                            }
-
-                                                            @Override
-                                                            public void onFailure(retrofit2.Call<MyResponse> call, Throwable t) {
-                                                                Log.e("Error",t.getMessage());
-                                                            }
-                                                        });
-                                                handler.sendEmptyMessage(1);
-                                                beMyGeneral(general.getUid());
-
-                                                // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
-                                                //Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
-                                                //Log.v("알림", "요청 성고");
-                                                //startActivity(intent);
-                                            }
-                                        }).setNegativeButton("아니오",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // 아니오 클릭. dialog 닫기.
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert = alertDialogBuilder.create();
-                        alertDialogBuilder.show();
-                        break;
-                    case 1:
-                        Snackbar.make(coordinatorLayout,"상대방의 수락을 기다리고 있습니다",Snackbar.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                mUserRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        Log.d("chat2","들어옴");
-                                        for(DataSnapshot children : dataSnapshot.getChildren()){
-                                            Chat chat = children.getValue(Chat.class);
-                                            Log.d("chat22","드루어옴");
-                                            if(chat.getTitle().equals(general.getName())){
-                                                //기존방이 있을때
-                                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
-                                                chatIntent.putExtra("chat_id", chat.getChatId());
-                                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                                                Log.d("chat222","드루루어옴");
-                                                return;
-                                            }
-                                        }
-                                        //기존방이 없을때
-                                        Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
-                                        chatIntent.putExtra("uid", general.getUid());
-                                        startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                                Log.d("chat3","나옴");
-                          /*      chatIntent.putExtra("chat_id", chat.getChatId());
-                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);*/
-
-                            }
-                        }).show();
-                        break;
-
-                }
-
-
+               // Log.d("궁금하다",String.valueOf(mUserRef.child(general.getUid()).child("blacklist").equals(mUserRef.child())));
+                mDialog.show();
+                chatFabListener();
             }
         });
 
         favoritesFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                switch (favoritesMode){
-                    case 1:
-                        mUserRef
-                                .child(mFirebaseUser.getUid())
-                                .child("favorites")
-                                .child(general.getUid())
-                                .removeValue(new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        mUserRef
-                                                .child(general.getUid())
-                                                .child("fans")
-                                                .child(mFirebaseUser.getUid())
-                                                .removeValue();
-                                    }
-                                });
-                        handler.sendEmptyMessage(4);
-                        break;
-                    case 2:
-                        mUserRef
-                                .child(mFirebaseUser.getUid())
-                                .child("favorites")
-                                .child(general.getUid())
-                                .setValue(general, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        mUserRef
-                                                .child(general.getUid())
-                                                .child("fans")
-                                                .child(mFirebaseUser.getUid())
-                                                .setValue(true);
-                                    }
-                                });
-                        handler.sendEmptyMessage(3);
-                        break;
-                }
+                favoritesFabListener();
             }
         });
 
@@ -435,8 +315,198 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }   // end of onCreate()
 
+    private void chatFabListener(){
+        mUserRef.child(general.getUid()).child("blacklist").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserDTO userDTO = dataSnapshot.getValue(UserDTO.class);
+                if(userDTO != null){
+                    Snackbar.make(coordinatorLayout,general.getName()+"님으로 부터 차단당하셨습니다.",Snackbar.LENGTH_SHORT).show();
+                    mDialog.dismiss();
+                }else {
+                    mUserRef.child(general.getUid()).child("theSameBoat").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            UserDTO userDTO1 = dataSnapshot.getValue(UserDTO.class);
+                            if(userDTO1 != null){
+                                // 채팅하시겠습니까?
+                                Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        mUserRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Log.d("chat2","들어옴");
+                                                for(DataSnapshot children : dataSnapshot.getChildren()){
+                                                    Chat chat = children.getValue(Chat.class);
+                                                    Log.d("chat22","드루어옴");
+                                                    if(chat.getTitle().equals(general.getName())){
+                                                        //기존방이 있을때
+                                                        Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                                        chatIntent.putExtra("chat_id", chat.getChatId());
+                                                        startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                                        Log.d("chat222","드루루어옴");
+                                                        return;
+                                                    }
+                                                }
+                                                //기존방이 없을때
+                                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                                chatIntent.putExtra("uid", general.getUid());
+                                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
+                                        });
+                                        Log.d("chat3", "나옴");
+                                    }
+                                }).show();
+                                mDialog.dismiss();
+                            } else {
+                                mUserRef.child(general.getUid()).child("requestFromMentee").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        UserDTO userDTO2 = dataSnapshot.getValue(UserDTO.class);
+                                        if (userDTO2 != null) {
+                                            //친구 요청 취소
+                                            Snackbar.make(coordinatorLayout, "상대방의 수락을 기다리고 있습니다.", Snackbar.LENGTH_LONG).setAction("요청 취소", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    mUserRef
+                                                            .child(general.getUid())
+                                                            .child("requestFromMentee")
+                                                            .child(mFirebaseUser.getUid())
+                                                            .removeValue();
+                                                    mUserRef
+                                                            .child(mFirebaseUser.getUid())
+                                                            .child("requestToMentor")
+                                                            .child(general.getUid())
+                                                            .removeValue();
+                                                    handler.sendEmptyMessage(5);
+                                                }
+                                            }).show();
+                                            mDialog.dismiss();
+                                        } else {
+                                            //친구 요청
+                                            requestFriend();
+                                            mDialog.dismiss();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                    }
+                                });
+                                mDialog.dismiss();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) { }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void requestFriend(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ProfileActivity.this);
+        alertDialogBuilder.setTitle("장군 면담 요청")
+                .setMessage("장군의 허락을 받아야 합니다." + "\n" + "요청하시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("네",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Data data = new Data("친구요청",MainActivity.nickName+"님이 멘티요청을 하였습니다.");
+                                Notification notification = new Notification("친구요청",MainActivity.nickName+"님이 멘티요청을 하였습니다.");
+                                Sender sender = new Sender(general.token,data);
+                                mService.sendNotification(sender)
+                                        .enqueue(new retrofit2.Callback<MyResponse>() {
+                                            @Override
+                                            public void onResponse(retrofit2.Call<MyResponse> call, retrofit2.Response<MyResponse> response) {
+                                                if(response.body().success == 1)
+                                                    Log.d("알림", "요청 성고");
+                                                else
+                                                    Log.d("알림", "요청 실패");
+                                            }
+
+                                            @Override
+                                            public void onFailure(retrofit2.Call<MyResponse> call, Throwable t) {
+                                                Log.e("Error",t.getMessage());
+                                            }
+                                        });
+                                handler.sendEmptyMessage(1);
+                                beMyGeneral(general.getUid());
+
+                                // 네 클릭하게 되면 일단은 요청했다고 간주하고 액티비티가 넘어가버림
+                                //Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
+                                //Log.v("알림", "요청 성고");
+                                //startActivity(intent);
+                            }
+                        }).setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // 아니오 클릭. dialog 닫기.
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alertDialogBuilder.show();
+    }
+
+    private void favoritesFabListener(){
+        mUserRef.child(mFirebaseUser.getUid()).child("favorites").child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserDTO userDTO = dataSnapshot.getValue(UserDTO.class);
+                if(userDTO != null){
+                    mUserRef
+                            .child(mFirebaseUser.getUid())
+                            .child("favorites")
+                            .child(general.getUid())
+                            .removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    mUserRef
+                                            .child(general.getUid())
+                                            .child("fans")
+                                            .child(mFirebaseUser.getUid())
+                                            .removeValue();
+                                }
+                            });
+                    handler.sendEmptyMessage(4);
+                }else {
+                    mUserRef
+                            .child(mFirebaseUser.getUid())
+                            .child("favorites")
+                            .child(general.getUid())
+                            .setValue(general, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    mUserRef
+                                            .child(general.getUid())
+                                            .child("fans")
+                                            .child(mFirebaseUser.getUid())
+                                            .setValue(true);
+                                }
+                            });
+                    handler.sendEmptyMessage(3);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
 
     private void beMyGeneral(final String generalUid) {
+
+        //mUserRef.child(generalUid)
 
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             UserDTO userDTO = new UserDTO();
@@ -486,13 +556,12 @@ public class ProfileActivity extends AppCompatActivity {
         adapter.addFrag(new IntroFragment(
                 ContextCompat.getColor(this, android.R.color.background_light)), "Profile");
         adapter.addFrag(new DailyLookFragment(ranker_id), "Daily Look");
-        adapter.addFrag(new ProfileFragment(
-                ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
+//        adapter.addFrag(new ProfileFragment(
+//                ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
         viewPager.setAdapter(adapter);
     }
 
     private void addProfileListener(final String ranker_id){
-
 
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -502,17 +571,16 @@ public class ProfileActivity extends AppCompatActivity {
                     if (userDTO.getName()!=null && userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
 
-
-
-
                         mProfileRef.child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 GalleryDTO profileDTO = dataSnapshot.getValue(GalleryDTO.class);
                                 if(profileDTO != null)
                                 {
-                                    photoUri = Uri.parse(profileDTO.imageUrl);
-                                    handler.sendEmptyMessage(0);
+                                    if(profileDTO.imageUrl!=null){
+                                        photoUri = Uri.parse(profileDTO.imageUrl);
+                                        handler.sendEmptyMessage(0);
+                                    }
                                 }
 
                             }
@@ -523,57 +591,41 @@ public class ProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                        mMentorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        mMentorRef.child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot children : dataSnapshot.getChildren()) {
-                                    UserDTO userDTO1 = children.getValue(UserDTO.class);
-                                    if (userDTO1.getUid().equals(general.getUid())) {
+                                    UserDTO userDTO1 = dataSnapshot.getValue(UserDTO.class);
+                                    if (userDTO1 != null) {
                                         handler.sendEmptyMessage(1);
-                                        mode = 1;
                                     }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) { }
+                        });
+
+                        mFriendRef.child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                    UserDTO userDTO1 = dataSnapshot.getValue(UserDTO.class);
+                                    if(userDTO1 != null){
+                                        handler.sendEmptyMessage(2);
+                                    }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {}
+                        });
+
+                        mUserRef.child(mFirebaseUser.getUid()).child("favorites").child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                UserDTO userDTO1 = dataSnapshot.getValue(UserDTO.class);
+                                if(userDTO1 != null){
+                                    handler.sendEmptyMessage(3);
                                 }
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) { }
-                        });
-
-                        mFriendRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot children : dataSnapshot.getChildren()){
-                                    UserDTO userDTO1 = children.getValue(UserDTO.class);
-                                    if(userDTO1.getUid().equals(general.getUid())){
-                                        handler.sendEmptyMessage(2);
-                                        mode = 2;
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                        mUserRef.child(mFirebaseUser.getUid()).child("favorites").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot children : dataSnapshot.getChildren()){
-                                    if(children.getKey().equals(general.getUid())){
-                                        handler.sendEmptyMessage(3);
-                                        favoritesMode = 1;
-                                        return;
-                                    }
-                                }
-                                favoritesMode = 2;
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
                         });
                         handler.sendEmptyMessage(0);
                         return;
@@ -582,16 +634,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -601,6 +651,7 @@ public class ProfileActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            // will be updated since ver 2.0
             case R.id.action_chat:
                 Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
                 startActivity(intent);

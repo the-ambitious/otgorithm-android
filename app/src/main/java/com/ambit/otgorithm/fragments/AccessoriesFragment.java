@@ -26,54 +26,51 @@ public class AccessoriesFragment extends android.support.v4.app.Fragment {
 
         arrayList = new ArrayList();
 
-        if(MainActivity.currenttemper < 15){
-            //머플러 출격
-            arrayList.add(R.drawable.accessory_color_scarf_thin);
+        // 1. 머플러 출격
+        if (MainActivity.currenttemper < 15) {
+            arrayList.add(R.drawable.accessory_permission_scarf_thin);
         } else {
             arrayList.add(R.drawable.accessory_black_scarf_thin);
         }
 
-        if(MainActivity.snowrain != 1 && MainActivity.currenttemper <= 3){
-            //목도리 출격
-            arrayList.add(R.drawable.accessory_color_scarf_thick);
+        // 2. 목도리 출격
+        if (MainActivity.snowrain != 1 && MainActivity.currenttemper <= 3) {
+            arrayList.add(R.drawable.accessory_permission_scarf_thick);
         } else {
             arrayList.add(R.drawable.accessory_black_scarf_thick);
         }
 
-        if(MainActivity.snowrain != 1 && MainActivity.currenttemper <= 5){
-            //울 장갑 출격
-            arrayList.add(R.drawable.accessory_color_gloves_wool);
+        // 3. 울 장갑 출격
+        if (MainActivity.snowrain != 1 && MainActivity.currenttemper <= 5) {
+            arrayList.add(R.drawable.accessory_permission_gloves_wool);
         } else {
             arrayList.add(R.drawable.accessory_black_gloves_wool);
         }
 
-        if(MainActivity.snowrain == 0 && MainActivity.currenttemper <= 5){
-            //가죽 장갑 출격
-            arrayList.add(R.drawable.accessory_color_gloves_leather);
+        // 4. 가죽 장갑 출격
+        if (MainActivity.snowrain == 0 && MainActivity.currenttemper <= 5) {
+            arrayList.add(R.drawable.accessory_permission_gloves_leather);
         } else {
             arrayList.add(R.drawable.accessory_black_gloves_leather);
         }
 
-        if(MainActivity.currenttemper <= 5){
-            //면장갑 출격
-            arrayList.add(R.drawable.accessory_color_gloves_cotton);
+        // 5. 면장갑 출격
+        if (MainActivity.currenttemper <= 5) {
+            arrayList.add(R.drawable.accessory_permission_gloves_cotton);
         } else {
             arrayList.add(R.drawable.accessory_black_gloves_cotton);
         }
 
-        if(MainActivity.snowrain != 0){
-            //우산 출격
-            arrayList.add(R.drawable.accessory_color_umbralla);
+        //6. 우산 출격
+        if (MainActivity.snowrain != 0) {
+            arrayList.add(R.drawable.accessory_permission_umbralla);
         } else {
             arrayList.add(R.drawable.accessory_black_umbralla);
         }
 
-
-
         grid = view.findViewById(R.id.grid);
         gridViewAdapter = new GridViewAdapter(getActivity(),arrayList,R.layout.square_view);
         grid.setAdapter(gridViewAdapter);
-
 
         return view;
 

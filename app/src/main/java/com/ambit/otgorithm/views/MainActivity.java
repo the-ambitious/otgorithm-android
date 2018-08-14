@@ -273,9 +273,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String uri = dataSnapshot.getValue(String.class);
-                    Uri myUri = Uri.parse(uri);
-                    userUri = myUri;
-                    Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                    if(uri != null){
+                        Uri myUri = Uri.parse(uri);
+                        userUri = myUri;
+                        Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                    }else {
+                        Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                    }
 
                 }
 
@@ -310,7 +314,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
 
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -320,8 +323,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 int id = item.getItemId();
                 switch (id) {
-                    case R.id.nav_item_closet:      // 내 옷장
-                        Snackbar.make(mDrawerLayout, "준비중입니다.", Snackbar.LENGTH_SHORT).show();
+                    case R.id.nav_item_letterbox:      // 나의 서신함
+                        if (mFirebaseUser != null) {
+                            intent = new Intent(MainActivity.this, ChatMain.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
+                        }
                         break;
 
                     case R.id.nav_item_favorites:   // 즐겨찾는 장군
@@ -333,16 +341,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
                         break;
 
-                    case R.id.nav_item_letterbox:
-                        if (mFirebaseUser != null) {
-                            intent = new Intent(MainActivity.this, ChatMain.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "로그인을 해야 이용가능합니다", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-
-                    case R.id.nav_contact_notice:   // 임시로 컬렉션; 나중에 공지사항으로 바꿔야 함
+                    case R.id.nav_item_collection:   // 데일리룩 컬렉션
                         if (mFirebaseUser != null){
                             intent = new Intent(MainActivity.this, CollectionActivity.class);
                             startActivity(intent);
@@ -352,24 +351,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
-                    case R.id.nav_aboutUs_settings:
-                        intent = new Intent(MainActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        break;
-
                     case R.id.nav_aboutUs_intro:
                         intent = new Intent(MainActivity.this, IntroActivity.class);
                         startActivity(intent);
                         break;
 
-                    case R.id.nav_aboutUs_temp:
+                    case R.id.nav_aboutUs_settings:
+                    intent = new Intent(MainActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    break;
+
+/*                    case R.id.nav_aboutUs_temp:
                         intent = new Intent(MainActivity.this, NoticeActivity.class);
                         startActivity(intent);
-                        break;
+                        break;*/
 
                     case R.id.nav_aboutUs_logout:
-
-                        Log.v("알림", "LOGOUT 아이템 클릭");
                         AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
                         alt_bld.setTitle("종료")
                                 .setMessage("로그아웃 하시겠습니까?")
@@ -506,7 +503,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-
             AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
             alt_bld.setTitle("확인")
                     .setMessage("종료하시겠습니까?")
