@@ -70,7 +70,7 @@ public class GalleryActivity extends AppCompatActivity
          * 커스텀 툴바 셋팅
          */
         textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        textViewToolbarTitle.setText("전투 상황 보고");
+        textViewToolbarTitle.setText("전투 상황판");
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -153,7 +153,7 @@ public class GalleryActivity extends AppCompatActivity
         parent.setContentInsetsAbsolute(0,0);*/
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calendar, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -166,6 +166,8 @@ public class GalleryActivity extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 return true;
+
+            // will be updated since ver 2.0
             case R.id.calendar:
                 Log.d("테스트: ", "R.id.calendar 진입");
 

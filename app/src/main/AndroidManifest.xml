@@ -108,7 +108,6 @@
         <activity android:name=".views.ChatMain" />
         <activity android:name=".views.IntroActivity" />
         <activity android:name=".views.DescriptionActivity" />
-        <activity android:name=".views.StandbyActivity" />
         <activity android:name=".views.FeedActivity" />
         <activity android:name=".views.FavoritesActivity" />
         <activity android:name=".views.CollectionActivity" />

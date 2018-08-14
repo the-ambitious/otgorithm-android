@@ -147,13 +147,16 @@
                         android:layout_height="0dp"
                         android:layout_gravity="center"
                         android:layout_weight="75"
-                        android:padding="4dp" />
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="4dp" />
 
                     <TextView
                         android:id="@+id/temper"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="25"
+                        android:textColor="@android:color/black"
                         android:gravity="center_horizontal"
                         android:textSize="20sp" />
 
@@ -182,8 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
             </LinearLayout>

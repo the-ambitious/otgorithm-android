@@ -1,12 +1,11 @@
 package com.ambit.otgorithm.views;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +21,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,16 +47,13 @@ import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.fragments.DailyLookFragment;
 import com.ambit.otgorithm.fragments.IntroFragment;
 
-import com.ambit.otgorithm.fragments.ProfileFragment;
 import com.ambit.otgorithm.models.Common;
 import com.ambit.otgorithm.models.Data;
 import com.ambit.otgorithm.models.MyResponse;
 import com.ambit.otgorithm.models.Notification;
-import com.ambit.otgorithm.models.NotificationModel;
 import com.ambit.otgorithm.models.Sender;
 import com.ambit.otgorithm.remote.APIService;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.stats.internal.G;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,23 +61,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -100,10 +86,11 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mMentorRef;
     private DatabaseReference mFriendRef;
     private DatabaseReference mProfileRef;
+    private DatabaseReference mBackgroundRef;
 
     private String ranker_id;
 
-    AlertDialog mDialog;
+    android.app.AlertDialog mDialog;
 
     ImageView htab_header;
 
@@ -112,11 +99,6 @@ public class ProfileActivity extends AppCompatActivity {
     UserDTO general;
 
     APIService mService;
-
-
-
-
-
 
     CoordinatorLayout coordinatorLayout;
 
@@ -184,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
         mMentorRef = mUserRef.child(mFirebaseUser.getUid()).child("requestToMentor");
         mFriendRef = mUserRef.child(mFirebaseUser.getUid()).child("theSameBoat");
         mProfileRef = mFirebaseDB.getReference("profiles");
-
+        mBackgroundRef = mFirebaseDB.getReference("background");
 
         intentUpload = (CircleImageView) findViewById(R.id.intent_upload);
         chatFab = findViewById(R.id.action_chat);
@@ -213,10 +195,28 @@ public class ProfileActivity extends AppCompatActivity {
         profileFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
-                intent.putExtra("mode","profile");
-                startActivity(intent);
-                finish();
+                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                 builder
+                        .setMessage("선택해주세요~!")
+                        .setNegativeButton("프로필 배경", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                                intent.putExtra("mode","background");
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setPositiveButton("프로필 사진", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
+                                intent.putExtra("mode","profile");
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                builder.create().show();
             }
         });
 
@@ -362,20 +362,21 @@ public class ProfileActivity extends AppCompatActivity {
                                             }
 
                                             @Override
-                                            public void onCancelled(DatabaseError databaseError) {}
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
                                         });
-                                        Log.d("chat3","나옴");
+                                        Log.d("chat3", "나옴");
                                     }
                                 }).show();
                                 mDialog.dismiss();
-                            }else {
+                            } else {
                                 mUserRef.child(general.getUid()).child("requestFromMentee").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         UserDTO userDTO2 = dataSnapshot.getValue(UserDTO.class);
-                                        if(userDTO2 != null){
+                                        if (userDTO2 != null) {
                                             //친구 요청 취소
-                                            Snackbar.make(coordinatorLayout,"상대방의 수락을 기다리고 있습니다.",Snackbar.LENGTH_LONG).setAction("요청 취소", new View.OnClickListener() {
+                                            Snackbar.make(coordinatorLayout, "상대방의 수락을 기다리고 있습니다.", Snackbar.LENGTH_LONG).setAction("요청 취소", new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
                                                     mUserRef
@@ -392,7 +393,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                 }
                                             }).show();
                                             mDialog.dismiss();
-                                        }else {
+                                        } else {
                                             //친구 요청
                                             requestFriend();
                                             mDialog.dismiss();
@@ -400,7 +401,8 @@ public class ProfileActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {}
+                                    public void onCancelled(DatabaseError databaseError) {
+                                    }
                                 });
                                 mDialog.dismiss();
                             }
@@ -408,7 +410,7 @@ public class ProfileActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {}
+                        public void onCancelled(DatabaseError databaseError) { }
                     });
                 }
             }
@@ -483,6 +485,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             .removeValue();
                                 }
                             });
+                    Toast.makeText(ProfileActivity.this,"즐겨찾는 장군목록에서 제거합니다.",Toast.LENGTH_SHORT).show();
                     handler.sendEmptyMessage(4);
                 }else {
                     mUserRef
@@ -499,6 +502,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             .setValue(true);
                                 }
                             });
+                    Toast.makeText(ProfileActivity.this,"즐겨찾는 장군에 추가하였습니다.",Toast.LENGTH_SHORT).show();
                     handler.sendEmptyMessage(3);
                 }
             }
@@ -559,8 +563,8 @@ public class ProfileActivity extends AppCompatActivity {
         adapter.addFrag(new IntroFragment(
                 ContextCompat.getColor(this, android.R.color.background_light)), "Profile");
         adapter.addFrag(new DailyLookFragment(ranker_id), "Daily Look");
-        adapter.addFrag(new ProfileFragment(
-                ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
+//        adapter.addFrag(new ProfileFragment(
+//                ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
         viewPager.setAdapter(adapter);
     }
 
@@ -574,13 +578,13 @@ public class ProfileActivity extends AppCompatActivity {
                     if (userDTO.getName()!=null && userDTO.getName().equals(ranker_id)) {
                         general = userDTO;
 
-                        mProfileRef.child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        mBackgroundRef.child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                GalleryDTO profileDTO = dataSnapshot.getValue(GalleryDTO.class);
-                                if(profileDTO != null)
+                                GalleryDTO backgroundDTO = dataSnapshot.getValue(GalleryDTO.class);
+                                if(backgroundDTO != null)
                                 {
-                                    photoUri = Uri.parse(profileDTO.imageUrl);
+                                    photoUri = Uri.parse(backgroundDTO.imageUrl);
                                     handler.sendEmptyMessage(0);
                                 }
 
@@ -635,14 +639,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -652,6 +656,7 @@ public class ProfileActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            // will be updated since ver 2.0
             case R.id.action_chat:
                 Intent intent = new Intent(ProfileActivity.this, ChatMain.class);
                 startActivity(intent);

@@ -76,8 +76,8 @@ public class IntroActivity extends AppCompatActivity {
             case R.id.license:
                 intent.putExtra("description", "license");
                 break;
-            case R.id.consultation:
-                intent.putExtra("description", "consultation");
+            case R.id.contact:
+                intent.putExtra("description", "#contact");
                 break;
         }
         startActivity(intent);

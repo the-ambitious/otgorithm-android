@@ -135,8 +135,10 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         final GalleryDTO infoData = data.get(position);
 
         addFavoritesListener(myViewHolder,infoData);
-        getCollectionCount();
+        if(mFirebaseUser!=null)
+            getCollectionCount();
 
+        /* 클릭 시 아이템이 복사되는 기능; will be updated since ver 2.0
         myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +146,9 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 addItem(currentPosition, infoData);
             }
         });
+        */
 
+        /* 꾹 클릭 시 아이템이 삭제되는 기능; will be updated since ver 2.0
         myViewHolder.imageview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -153,13 +157,14 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 return true;
             }
         });
+        */
 
         myViewHolder.star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("클릭",Integer.toString(currentPosition));
 
-                //data.get(currentPosition).imageUrl
+                // data.get(currentPosition).imageUrl
 
                 // onStarClicked(mGalleryRef.child(key));
                 mGalleryRef.child(infoData.gid).addListenerForSingleValueEvent(new ValueEventListener() {

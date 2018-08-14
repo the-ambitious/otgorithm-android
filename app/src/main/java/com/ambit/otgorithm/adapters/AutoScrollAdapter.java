@@ -1,13 +1,17 @@
 package com.ambit.otgorithm.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ambit.otgorithm.R;
+import com.ambit.otgorithm.views.GalleryActivity;
+import com.ambit.otgorithm.views.MainActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -40,31 +44,34 @@ public class AutoScrollAdapter extends PagerAdapter {
      * @return
      */
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         //뷰페이지 슬라이딩 할 레이아웃 인플레이션
 //        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         View v = inflater.inflate(R.layout.activity_main_viewpager_image,null);
         ImageView image_container = (ImageView) v.findViewById(R.id.viewpager_image);
 
+
         /*TextView bannerTitle = (TextView) v.findViewById(R.id.banner_title);
         bannerTitle.setTextColor(Color.WHITE);
+*/
+        /*switch (position) {
+            Intent intent = null;
 
-        switch (position) {
             case 0:
-                bannerTitle.setText("더 이상 코디 고민은 No!");
                 break;
             case 1:
-                bannerTitle.setText("출격 명령이란?");
-                break;
+        Log.d("TEST: ", "case 1 진입");
+        Intent intent = new Intent(v.getContext(), GalleryActivity.class);
+
+                break;*/
+/*
             case 2:
                 bannerTitle.setText("관리도 중요합니다!");
                 break;
             default:
                 bannerTitle.setText("준비중입니다.");
-                break;
-        }*/
-
+                break;*/
 
         Glide.with(context).load(arrayList.get(position)).into(image_container);
         container.addView(v);

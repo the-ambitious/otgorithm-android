@@ -91,7 +91,7 @@
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/consultation"
+                android:id="@+id/contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="24dp"

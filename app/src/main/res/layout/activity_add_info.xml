@@ -78,6 +78,7 @@
 
 
                 <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/profile_upload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
@@ -132,93 +133,7 @@
         </LinearLayout>
 
         <!-- 닉네임 입력란 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="18"
-            android:orientation="vertical"
-            android:paddingBottom="8dp">
 
-            <TextView
-                android:textSize="18sp"
-                android:text="생일 및 성별"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="8dp"
-                android:weightSum="10">
-
-                <EditText
-                    android:id="@+id/til_year"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.6" />
-                <TextView
-                    android:text="년"
-                    android:textSize="18sp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.2" />
-                <TextView
-                    android:textSize="18sp"
-                    android:text="월"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.2" />
-                <TextView
-                    android:textSize="18sp"
-                    android:text="일"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
-
-                <Button
-                    android:text="남"
-                    android:textColor="#fff"
-                    android:textSize="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/btn_gender_man"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content" />
-                <Button
-                    android:text="여"
-                    android:textColor="#fff"
-                    android:textSize="16dp"
-                    android:background="@drawable/btn_gender_woman"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
 
         <!-- 소개 입력란 -->
         <LinearLayout
@@ -245,34 +160,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/confirm_possibility"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/gogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginStart="28dp"
-                android:text="전장으로"
-                android:visibility="invisible" />
-
-            <Button
-                android:id="@+id/okok"
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:text="확정"
-                android:visibility="invisible" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

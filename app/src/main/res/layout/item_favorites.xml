@@ -18,16 +18,18 @@
             android:id="@+id/fav_thumbnail"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="10dp"
-            android:src="@color/colorPrimaryDark"
-            app:civ_border_color="#FF000000" />
+            android:src="@drawable/thumbnail_default"
+            app:civ_border_color="#FF000000"
+            />
 
         <TextView
             android:id="@+id/fav_user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/fav_thumbnail"
-            android:text="이곳에 장군의 ID가 들어감"
+            android:text="장군 ID"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -35,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fav_user_id"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@+id/fav_thumbnail"
             android:text="이곳에 장군의 소개 설명"
             android:textAppearance="?android:attr/textAppearanceSmall" />

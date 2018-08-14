@@ -80,8 +80,6 @@
         <item>#00000000</item>
     </string-array>
 
-
-
     <string-array name="TextColor">
         <item>maroon</item>
         <item>indigo</item>

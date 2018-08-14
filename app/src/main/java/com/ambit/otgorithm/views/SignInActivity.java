@@ -2,10 +2,12 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,22 +40,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import dmax.dialog.SpotsDialog;
-
+import org.w3c.dom.Text;
 
 public class SignInActivity extends AppCompatActivity {
-
-
 
     // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    //google 변수
+    // google 변수
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
 
-    //facebook변수
+    // facebook변수
     private CallbackManager mCallbackManager;
 
     // firebase DB 객체
@@ -62,14 +61,19 @@ public class SignInActivity extends AppCompatActivity {
     // DB참조 객체 (검색시 사용)
     private DatabaseReference mUserRef;
 
-    TextView tvSignUp;
+    LinearLayout signInContent;
+    TextView forgottenPassword;
+    TextView toSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        tvSignUp = findViewById(R.id.tvSignUp);
+        // 위젯 연결
+        signInContent = findViewById(R.id.sign_in_content);
+        forgottenPassword = findViewById(R.id.tvFindPasswd);
+        toSignUp = findViewById(R.id.tvSignUp);
 
         // DB객체 싱글톤 패턴으로 얻음
         database = FirebaseDatabase.getInstance();
@@ -94,8 +98,6 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-
-
             }
         });
 
@@ -106,7 +108,6 @@ public class SignInActivity extends AppCompatActivity {
         LoginButton signInFacebook = findViewById(R.id.sign_in_facebook);
         signInFacebook.setReadPermissions("email", "public_profile");
         signInFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-
 
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -131,11 +132,18 @@ public class SignInActivity extends AppCompatActivity {
         Intent intent = null;
 
         switch (v.getId()) {
+            case R.id.signin:
+                Snackbar.make(signInContent, "다음 업데이트까지 간편로그인을 이용해주세요.", Snackbar.LENGTH_SHORT).show();
+                break;
+            case R.id.tvFindPasswd:
+                Snackbar.make(signInContent, "다음 업데이트까지 간편로그인을 이용해주세요.", Snackbar.LENGTH_SHORT).show();
+                break;
             case R.id.tvSignUp:
-                intent = new Intent(this, SiginUp1Activity.class);
+                Snackbar.make(signInContent, "다음 업데이트까지 간편로그인을 이용해주세요.", Snackbar.LENGTH_SHORT).show();
+                // intent = new Intent(this, SiginUp1Activity.class);
                 break;
         }
-        startActivity(intent);
+        // startActivity(intent);
     }
 
     @Override
@@ -230,8 +238,6 @@ public class SignInActivity extends AppCompatActivity {
         final UserDTO user = new UserDTO();
         user.setEmail(firebaseUser.getEmail());
         user.setUid(firebaseUser.getUid());
-        if ( firebaseUser.getPhotoUrl() != null )
-            user.setProfileUrl(firebaseUser.getPhotoUrl().toString());
         mUserRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

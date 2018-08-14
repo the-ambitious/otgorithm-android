@@ -2,43 +2,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_item_closet"
-            android:checked="true"
-            android:icon="@drawable/ic_attachment"
-            android:title="@string/nav_item_closet" />
+            android:id="@+id/nav_item_letterbox"
+            android:icon="@drawable/ic_chat_black_24dp"
+            android:title="@string/nav_item_letterbox" />
         <item
             android:id="@+id/nav_item_favorites"
-            android:icon="@drawable/ic_image"
+            android:icon="@drawable/ic_face_yellow_24dp"
             android:title="@string/nav_item_favorites" />
         <item
-            android:id="@+id/nav_item_letterbox"
-            android:icon="@drawable/ic_place"
-            android:title="@string/nav_item_letterbox" />
-
+            android:id="@+id/nav_item_collection"
+            android:checked="true"
+            android:icon="@drawable/ic_insert_photo_black_24dp"
+            android:title="@string/nav_item_collection" />
     </group>
 
     <item android:title="@string/nav_aboutUs">
         <menu>
-            <item
+            <!--<item
                 android:id="@+id/nav_contact_notice"
                 android:icon="@drawable/ic_emoticon"
-                android:title="@string/nav_contact_notice" />
+                android:title="@string/nav_contact_notice" />-->
             <item
                 android:id="@+id/nav_aboutUs_intro"
-                android:icon="@drawable/ic_emoticon"
+                android:icon="@drawable/ic_info_outline_black_24dp"
                 android:title="@string/nav_aboutUs_intro" />
             <item
                 android:id="@+id/nav_aboutUs_settings"
-                android:icon="@drawable/ic_emoticon"
+                android:icon="@drawable/ic_settings_black_24dp"
                 android:title="@string/nav_aboutUs_settings" />
             <item
                 android:id="@+id/nav_aboutUs_logout"
-                android:icon="@drawable/ic_emoticon"
+                android:icon="@drawable/ic_directions_walk_black_24dp"
                 android:title="로그아웃" />
-            <item
+<!--            <item
                 android:id="@+id/nav_aboutUs_temp"
                 android:icon="@drawable/ic_emoticon"
-                android:title="임시공지사항" />
+                android:title="임시공지사항" />-->
         </menu>
     </item>
 

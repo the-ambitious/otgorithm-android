@@ -1,18 +1,24 @@
 package com.ambit.otgorithm.views;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.MessageListAdapter;
@@ -36,9 +42,14 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -54,8 +65,7 @@ import dmax.dialog.SpotsDialog;
 
 public class ChatActivity extends AppCompatActivity {
 
-
-
+    //TextView tv;
     private String mChatId;
 
     @BindView(R.id.senderBtn)
@@ -85,14 +95,36 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_chat);
 
+        /*****************************************************************
+         * 커스텀 툴바 셋팅
+         */
+/*        //Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
+        setSupportActionBar(mToolbar);    // 액션바와 같게 만들어줌
 
+        tv = (TextView) findViewById(R.id.toolbar_title);
+        tv.setText("면담");
+        tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        tv.setTextColor(Color.WHITE);
+        //Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
+        setSupportActionBar(mToolbar);
+
+        // 기본 타이틀을 보여줄 지 말 지 설정
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        /****************************************************************/
 
         ButterKnife.bind(this);
         mChatId = getIntent().getStringExtra("chat_id");
         mFirebaseDb = FirebaseDatabase.getInstance();
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mUserRef = mFirebaseDb.getReference("users");
-        mToolbar.setTitleTextColor(Color.WHITE);
+
+        // mToolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(mToolbar);
+        // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (mChatId != null) {
             mChatRef = mFirebaseDb.getReference("users").child(mFirebaseUser.getUid()).child("chats").child(mChatId);
             mChatMessageRef = mFirebaseDb.getReference("chat_messages").child(mChatId);
@@ -106,6 +138,21 @@ public class ChatActivity extends AppCompatActivity {
         mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mChatRecyclerView.setAdapter(messageListAdapter);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -128,8 +175,6 @@ public class ChatActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     long totalMessageCount =  dataSnapshot.getChildrenCount();
                     mMessageEventListener.setTotalMessageCount(totalMessageCount);
-
-
                 }
 
                 @Override
@@ -154,8 +199,6 @@ public class ChatActivity extends AppCompatActivity {
                 String title = dataSnapshot.getValue(String.class);
                 if ( title != null ) {
                     mToolbar.setTitle(title);
-
-
                 }
             }
 
@@ -163,7 +206,6 @@ public class ChatActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {  }
         });
     }
-
 
     private void addMessageListener(){
         mChatMessageRef.addChildEventListener(mMessageEventListener);
@@ -176,7 +218,6 @@ public class ChatActivity extends AppCompatActivity {
     private class MessageEventListener implements ChildEventListener {
 
         private long totalMessageCount;
-
         private long callCount = 1;
 
         public void setTotalMessageCount(long totalMessageCount) {
@@ -293,7 +334,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    //블랙리스트 차단
     @OnClick(R.id.senderBtn)
     public void onSendEvent(View v){
 
@@ -304,7 +344,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    //블랙리스트 차단
     @OnClick(R.id.photoSend)
     public void onPhotoSendEvent(View v) {
         // 안드로이드 파일창 오픈 (갤러리 오픈)
@@ -330,7 +369,6 @@ public class ChatActivity extends AppCompatActivity {
                 // 실제 web 에 업로드 된 주소를 받아서 photoUrl로 저장
                 // 그다음 포토메세지 발송
                 uploadImage(data.getData());
-
             }
         }
     }
@@ -385,7 +423,12 @@ public class ChatActivity extends AppCompatActivity {
         message.setChatId(mChatId);
         message.setMessageId(messageId);
         message.setMessageType(mMessageType);
-        message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
+        if(MainActivity.userUri!=null){
+            message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
+        }else {
+            message.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, null));
+        }
+
         message.setReadUserList(Arrays.asList(new String[]{mFirebaseUser.getUid()}));
 
         String [] uids = getIntent().getStringArrayExtra("uids");

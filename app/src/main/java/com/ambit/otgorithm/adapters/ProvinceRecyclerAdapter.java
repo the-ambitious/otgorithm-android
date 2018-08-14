@@ -26,12 +26,10 @@ import java.util.List;
 
 // ProvinceActivity의 Adapter
 public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecyclerAdapter.ViewHolder> {
-
     private String url;     // 지역 이미지를 불러오기 위한 경로
     private ArrayList<String> urlList;
     private ArrayList<String> nameList;
     Animation ani;          // 지역명에 애니메이션 효과를 주기 위한 변수
-
     Context context;
     List<ItemDTO> items;
     int item_layout;
@@ -54,18 +52,14 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // 글자에 밑줄을 긋기 위한 객체 선언
         SpannableString provinceName = null;
-
         /* Log.v("url: ", "아이템 이미지: " + items.get(position).getProvincesImage()); */
         final ItemDTO item = items.get(position);
-
         // 애니메이션 정보 로딩
         ani = AnimationUtils.loadAnimation(context, R.anim.translate);
         // 애니메이션 적용
         holder.provinceTitle.startAnimation(ani);
-
         // 지역 제목의 글자 크기 조절
         holder.provinceTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36);
-
         switch (position) {
             case 0:     // 전국
                 url = "http://13.125.253.250/provinces/korea.png";
@@ -126,26 +120,23 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
         }
         urlList.add(url);
         nameList.add(provinceName.toString());
-
         // 밑줄 긋기 작업
         provinceName.setSpan(new UnderlineSpan(), 0, provinceName.length(), 0);
         holder.provinceTitle.setText(provinceName);
-
         Glide.with(context.getApplicationContext())
                 // .load(items.get(position).getProvincesImage()) --> it doesn't work
                 .load(url) // it works
                 .into(holder.provinceImage);
-
         // holder.title.setText(item.getProvincesTitle());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("지역배경",urlList.get(position));
-                Log.d("지역이름",nameList.get(position));
+                Log.d("지역배경", urlList.get(position));
+                Log.d("지역이름", nameList.get(position));
                 Intent intent = new Intent(v.getContext(), RankActivity.class);
                 intent.putExtra("name", Integer.toString(position));
-                intent.putExtra("background",urlList.get(position));
-                intent.putExtra("provinceName",nameList.get(position));
+                intent.putExtra("background", urlList.get(position));
+                intent.putExtra("provinceName", nameList.get(position));
                 v.getContext().startActivity(intent);
             }
         });
@@ -153,8 +144,6 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
         Drawable drawable = ContextCompat.getDrawable(context, item.getProvincesImage());
         */
         //holder.image.setBackground(drawable);
-
-
     }   // end of onBindViewHolder()
 
     @Override
@@ -169,7 +158,6 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             // activity_province.xml
             itemView.setOnClickListener(this);
             provinceImage = (ImageView) itemView.findViewById(R.id.province_image);
@@ -185,5 +173,4 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
             v.getContext().startActivity(intent);
         }
     }
-
 }

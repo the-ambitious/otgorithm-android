@@ -33,8 +33,8 @@ public class ChatMain extends AppCompatActivity {
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
 
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
+//    @BindView(R.id.fab)
+//    FloatingActionButton mFab;
 
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
@@ -53,7 +53,7 @@ public class ChatMain extends AppCompatActivity {
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
         tv = (TextView) findViewById(R.id.toolbar_title);
-        tv.setText("친구");
+        tv.setText("나의 서신함");
         tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
         tv.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -105,20 +105,16 @@ public class ChatMain extends AppCompatActivity {
                 finish();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-
     private void setUpViewPager(){
         mPageAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mPageAdapter.addFragment(new ChatFragment(), "채팅");
-        mPageAdapter.addFragment(new FriendFragment(), "친구");
         mPageAdapter.addFragment(new FriendRequestFragment(), "친구요청");
+        mPageAdapter.addFragment(new FriendFragment(), "친구");
+        mPageAdapter.addFragment(new ChatFragment(), "채팅");
         mViewPager.setAdapter(mPageAdapter);
     }
-
-
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 

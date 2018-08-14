@@ -54,9 +54,9 @@ public class DescriptionActivity extends AppCompatActivity {
                 textViewToolbarTitle.setText("이용약관");
                 break;
             case "license":
-                textViewToolbarTitle.setText("오픈소스 라이선스");
+                textViewToolbarTitle.setText("오픈 소스 라이브러리");
                 break;
-            case "consultation":
+            case "#contact":
                 textViewToolbarTitle.setText("이메일 문의");
                 break;
         }
