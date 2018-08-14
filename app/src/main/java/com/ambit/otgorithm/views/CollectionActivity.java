@@ -55,7 +55,7 @@ public class CollectionActivity extends AppCompatActivity {
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
         textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        textViewToolbarTitle.setText("나만의 컬렉션");
+        textViewToolbarTitle.setText("데일리룩 컬렉션");
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);

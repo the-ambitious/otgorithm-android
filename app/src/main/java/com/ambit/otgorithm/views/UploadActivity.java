@@ -250,12 +250,13 @@ public class UploadActivity extends AppCompatActivity {
         Uri file = Uri.fromFile(new File(uri));
         // storeageRef: 스토리지의 최상위 레퍼런스
         StorageReference riversRef=null;
+        final String gid = database.getReference().child("galleries").push().getKey();
         if(mode.equals("upload")){
-            riversRef = storageRef.child("galleries/"+file.getLastPathSegment());
+            riversRef = storageRef.child("galleries/"+gid);
         }else if (mode.equals("profile")){
-            riversRef = storageRef.child("profiles/"+file.getLastPathSegment());
+            riversRef = storageRef.child("profiles/"+mFirebaseUser.getUid());
         }else if(mode.equals("background")){
-            riversRef = storageRef.child("background/"+file.getLastPathSegment());
+            riversRef = storageRef.child("background/"+mFirebaseUser.getUid());
         }
         UploadTask uploadTask = riversRef.putFile(file);
         // Register observers to listen for when the download is done or if it fails
@@ -285,7 +286,7 @@ public class UploadActivity extends AppCompatActivity {
                 galleryDTO.weather = MainActivity.sky;
                 galleryDTO.weatherIcon = MainActivity.weather_Icon;
                 galleryDTO.nickname = MainActivity.nickName;
-                galleryDTO.gid = database.getReference().child("galleries").push().getKey();
+                galleryDTO.gid = gid;
                 if (mode.equals("upload")) {
                     mUserRef.child(mFirebaseUser.getUid()).child("battlefield").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

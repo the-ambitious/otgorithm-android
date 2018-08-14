@@ -24,6 +24,8 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
     Toolbar toolbar;
     TextView textViewToolbarTitle;
 
+    public static boolean alarmIsNotChecked;
+
     private static final String TAG = "PreSettingsActivity";
 
     private static final String USE_USER_NAME = "key_useUserName";
@@ -126,7 +128,7 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 // 푸시 알람 스위치 on/off를 알려주는 변수
-                boolean alarmIsNotChecked = mPushAlarm.isChecked();
+                alarmIsNotChecked = mPushAlarm.isChecked();
 
                 if (!alarmIsNotChecked) {
                     // 푸시 알람이 on일 경우
