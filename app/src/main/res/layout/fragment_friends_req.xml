@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context=".fragments.FriendRequestFragment">
 
-
     <!--<LinearLayout
         android:id="@+id/search_area"
         android:layout_width="match_parent"

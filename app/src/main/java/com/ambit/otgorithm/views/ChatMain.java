@@ -105,7 +105,6 @@ public class ChatMain extends AppCompatActivity {
                 finish();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -114,7 +113,6 @@ public class ChatMain extends AppCompatActivity {
         mPageAdapter.addFragment(new FriendRequestFragment(), "친구요청");
         mPageAdapter.addFragment(new FriendFragment(), "친구");
         mPageAdapter.addFragment(new ChatFragment(), "채팅");
-        mPageAdapter.addFragment(new ChatFragment(), "차단");
         mViewPager.setAdapter(mPageAdapter);
     }
 

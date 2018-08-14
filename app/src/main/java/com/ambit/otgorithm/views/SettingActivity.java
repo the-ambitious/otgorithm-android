@@ -71,9 +71,9 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         mTextcolor = (ListPreference) screen.findPreference(TEXT_COLOR);
 
         //변화 이벤트가 일어났을 시 동작
-        mUsername.setOnPreferenceChangeListener(this);
+/*        mUsername.setOnPreferenceChangeListener(this);
         mbackgroundcolor.setOnPreferenceChangeListener(this);
-        mTextcolor.setOnPreferenceChangeListener(this);
+        mTextcolor.setOnPreferenceChangeListener(this);*/
     }
 
     @Override
@@ -122,9 +122,9 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
     private void updateSummary(){
         //액티비티 실행 할 때 저장되어있는 summary값을 set
         //안 하면 안 뜸
-        mUsername.setSummary(mUsername.getText());
+/*        mUsername.setSummary(mUsername.getText());
         mbackgroundcolor.setSummary(mbackgroundcolor.getEntry());
-        mTextcolor.setSummary(mTextcolor.getEntry());
+        mTextcolor.setSummary(mTextcolor.getEntry());*/
         Log.d(TAG,"mbackgroundcolor="+mbackgroundcolor +", mUsername :" + mUsername);
     }
 
