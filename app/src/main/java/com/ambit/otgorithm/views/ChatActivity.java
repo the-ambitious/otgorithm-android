@@ -45,6 +45,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -333,27 +336,12 @@ public class ChatActivity extends AppCompatActivity {
                 // 이미지 업로드가 완료된 경우
                 // 실제 web 에 업로드 된 주소를 받아서 photoUrl로 저장
                 // 그다음 포토메세지 발송
-
-                //사진이미지 사이즈 줄이기
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                Bitmap src = BitmapFactory.decodeFile(data.getData().toString(), options);
-                //Bitmap resized = Bitmap.createScaledBitmap(src, dstWidth, dstHeight, true);
-
-
-
                 uploadImage(data.getData());
-
             }
         }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
+
 
     private String mPhotoUrl = null;
     private Message.MessageType mMessageType = Message.MessageType.TEXT;

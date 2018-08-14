@@ -341,6 +341,8 @@ public class FriendFragment extends Fragment {
                 mUserDBRef.child(mFirebaseUser.getUid()).child("theSameBoat").child(friend.getUid()).removeValue();
                 mUserDBRef.child(mFirebaseUser.getUid()).child("blacklist").child(friend.getUid()).setValue(friend);
                 mUserDBRef.child(friend.getUid()).child("theSameBoat").child(mFirebaseUser.getUid()).removeValue();
+                mUserDBRef.child(mFirebaseUser.getUid()).child("favorites").child(friend.getUid()).removeValue();
+                mUserDBRef.child(friend.getUid()).child("fans").child(mFirebaseUser.getUid()).removeValue();
             }
         }).show();
     }

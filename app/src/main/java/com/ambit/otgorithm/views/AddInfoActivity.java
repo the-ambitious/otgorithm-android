@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -182,6 +183,8 @@ public class AddInfoActivity extends AppCompatActivity {
         mUserRef = mFirebaseDb.getReference("users");
         storage = FirebaseStorage.getInstance();
 
+        final InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+
         check_duplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,6 +202,7 @@ public class AddInfoActivity extends AppCompatActivity {
                     if(emptyCheck()&&lengthCheck()){
                         mDialog.show();
                         checkPosibility(tieNickname.getText().toString());
+                        inputMethodManager.hideSoftInputFromWindow(check_duplication.getWindowToken(),0);
                     }
 
 

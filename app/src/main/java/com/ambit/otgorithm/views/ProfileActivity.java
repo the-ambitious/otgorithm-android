@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.ProfileAdapter;
@@ -487,6 +488,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             .removeValue();
                                 }
                             });
+                    Toast.makeText(ProfileActivity.this,"즐겨찾는 장군목록에서 제거합니다.",Toast.LENGTH_SHORT).show();
                     handler.sendEmptyMessage(4);
                 }else {
                     mUserRef
@@ -503,6 +505,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             .setValue(true);
                                 }
                             });
+                    Toast.makeText(ProfileActivity.this,"즐겨찾는 장군에 추가하였습니다.",Toast.LENGTH_SHORT).show();
                     handler.sendEmptyMessage(3);
                 }
             }

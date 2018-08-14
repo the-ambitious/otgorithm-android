@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
     FirebaseAuth mAuth;
     FirebaseDatabase mFirebaseDb;
     DatabaseReference mGalleryRef;
+    private FirebaseStorage storage;
 
     // 생성자
     public DailyLookAdapter() { }
@@ -55,6 +58,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDb = FirebaseDatabase.getInstance();
         mGalleryRef = mFirebaseDb.getReference("galleries");
+        storage = FirebaseStorage.getInstance();
         /************************************/
         return holder;
     }
@@ -99,6 +103,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
                                                 Toast.makeText(context,"삭제",Toast.LENGTH_SHORT).show();
                                                 mGalleryRef.child(infoData.gid).removeValue();
                                                 removeItem(infoData);
+                                                removeStorage(infoData);
                                             }
                                         })
                                         .setNeutralButton("아니오", new DialogInterface.OnClickListener() {
@@ -134,6 +139,13 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
 
 
     }
+
+    private void removeStorage(GalleryDTO galleryDTO){
+        StorageReference storageRef = storage.getReference();
+        StorageReference desertRef = storageRef.child("galleries/"+galleryDTO.gid);
+        desertRef.delete();
+    }
+
     private void removeItem(GalleryDTO infoData) {
         int CurrPosition = dailyLookList.indexOf(infoData);
         dailyLookList.remove(CurrPosition);
