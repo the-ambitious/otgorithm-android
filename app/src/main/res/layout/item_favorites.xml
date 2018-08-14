@@ -19,8 +19,9 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="10dp"
-            android:src="@color/colorPrimaryDark"
-            app:civ_border_color="#FF000000" />
+            android:src="@drawable/thumbnail_default"
+            app:civ_border_color="#FF000000"
+            />
 
         <TextView
             android:id="@+id/fav_user_id"

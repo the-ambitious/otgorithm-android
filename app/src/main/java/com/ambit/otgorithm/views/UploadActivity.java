@@ -117,32 +117,32 @@ public class UploadActivity extends AppCompatActivity {
         pictureDescription = findViewById(R.id.picture_description);
         profile = findViewById(R.id.profileComment);
 
+        Bundle bundle = getIntent().getExtras();
+        mode = (String)bundle.get("mode");
+
         pictureChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(UploadActivity.this);
 
-                builder
-                        .setMessage("사진을 고르세요")
-                        .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startGalleryChooser();
-                            }
-                        })
-                        .setNegativeButton("Camera", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startCamera();
-                            }
-                        });
-
+                    builder
+                            .setMessage("사진을 골라주세요~!")
+                            .setNeutralButton("사진첩 가기!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startGalleryChooser();
+                                }
+                            });
                 builder.create().show();
             }
         });
 
-        Bundle bundle = getIntent().getExtras();
-        mode = (String)bundle.get("mode");
+        if(mode.equals("background")){
+            profile.setText("프로필 배경을 올려보세요");
+            pictureDescription.setVisibility(View.INVISIBLE);
+        }
+
+
         if(mode.equals("profile"))
             profile.setText("프로필 사진을 올려보세요");
 
@@ -253,6 +253,8 @@ public class UploadActivity extends AppCompatActivity {
             riversRef = storageRef.child("galleries/"+file.getLastPathSegment());
         }else if (mode.equals("profile")){
             riversRef = storageRef.child("profiles/"+file.getLastPathSegment());
+        }else if(mode.equals("background")){
+            riversRef = storageRef.child("background/"+file.getLastPathSegment());
         }
         UploadTask uploadTask = riversRef.putFile(file);
         // Register observers to listen for when the download is done or if it fails
@@ -302,8 +304,9 @@ public class UploadActivity extends AppCompatActivity {
                             Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
                             Intent intent = new Intent(UploadActivity.this,ProfileActivity.class);
                             intent.putExtra("ranker_id",MainActivity.nickName);
-                            startActivity(intent);
                             finish();
+                            startActivity(intent);
+
                         }
 
                         @Override
@@ -311,9 +314,18 @@ public class UploadActivity extends AppCompatActivity {
                             mDialog.dismiss();
                         }
                     });
-                } else {
+                } else if(mode.equals("profile")){
                     database.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
                     database.getReference().child("users").child(mFirebaseUser.getUid()).child("profileUrl").setValue(galleryDTO.imageUrl);
+                    database.getReference().child("users").child(mFirebaseUser.getUid()).child("description").setValue(galleryDTO.description);
+                    mDialog.dismiss();
+                    Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UploadActivity.this,MainActivity.class);
+                    intent.putExtra("ranker_id",MainActivity.nickName);
+                    startActivity(intent);
+                    finish();
+                }else if(mode.equals("background")){
+                    database.getReference().child("background").child(mFirebaseUser.getUid()).setValue(galleryDTO);
                     mDialog.dismiss();
                     Snackbar.make(uploadLayout, "업로드가 완료되었습니다.", Snackbar.LENGTH_SHORT).show();
                     Intent intent = new Intent(UploadActivity.this,ProfileActivity.class);

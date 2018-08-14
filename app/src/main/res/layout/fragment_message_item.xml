@@ -17,7 +17,7 @@
             android:id="@+id/rcvProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/thumbnail_default" />
 
         <TextView
             android:id="@+id/rcvTxt"

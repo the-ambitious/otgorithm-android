@@ -96,9 +96,13 @@ public class FriendRequestAdapter
     // 각 항목을 구성하기 위해서 호출
     @Override
     public void onBindViewHolder(@NonNull FriendRequestViewHolder holder, final int position) {
-        Uri myUri = Uri.parse(mFriendRequestList.get(position).getProfileUrl());
-        //holder.friendRequestThumbnail.setImageURI(myUri);
-        Glide.with(holder.itemView).load(myUri).into(holder.friendRequestThumbnail);
+
+       if(mFriendRequestList.get(position).getProfileUrl()!=null){
+           Uri myUri = Uri.parse(mFriendRequestList.get(position).getProfileUrl());
+           //holder.friendRequestThumbnail.setImageURI(myUri);
+           Glide.with(holder.itemView).load(myUri).into(holder.friendRequestThumbnail);
+       }
+
         holder.friendRequestId.setText(mFriendRequestList.get(position).getName());
 
         if (mFriendRequestList != null) {

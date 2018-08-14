@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         startActivity(intent);
                     }else {
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
+                        finish();
                         startActivity(intent);
                     }
 
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
         if(mFirebaseUser != null) {
-            mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addValueEventListener(new ValueEventListener() {
+            mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String uri = dataSnapshot.getValue(String.class);

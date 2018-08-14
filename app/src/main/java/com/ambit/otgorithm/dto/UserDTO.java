@@ -39,6 +39,12 @@ public class UserDTO {
         this.selection = selection;
     }
 
+    public UserDTO(String email, String name, String uid) {
+        this.email = email;
+        this.name = name;
+        this.uid = uid;
+    }
+
     public String getEmail() {
         return email;
     }
