@@ -120,7 +120,7 @@ public class FavoritesActivity extends AppCompatActivity {
              * (가지고 온 값이 blacklist인 경우 longItemlick을 통해 해제 다이얼로그 나오게끔 함
              */
             @Override
-            public void onLongItemClick(View view, int position) {
+            public void onLongItemClick(View view, final int position) {
                 Log.d("인텐트 테스트 ", target);
 
                 // 차단친구 관리에서 꾹 눌렀을 시
@@ -142,12 +142,18 @@ public class FavoritesActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         Toast.makeText(getApplicationContext(), "차단 해제", Toast.LENGTH_SHORT).show();
-
                                                         /**
                                                          * 차단 해제 처리 작업
                                                          */
-//                                                        mUserRef.child(mFirebaseUser.getUid()).child("collection").child(collectionItem.gid).removeValue();
-//                                                        removeItem(collectionItem);
+                                                        if(favoritesAdapter.getItem(position)!=null){
+                                                            final UserDTO blacklist_person = favoritesAdapter.getItem(position);
+                                                            mUserRef.child(mFirebaseUser.getUid()).child("blacklist").child(blacklist_person.getUid()).removeValue(new DatabaseReference.CompletionListener() {
+                                                                @Override
+                                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                                    favoritesAdapter.removeItem(blacklist_person);
+                                                                }
+                                                            });
+                                                        }
                                                     }
                                                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                                             @Override

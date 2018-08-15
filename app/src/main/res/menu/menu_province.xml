@@ -5,7 +5,7 @@
     <!-- Use ProvinceActivity -->
     <item
         android:id="@+id/action_gallary"
-        android:icon="@drawable/ic_view_carousel_black_24dp"
+        android:icon="@drawable/ic_add_circle_outline_white_24dp"
         android:title="Gallary"
         app:showAsAction="always" />
 

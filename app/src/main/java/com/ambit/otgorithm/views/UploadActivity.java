@@ -1,11 +1,13 @@
 package com.ambit.otgorithm.views;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,12 +52,22 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 
 public class UploadActivity extends AppCompatActivity {
 
+    Dialog epicDialog;
     android.app.AlertDialog mDialog;
     ConstraintLayout uploadLayout;
+
+    // 정보띄우기
+    ImageView uploadInfo;
+
+    Button btnAccept;
+
+    ImageView closePopup;
 
     private TextView textViewToolbarTitle;
     private TextView profile;
@@ -105,6 +118,9 @@ public class UploadActivity extends AppCompatActivity {
         /****************************************************************/
 
         uploadLayout = (ConstraintLayout) findViewById(R.id.upload_content);
+        uploadInfo = findViewById(R.id.upload_info);
+
+        epicDialog = new Dialog(this);
 
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -116,6 +132,14 @@ public class UploadActivity extends AppCompatActivity {
         pictureView = findViewById(R.id.picture_view);
         pictureDescription = findViewById(R.id.picture_description);
         profile = findViewById(R.id.profileComment);
+
+        // 정보띄우기
+        uploadInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup();
+            }
+        });
 
         Bundle bundle = getIntent().getExtras();
         mode = (String)bundle.get("mode");
@@ -141,7 +165,6 @@ public class UploadActivity extends AppCompatActivity {
             profile.setText("프로필 배경을 올려보세요");
             pictureDescription.setVisibility(View.INVISIBLE);
         }
-
 
         if(mode.equals("profile"))
             profile.setText("프로필 사진을 올려보세요");
@@ -205,6 +228,31 @@ public class UploadActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // 팝업띄우기
+    public void showPopup() {
+        epicDialog.setContentView(R.layout.popup);
+
+        closePopup = epicDialog.findViewById(R.id.close_popup);
+        btnAccept = epicDialog.findViewById(R.id.btn_accept);
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                epicDialog.dismiss();
+            }
+        });
+
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                epicDialog.dismiss();
+            }
+        });
+
+        epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        epicDialog.show();
     }
 
     public void startGalleryChooser(){

@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="90"
+            android:layout_weight="80"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -30,39 +30,6 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true" />
 
-                <!--업로드 날짜-->
-                <TextView
-                    android:id="@+id/txv_row"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Hello How Are you"
-                    android:textColor="@android:color/black" />
-
-                <!--따봉 -->
-                <ImageButton
-                    android:id="@+id/star"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/txv_row"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="40dp"
-                    android:background="@android:color/transparent"
-                    card_view:srcCompat="@drawable/thumbs_up_off" />
-
-                <!--즐겨찾기 -->
-                <ImageView
-                    android:id="@+id/likey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/txv_row"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/ic_star_border_black_24dp" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -70,8 +37,56 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:orientation="vertical">
+            android:layout_weight="20"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:paddingTop="4dp"
+                android:layout_margin="4dp"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content">
+
+                <!--업로드 날짜-->
+                <TextView
+                    android:id="@+id/txv_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Hello How Are you"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_margin="4dp"
+                android:layout_height="wrap_content">
+
+                <!--즐겨찾기 -->
+                <ImageView
+                    android:id="@+id/likey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/ic_star_border_gray_32dp" />
+
+                <!--따봉 -->
+                <ImageButton
+                    android:id="@+id/star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    card_view:srcCompat="@drawable/thumbs_up_off" />
+            </LinearLayout>
 
         </LinearLayout>
 
