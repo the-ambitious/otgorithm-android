@@ -130,7 +130,7 @@
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
@@ -146,14 +146,14 @@
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:text="관심있는 품목에 태그를 추가해보세요."
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp" />-->
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="출격모드"
+            android:layout_marginTop="16dp"
+            android:text="출격상황"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -162,13 +162,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="On(hash tag)"
+            android:text="On"
+            android:textStyle="bold"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="16sp"
             android:layout_marginBottom="@dimen/activity_vertical_margin" />
         
     </LinearLayout>
 
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -233,6 +235,7 @@
                 app:srcCompat="@drawable/ic_star_yellow_24dp" />
 
         </android.support.constraint.ConstraintLayout>
-    </LinearLayout>
 
+    </LinearLayout>
+-->
 </android.support.constraint.ConstraintLayout>

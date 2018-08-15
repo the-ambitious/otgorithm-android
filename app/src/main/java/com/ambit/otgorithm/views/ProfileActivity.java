@@ -123,7 +123,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Glide.with(ProfileActivity.this).load(R.drawable.ic_star_yellow_24dp).into(favoritesFab);
                     break;
                 case 4:
-                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_border_black_24dp).into(favoritesFab);
+                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_border_gray_32dp).into(favoritesFab);
                     break;
                 case 5:
                     Glide.with(ProfileActivity.this).load(android.R.drawable.sym_action_chat).into(chatFab);

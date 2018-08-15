@@ -17,11 +17,9 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
-import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.AnimationUtil;
 import com.ambit.otgorithm.views.MainActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,10 +31,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder> {
 
@@ -67,7 +62,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                     Glide.with(context).load(R.drawable.thumbs_up_off).into(thumbs_up);
                     break;
                 case 3:
-                    Glide.with(context).load(R.drawable.ic_star_border_black_24dp).into(favorites);
+                    Glide.with(context).load(R.drawable.ic_star_border_gray_32dp).into(favorites);
                     break;
                 case 4:
                     Glide.with(context).load(R.drawable.ic_star_yellow_24dp).into(favorites);

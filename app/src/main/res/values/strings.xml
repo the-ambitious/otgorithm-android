@@ -53,4 +53,22 @@
     <!--페북-->
     <string name="facebook_app_id">244104373080056</string>
     <string name="fb_login_protocol_scheme">fb244104373080056</string>
+
+    <!-- Custom dialog box 2018 -->
+    <string name="positive_popup_text_default">
+        데일리룩이 잘 보이게 촬영해주세요.\n
+        (얼굴은 나오지 않아도 괜찮아요)\n\n
+        데일리룩과 무관하거나,\n
+        불순한 의도의 사진 업로드 시
+    </string>
+
+    <string name="warning_accent">
+        블라인드 및 영구 계정 정지는 물론\n
+        법적 제재 대상이 될 수 있습니다.
+    </string>
+
+    <string name="positive_popup_title_default">데일리룩 업로드, 이렇게!</string>
+    <string name="negative_popup_text_default">You have failed to complete the challenge. So close! Wanna have another go at it?</string>
+    <string name="negative_popup_title_default">Aww... Swp!</string>
+
 </resources>

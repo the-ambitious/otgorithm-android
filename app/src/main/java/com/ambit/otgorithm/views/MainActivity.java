@@ -34,6 +34,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,6 +46,10 @@ import com.ambit.otgorithm.models.Common;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -72,6 +77,13 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
+
+    // admob 전면광고
+    private InterstitialAd mInterstitialAd;
+    AdView main_Banner_AdView;
+
+    Button btn_test;
+    AdRequest adRequest;
 
     private long pressedTime = 0;
 
@@ -190,6 +202,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         SystemClock.sleep(2000);
 
         super.onCreate(savedInstanceState);
+
+        setFullAd();
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                displayInterstitial();
+            }
+
+            @Override
+            public void onAdClosed() { }
+        });
+
         setContentView(R.layout.activity_main);
 
         // firebase 인증 객체 얻기
@@ -1021,5 +1045,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         mUserRef.child(uid).updateChildren(map);
     }   // end of passPushTokenToServer()
+
+    private void setFullAd() {
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        AdRequest adRequest1 = new AdRequest.Builder().build(); //새 광고요청
+        mInterstitialAd.loadAd(adRequest1); //요청한 광고를 load 합니다.
+        mInterstitialAd.setAdListener(new AdListener() { //전면 광고의 상태를 확인하는 리스너 등록
+            @Override
+            public void onAdClosed() { //전면 광고가 열린 뒤에 닫혔을 때
+                AdRequest adRequest1 = new AdRequest.Builder().build();  //새 광고요청
+                mInterstitialAd.loadAd(adRequest1); //요청한 광고를 load 합니다.
+            }
+        });
+    }
+
+    // Invoke displayInterstitial() when you are ready to display an interstitial.
+    public void displayInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            //전면광고후 처리 코드 삽입
+        }
+    }
 
 }

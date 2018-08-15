@@ -2,6 +2,7 @@ package com.ambit.otgorithm.views;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GalleryRecyclerAdapter;
@@ -153,7 +155,7 @@ public class GalleryActivity extends AppCompatActivity
         parent.setContentInsetsAbsolute(0,0);*/
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_province, menu);
         return true;
     }
 
@@ -166,6 +168,12 @@ public class GalleryActivity extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 return true;
+
+            case R.id.action_gallary:
+                Intent intent = new Intent(GalleryActivity.this, UploadActivity.class);
+                intent.putExtra("mode", "upload");
+                startActivity(intent);
+                break;
 
             // will be updated since ver 2.0
             case R.id.calendar:
@@ -202,7 +210,6 @@ public class GalleryActivity extends AppCompatActivity
                 recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

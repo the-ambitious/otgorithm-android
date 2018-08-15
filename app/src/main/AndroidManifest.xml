@@ -24,6 +24,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".views.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +47,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -59,7 +61,6 @@
             </intent-filter>
         </activity>
         <!-- 페북끝 -->
-
 
         <!-- FirebaseMessagingService를 확장하는 서비스 -->
         <!--
@@ -93,27 +94,69 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".views.SortieActivity" />
-        <activity android:name=".views.GalleryActivity" />
-        <activity android:name=".views.FirstStartActivity" />
-        <activity android:name=".views.ProvinceActivity" />
-        <activity android:name=".views.RankActivity" />
-        <activity android:name=".views.SignInActivity" />
-        <activity android:name=".views.SiginUp1Activity" />
-        <activity android:name=".views.SignUp2Activity" />
-        <activity android:name=".views.UploadActivity" />
-        <activity android:name=".views.ProfileActivity" />
-        <activity android:name=".views.WebViewActivity" />
-        <activity android:name=".views.ChatActivity" />
-        <activity android:name=".views.ChatMain" />
-        <activity android:name=".views.IntroActivity" />
-        <activity android:name=".views.DescriptionActivity" />
-        <activity android:name=".views.FeedActivity" />
-        <activity android:name=".views.FavoritesActivity" />
-        <activity android:name=".views.CollectionActivity" />
-        <activity android:name=".views.NoticeActivity" />
-        <activity android:name=".views.AddInfoActivity" />
-        <activity android:name=".views.SettingActivity"></activity>
+        <activity
+            android:name=".views.SortieActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.FirstStartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ProvinceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.RankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SignInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SiginUp1Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SignUp2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.UploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ChatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ChatMain"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.IntroActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.DescriptionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.FeedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.FavoritesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.CollectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.AddInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SettingActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

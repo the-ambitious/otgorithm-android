@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="알림 설정">
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="push_alarm"
             android:summary="면담(친구) 요청을 알림으로 받습니다."
             android:title="면담 요청 알림" />

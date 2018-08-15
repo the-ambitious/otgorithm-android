@@ -37,4 +37,13 @@
     <color name="font_color">#E4E4E4</color>
 
     <color name="white">#fff</color>
+    
+    <!-- Custom dialog box 2018 -->
+    <color name="colorRed">#ff3943</color>
+    <color name="colorRedDark">#801b20</color>
+    <color name="colorGreenLight">#abffc0</color>
+    <color name="colorGreen">#247b37</color>
+    <color name="colorWhite">#ffffff</color>
+
+    
 </resources>
