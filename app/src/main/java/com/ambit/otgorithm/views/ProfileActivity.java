@@ -321,103 +321,122 @@ public class ProfileActivity extends AppCompatActivity {
     }   // end of onCreate()
 
     private void chatFabListener(){
-        mUserRef.child(general.getUid()).child("blacklist").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mUserRef.child(mFirebaseUser.getUid()).child("blacklist").child(general.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserDTO userDTO = dataSnapshot.getValue(UserDTO.class);
-                if(userDTO != null){
-                    Snackbar.make(coordinatorLayout,general.getName()+"님으로 부터 차단당하셨습니다.",Snackbar.LENGTH_SHORT).show();
+                UserDTO user = dataSnapshot.getValue(UserDTO.class);
+                if(user != null){
+                    Snackbar.make(coordinatorLayout,"차단을 먼저 해제해주세요.",Snackbar.LENGTH_SHORT).show();
                     mDialog.dismiss();
                 }else {
-                    mUserRef.child(general.getUid()).child("theSameBoat").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    mUserRef.child(general.getUid()).child("blacklist").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            UserDTO userDTO1 = dataSnapshot.getValue(UserDTO.class);
-                            if(userDTO1 != null){
-                                // 채팅하시겠습니까?
-                                Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                        mUserRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Log.d("chat2","들어옴");
-                                                for(DataSnapshot children : dataSnapshot.getChildren()){
-                                                    Chat chat = children.getValue(Chat.class);
-                                                    Log.d("chat22","드루어옴");
-                                                    if(chat.getTitle().equals(general.getName())){
-                                                        //기존방이 있을때
-                                                        Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
-                                                        chatIntent.putExtra("chat_id", chat.getChatId());
-                                                        startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                                                        Log.d("chat222","드루루어옴");
-                                                        return;
-                                                    }
-                                                }
-                                                //기존방이 없을때
-                                                Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
-                                                chatIntent.putExtra("uid", general.getUid());
-                                                startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                            }
-                                        });
-                                        Log.d("chat3", "나옴");
-                                    }
-                                }).show();
+                            UserDTO userDTO = dataSnapshot.getValue(UserDTO.class);
+                            if(userDTO != null){
+                                Snackbar.make(coordinatorLayout,general.getName()+"님으로 부터 차단당하셨습니다.",Snackbar.LENGTH_SHORT).show();
                                 mDialog.dismiss();
-                            } else {
-                                mUserRef.child(general.getUid()).child("requestFromMentee").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            }else {
+                                mUserRef.child(general.getUid()).child("theSameBoat").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        UserDTO userDTO2 = dataSnapshot.getValue(UserDTO.class);
-                                        if (userDTO2 != null) {
-                                            //친구 요청 취소
-                                            Snackbar.make(coordinatorLayout, "상대방의 수락을 기다리고 있습니다.", Snackbar.LENGTH_LONG).setAction("요청 취소", new View.OnClickListener() {
+                                        UserDTO userDTO1 = dataSnapshot.getValue(UserDTO.class);
+                                        if(userDTO1 != null){
+                                            // 채팅하시겠습니까?
+                                            Snackbar.make(coordinatorLayout, general.getName()+"님과 대화를 하시겠습니까?", Snackbar.LENGTH_LONG).setAction("예", new View.OnClickListener() {
                                                 @Override
-                                                public void onClick(View v) {
-                                                    mUserRef
-                                                            .child(general.getUid())
-                                                            .child("requestFromMentee")
-                                                            .child(mFirebaseUser.getUid())
-                                                            .removeValue();
-                                                    mUserRef
-                                                            .child(mFirebaseUser.getUid())
-                                                            .child("requestToMentor")
-                                                            .child(general.getUid())
-                                                            .removeValue();
-                                                    handler.sendEmptyMessage(5);
+                                                public void onClick(View view) {
+
+                                                    mUserRef.child(mFirebaseUser.getUid()).child("chats").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            Log.d("chat2","들어옴");
+                                                            for(DataSnapshot children : dataSnapshot.getChildren()){
+                                                                Chat chat = children.getValue(Chat.class);
+                                                                Log.d("chat22","드루어옴");
+                                                                if(chat.getTitle().equals(general.getName())){
+                                                                    //기존방이 있을때
+                                                                    Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                                                    chatIntent.putExtra("chat_id", chat.getChatId());
+                                                                    startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                                                    Log.d("chat222","드루루어옴");
+                                                                    return;
+                                                                }
+                                                            }
+                                                            //기존방이 없을때
+                                                            Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
+                                                            chatIntent.putExtra("uid", general.getUid());
+                                                            startActivityForResult(chatIntent, ChatFragment.JOIN_ROOM_REQUEST_CODE);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+                                                        }
+                                                    });
+                                                    Log.d("chat3", "나옴");
                                                 }
                                             }).show();
                                             mDialog.dismiss();
                                         } else {
-                                            //친구 요청
-                                            requestFriend();
+                                            mUserRef.child(general.getUid()).child("requestFromMentee").child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    UserDTO userDTO2 = dataSnapshot.getValue(UserDTO.class);
+                                                    if (userDTO2 != null) {
+                                                        //친구 요청 취소
+                                                        Snackbar.make(coordinatorLayout, "상대방의 수락을 기다리고 있습니다.", Snackbar.LENGTH_LONG).setAction("요청 취소", new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                mUserRef
+                                                                        .child(general.getUid())
+                                                                        .child("requestFromMentee")
+                                                                        .child(mFirebaseUser.getUid())
+                                                                        .removeValue();
+                                                                mUserRef
+                                                                        .child(mFirebaseUser.getUid())
+                                                                        .child("requestToMentor")
+                                                                        .child(general.getUid())
+                                                                        .removeValue();
+                                                                handler.sendEmptyMessage(5);
+                                                            }
+                                                        }).show();
+                                                        mDialog.dismiss();
+                                                    } else {
+                                                        //친구 요청
+                                                        requestFriend();
+                                                        mDialog.dismiss();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                }
+                                            });
                                             mDialog.dismiss();
                                         }
+
                                     }
 
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                    }
+                                    public void onCancelled(DatabaseError databaseError) { }
                                 });
-                                mDialog.dismiss();
                             }
-
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) { }
+                        public void onCancelled(DatabaseError databaseError) {}
                     });
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
+
+
+
     }
 
     private void requestFriend(){

@@ -26,6 +26,7 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GalleryRecyclerAdapter;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.fragments.DatePickerFragment;
+import com.ambit.otgorithm.modules.RecyclerViewItemClickListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -130,6 +131,16 @@ public class GalleryActivity extends AppCompatActivity
 
         // Vertical Orientation By Default
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
+        recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this, new RecyclerViewItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                GalleryDTO galleryDTO = adapter.getItem(position);
+                Intent intent = new Intent(GalleryActivity.this, ProfileActivity.class);
+                intent.putExtra("ranker_id",galleryDTO.getNickname());
+                startActivity(intent);
+            }
+        }));
     }
 
     @Override
