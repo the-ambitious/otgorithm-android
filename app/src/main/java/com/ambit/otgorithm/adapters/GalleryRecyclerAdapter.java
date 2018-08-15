@@ -233,6 +233,14 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         return data.size();
     }
 
+    public GalleryDTO getItem(int position) {
+        if(data.size()!=0){
+            return this.data.get(position);
+        }else {
+            return null;
+        }
+    }
+
     public void getCollectionCount(){
         mUserRef.child(mFirebaseUser.getUid()).child("collection").addValueEventListener(new ValueEventListener() {
             @Override

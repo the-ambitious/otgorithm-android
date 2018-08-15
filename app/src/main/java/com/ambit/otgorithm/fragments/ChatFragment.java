@@ -252,8 +252,12 @@ public class ChatFragment extends Fragment {
 
                         final ExitMessage exitMessage = new ExitMessage();
                         String messageId = messageRef.push().getKey();
+                        if(MainActivity.userUri!=null){
+                            exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
+                        }else {
+                            exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, null));
+                        }
 
-                        exitMessage.setMessageUser(new UserDTO(mFirebaseUser.getUid(), mFirebaseUser.getEmail(), MainActivity.nickName, MainActivity.userUri.toString()));
                         exitMessage.setMessageDate(new Date());
                         exitMessage.setMessageId(messageId);
                         exitMessage.setChatId(chat.getChatId());

@@ -21,7 +21,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesHolder> {
 
     private ArrayList<UserDTO> favoritesList;
-    private ArrayList<UserDTO> blackList;
     Context context;
     LayoutInflater inflater;
 
@@ -54,6 +53,19 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         holder.favoritesUserId.setText(favoritesPerson.getName());
         holder.favoritesUserDesc.setText(favoritesPerson.description);
 
+    }
+
+    public UserDTO getItem(int position) {
+        if(favoritesList.size()!=0){
+            return this.favoritesList.get(position);
+        }else {
+            return null;
+        }
+    }
+
+    public void removeItem(UserDTO friend){
+        favoritesList.remove(friend);
+        notifyDataSetChanged();
     }
 
     @Override

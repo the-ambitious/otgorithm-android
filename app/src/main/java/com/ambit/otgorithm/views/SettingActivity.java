@@ -2,6 +2,7 @@ package com.ambit.otgorithm.views;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -25,6 +26,7 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
     TextView textViewToolbarTitle;
 
     public static boolean alarmIsNotChecked;
+    public static int alram;
 
     private static final String TAG = "PreSettingsActivity";
 
@@ -37,7 +39,7 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
 
     private static final String PUSH_ALARM = "push_alarm";
 
-    private SwitchPreference mPushAlarm;
+    public static Preference mPushAlarm;
 
     private PreferenceScreen screen;
     private CheckBoxPreference mUseUsername;
@@ -122,24 +124,35 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         mUsername = (EditTextPreference) screen.findPreference(USER_NAME);
         mbackgroundcolor = (ListPreference) screen.findPreference(BACKGROUND_COLOR);
         mTextcolor = (ListPreference) screen.findPreference(TEXT_COLOR);
-        mPushAlarm = (SwitchPreference) screen.findPreference(PUSH_ALARM);
+        mPushAlarm = screen.findPreference(PUSH_ALARM);
 
-        mPushAlarm.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        findPreference("push_alarm").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData(Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
+                return false;
+            }
+        });
+/*        mPushAlarm.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 // 푸시 알람 스위치 on/off를 알려주는 변수
-                alarmIsNotChecked = mPushAlarm.isChecked();
+//                alarmIsNotChecked = mPushAlarm.isChecked();
 
-                if (!alarmIsNotChecked) {
+
+                *//*if (!alarmIsNotChecked) {
                     // 푸시 알람이 on일 경우
                     Toast.makeText(SettingActivity.this, "switch on", Toast.LENGTH_SHORT).show();
                 } else {
                     // 푸시 알람이 off일 경우
                     Toast.makeText(SettingActivity.this, "switch off", Toast.LENGTH_SHORT).show();
                 }
+                *//*
                 return true;
             }
-        });
+        });*/
         //변화 이벤트가 일어났을 시 동작
 /*        mUsername.setOnPreferenceChangeListener(this);
         mbackgroundcolor.setOnPreferenceChangeListener(this);
