@@ -354,7 +354,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                             for(DataSnapshot children : dataSnapshot.getChildren()){
                                                                 Chat chat = children.getValue(Chat.class);
                                                                 Log.d("chat22","드루어옴");
-                                                                if(chat.getTitle().equals(general.getName())){
+                                                                if(chat.getTitle()!=null&&chat.getTitle().equals(general.getName())){
                                                                     //기존방이 있을때
                                                                     Intent chatIntent = new Intent(ProfileActivity.this, ChatActivity.class);
                                                                     chatIntent.putExtra("chat_id", chat.getChatId());
@@ -579,8 +579,7 @@ public class ProfileActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new IntroFragment(
-                ContextCompat.getColor(this, android.R.color.background_light)), "Profile");
+        adapter.addFrag(new IntroFragment(ranker_id), "Profile");
         adapter.addFrag(new DailyLookFragment(ranker_id), "Daily Look");
 //        adapter.addFrag(new ProfileFragment(
 //                ContextCompat.getColor(this, android.R.color.transparent)), "Dress Room");
@@ -651,7 +650,7 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onCancelled(DatabaseError databaseError) { }
                         });
-                        handler.sendEmptyMessage(0);
+
                         return;
                     }
                 }

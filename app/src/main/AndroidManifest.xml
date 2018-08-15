@@ -47,7 +47,6 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -61,6 +60,7 @@
             </intent-filter>
         </activity>
         <!-- 페북끝 -->
+
 
         <!-- FirebaseMessagingService를 확장하는 서비스 -->
         <!--
@@ -157,6 +157,8 @@
         <activity
             android:name=".views.SettingActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".modules.AdDialog" />
+        <activity android:name=".modules.FirstAdDialog"></activity>
     </application>
 
 </manifest>

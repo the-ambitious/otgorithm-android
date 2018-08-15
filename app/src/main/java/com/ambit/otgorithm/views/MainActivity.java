@@ -43,6 +43,8 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.ambit.otgorithm.models.Common;
+import com.ambit.otgorithm.modules.AdDialog;
+import com.ambit.otgorithm.modules.FirstAdDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
@@ -203,8 +205,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         super.onCreate(savedInstanceState);
 
-        setFullAd();
-        mInterstitialAd.setAdListener(new AdListener() {
+        FirstAdDialog firstAdDialog = new FirstAdDialog(this);
+        firstAdDialog.show();
+        //setFullAd();
+       /* mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 displayInterstitial();
@@ -212,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             @Override
             public void onAdClosed() { }
-        });
+        });*/
 
         setContentView(R.layout.activity_main);
 
@@ -524,7 +528,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      */
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+        /*if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
@@ -545,7 +549,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
                     });
             alt_bld.show();
-        }
+        }*/
+
+
+        AdDialog adDialog = new AdDialog(this);
+        adDialog.show();
+
         //super.onBackPressed();
 
 /*

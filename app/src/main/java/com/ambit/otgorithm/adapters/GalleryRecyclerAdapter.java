@@ -1,7 +1,9 @@
 package com.ambit.otgorithm.adapters;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +20,9 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.modules.AnimationUtil;
+import com.ambit.otgorithm.views.GalleryActivity;
 import com.ambit.otgorithm.views.MainActivity;
+import com.ambit.otgorithm.views.ProfileActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -154,6 +158,15 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         });
         */
 
+        myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProfileActivity.class);
+                intent.putExtra("ranker_id",infoData.getNickname());
+                context.startActivity(intent);
+            }
+        });
+
         myViewHolder.star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +210,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                   @Override
                   public void onDataChange(DataSnapshot dataSnapshot) {
                           GalleryDTO galleryDTO = dataSnapshot.getValue(GalleryDTO.class);
-                          if(collectionCount>3){
+                          if(collectionCount>20){
                               Toast.makeText(context,"컬랙션이 꽉 찼습니다",Toast.LENGTH_SHORT).show();
                               return;
                           }
@@ -235,6 +248,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             return null;
         }
     }
+
 
     public void getCollectionCount(){
         mUserRef.child(mFirebaseUser.getUid()).child("collection").addValueEventListener(new ValueEventListener() {
