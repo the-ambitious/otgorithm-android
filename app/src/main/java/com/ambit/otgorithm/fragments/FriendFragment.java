@@ -117,7 +117,7 @@ public class FriendFragment extends Fragment {
                                         for (DataSnapshot children : dataSnapshot.getChildren()) {
                                             Chat chat = children.getValue(Chat.class);
                                             Log.d("chat22", "드루어옴");
-                                            if (chat.getTitle().equals(friend.getName())) {
+                                            if (chat.getTitle()!=null&&chat.getTitle().equals(friend.getName())) {
                                                 //기존방이 있을때
                                                 Intent chatIntent = new Intent(getContext(), ChatActivity.class);
                                                 chatIntent.putExtra("chat_id", chat.getChatId());
@@ -361,7 +361,7 @@ public class FriendFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot children : dataSnapshot.getChildren()){
                                     Chat chat = children.getValue(Chat.class);
-                                    if(chat != null && chat.getTitle().equals(friend.getName())){
+                                    if(chat != null && chat.getTitle()!=null && chat.getTitle().equals(friend.getName())){
                                         leaveChat(chat);
                                         return;
                                     }
