@@ -55,13 +55,12 @@
                 app:srcCompat="@drawable/ic_thumb_up_blue_24dp" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/favorites_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="1002"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -82,13 +81,12 @@
                 app:srcCompat="@drawable/ic_star_yellow_24dp" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/thumbs_up_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="1002"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -123,6 +121,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/profile_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"

@@ -72,6 +72,7 @@ public class UploadActivity extends AppCompatActivity {
     private TextView textViewToolbarTitle;
     private TextView profile;
 
+    private TextView simple_comment;
     private ImageView pictureView;
     private FloatingActionButton pictureChoose;
     private Button pictureUpload;
@@ -132,6 +133,7 @@ public class UploadActivity extends AppCompatActivity {
         pictureView = findViewById(R.id.picture_view);
         pictureDescription = findViewById(R.id.picture_description);
         profile = findViewById(R.id.profileComment);
+        simple_comment = findViewById(R.id.simple_comment);
 
         // 정보띄우기
         uploadInfo.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +166,7 @@ public class UploadActivity extends AppCompatActivity {
         if(mode.equals("background")){
             profile.setText("프로필 배경을 올려보세요");
             pictureDescription.setVisibility(View.INVISIBLE);
+            simple_comment.setVisibility(View.INVISIBLE);
         }
 
         if(mode.equals("profile"))
@@ -173,12 +176,16 @@ public class UploadActivity extends AppCompatActivity {
         pictureUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (path != null) {
-                    upload(path);
-                    mDialog = new SpotsDialog.Builder().setContext(UploadActivity.this).build();
-                    mDialog.show();
-                } else {
-                    Toast.makeText(UploadActivity.this, "사진을 올려주세요.", Toast.LENGTH_SHORT).show();
+                if(pictureDescription.getText().toString().length()>15){
+                    Toast.makeText(UploadActivity.this, "15자 이내로 써주세요.", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (path != null) {
+                        upload(path);
+                        mDialog = new SpotsDialog.Builder().setContext(UploadActivity.this).build();
+                        mDialog.show();
+                    } else {
+                        Toast.makeText(UploadActivity.this, "사진을 올려주세요.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -398,7 +405,7 @@ public class UploadActivity extends AppCompatActivity {
                 Integer upload_count = dataSnapshot.getValue(Integer.class);
                 if(upload_count == null){
                     Map<String,Object> map = new HashMap<>();
-                    map.put(formatDate,3);
+                    map.put(formatDate,5);
                     mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").setValue(map);
                 }else {
                     uploadCount = upload_count;

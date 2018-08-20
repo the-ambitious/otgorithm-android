@@ -132,7 +132,7 @@ public class GalleryActivity extends AppCompatActivity
         // Vertical Orientation By Default
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this, new RecyclerViewItemClickListener.OnItemClickListener() {
+       /* recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this, new RecyclerViewItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 GalleryDTO galleryDTO = adapter.getItem(position);
@@ -140,7 +140,7 @@ public class GalleryActivity extends AppCompatActivity
                 intent.putExtra("ranker_id",galleryDTO.getNickname());
                 startActivity(intent);
             }
-        }));
+        }));*/
     }
 
     @Override

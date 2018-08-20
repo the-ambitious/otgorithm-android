@@ -68,10 +68,14 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         holder.textView.setText(dailyLookList.get(position).sysdate);
         Uri uri = Uri.parse(dailyLookList.get(position).imageUrl);
         Glide.with(context).load(uri).into(holder.imageView);
+        holder.my_count.setText(Integer.toString(dailyLookList.get(position).starCount));
 
         //좋아요 , 즐겨찾기 버튼 없앤 부분
         holder.likey.setVisibility(View.INVISIBLE);
-        holder.star.setVisibility(View.INVISIBLE);
+        //holder.star.setVisibility(View.INVISIBLE);
+        holder.star.setImageResource(R.drawable.thumbs_up_on);
+        holder.my_count.setVisibility(View.VISIBLE);
+
         if (position > previousPosition) {      // // We are scrolling DOWN
             AnimationUtil.animate(holder, true);
         } else {    // We are scrolling UP
@@ -169,6 +173,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         ImageView imageView;
         ImageButton star;
         ImageView likey;
+        TextView my_count;
 
         // 생성자
         public MyViewHolder(View itemView) {
@@ -178,6 +183,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
             this.imageView = (ImageView) itemView.findViewById(R.id.img_row);
             this.star = (ImageButton) itemView.findViewById(R.id.star);
             this.likey = (ImageView) itemView.findViewById(R.id.likey);
+            this.my_count = (TextView) itemView.findViewById(R.id.my_count);
         }
 
     }   // end of class MyViewHolder
