@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.ambit.otgorithm.R;
@@ -14,6 +13,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class GridViewAdapter extends BaseAdapter {
+
     Context context;
     ArrayList arrayList;
     LayoutInflater inflater;
@@ -43,11 +43,12 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView==null)
-            convertView = inflater.inflate(layout,null);
-        ImageView iv = (ImageView)convertView.findViewById(R.id.square_view_image);
+        if (convertView == null)
+            convertView = inflater.inflate(layout, null);
+        ImageView iv = (ImageView) convertView.findViewById(R.id.square_view_image);
         //iv.setImageResource((int)arrayList.get(position));
-        Glide.with(context).load((int)arrayList.get(position)).into(iv);
+        Glide.with(context).load((int) arrayList.get(position)).into(iv);
         return convertView;
     }
+
 }

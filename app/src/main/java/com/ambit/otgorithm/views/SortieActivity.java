@@ -1,9 +1,11 @@
 package com.ambit.otgorithm.views;
 
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -31,6 +33,9 @@ public class SortieActivity extends AppCompatActivity {
 
     DrawerLayout mContent;
 
+    Dialog sortieInfoDialog;
+    ImageView closePopup;
+
     // 변수 선언
     FragmentManager fm;
     FragmentTransaction tran;
@@ -48,6 +53,9 @@ public class SortieActivity extends AppCompatActivity {
         // .initialize(): 배너를 사용하기 위해서 초기화를 해준다. 한번만 실행하면 된다.
         MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
         mAdView = findViewById(R.id.adView);
+
+        // 도움말 다이얼로그 객체 생성
+        sortieInfoDialog = new Dialog(this);
 
         // set ads size
 //        AdSize customAdSize = new AdSize(320, 100);
@@ -127,7 +135,7 @@ public class SortieActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_info, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -142,16 +150,27 @@ public class SortieActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-
-            case R.id.action_next:
-//                Intent intent = new Intent(SortieActivity.this, StandbyActivity.class);
-//                startActivity(intent);
-                Snackbar.make(mContent, "다음 버전에 업데이트 예정입니다.", Snackbar.LENGTH_SHORT).show();
+            case R.id.action_information:
+                showSortieInfoPopup();
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }   // end of onOptionsItemSelected()
+
+    public void showSortieInfoPopup() {
+        sortieInfoDialog.setContentView(R.layout.dialog_sortie);
+
+        closePopup = sortieInfoDialog.findViewById(R.id.close_popup);
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortieInfoDialog.dismiss();
+            }
+        });
+
+        sortieInfoDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        sortieInfoDialog.show();
+    }   // end of showSortieInfoPopup()
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {

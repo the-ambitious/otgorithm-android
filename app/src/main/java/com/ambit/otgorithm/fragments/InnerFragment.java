@@ -1,6 +1,5 @@
 package com.ambit.otgorithm.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.GridViewAdapter;
 import com.ambit.otgorithm.views.MainActivity;
-import com.ambit.otgorithm.views.SortieActivity;
 import com.ambit.otgorithm.views.WebViewActivity;
 
 import java.util.ArrayList;
@@ -42,102 +39,98 @@ public class InnerFragment extends android.support.v4.app.Fragment {
 
         arrayList = new ArrayList();
 
-        if(MainActivity.currenttemper < 20){
+        if (MainActivity.currenttemper < 20) {
             // 옥스퍼드 , 폴란넬 셔츠 출격
             arrayList.add(R.drawable.inner_permission_oxford_shirts);
             arrayList.add(R.drawable.inner_permission_flannel_shirts);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_oxford_shirts);
             arrayList.add(R.drawable.inner_black_flannel_shirts);
         }
 
-        if(MainActivity.currenttemper >= 13){
+        if (MainActivity.currenttemper >= 13) {
             // 린넨셔츠 출격
             arrayList.add(R.drawable.inner_permission_linen_shirts);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_linen_shirts);
         }
 
         //드레스 셔츠 always
         arrayList.add(R.drawable.inner_permission_dress_shirts);
 
-        if(MainActivity.currenttemper >= 15){
+        if (MainActivity.currenttemper >= 15) {
             //면 반팔 출격
             arrayList.add(R.drawable.inner_permission_cotton_short_sleeves);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_cotton_short_sleeves);
         }
 
         // 면 슬리브 always
         arrayList.add(R.drawable.inner_permission_cotton_sleeves);
 
-        if(MainActivity.currenttemper <= 20){
+        if (MainActivity.currenttemper <= 20) {
             //니트(얇은) 출격
             arrayList.add(R.drawable.inner_permission_knitwear_thin);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_knitwear_thin);
         }
 
-        if(MainActivity.currenttemper <= 13){
+        if (MainActivity.currenttemper <= 13) {
             //니트(두꺼운) 출격
             arrayList.add(R.drawable.inner_permission_knitwear_thick);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_knitwear_thick);
         }
 
-        if(MainActivity.currenttemper <= 15){
+        if (MainActivity.currenttemper <= 15) {
             //맨투맨 출격
             arrayList.add(R.drawable.inner_permission_sweatshirt);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_sweatshirt);
         }
 
-        if(MainActivity.currenttemper <= 13){
+        if (MainActivity.currenttemper <= 13) {
             //기모 맨투맨 출격
             arrayList.add(R.drawable.inner_permission_fleece_lined_sweatshirt);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_fleece_lined_sweatshirt);
         }
 
-        if(MainActivity.currenttemper <= 13){
+        if (MainActivity.currenttemper <= 13) {
             //네오프렌 맨투맨 출격
             arrayList.add(R.drawable.inner_permission_neoprene_sweatshirt);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_neoprene_sweatshirt);
         }
 
 
-        if(MainActivity.currenttemper <= 18){
+        if (MainActivity.currenttemper <= 18) {
             //가디건(얇은) 출격
             arrayList.add(R.drawable.inner_permission_cardigan_thin);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_cardigan_thin);
         }
 
-        if(MainActivity.currenttemper <= 14){
+        if (MainActivity.currenttemper <= 14) {
             //가디건 (두꺼운),터틀넥 출격
             arrayList.add(R.drawable.inner_permission_cardigan_thick);
             arrayList.add(R.drawable.inner_permission_turtleneck);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_cardigan_thick);
             arrayList.add(R.drawable.inner_black_turtleneck);
         }
 
-        if(MainActivity.currenttemper >= 24){
+        if (MainActivity.currenttemper >= 24) {
             //피케 티셔츠 출격
             arrayList.add(R.drawable.inner_permission_pique_shirts);
-        }else {
+        } else {
             arrayList.add(R.drawable.inner_black_pique_shirts);
         }
-
-
-
 
 /*        linen = (ImageView)findViewById(R.id.linen);
         loafer = (ImageView)findViewById(R.id.loafer);
 
         Log.v("---------------",linen.getId()+"");*/
-
 
         grid = view.findViewById(R.id.grid);
         gridViewAdapter = new GridViewAdapter(getActivity(), arrayList, R.layout.square_view);
@@ -149,7 +142,7 @@ public class InnerFragment extends android.support.v4.app.Fragment {
                 Log.d("포지션 체크: ", "위치: " + position);
 
                 switch (position) {
-                    case 0:
+                    case 0:     // 옥스포드 셔츠
                         Log.d("테스트: ", "view.getContext()?" + view.getContext());
                         //context = linen.getContext();
                         Log.d("테스트: ", "linen.getContext() 머있음?" + intent);
@@ -163,38 +156,50 @@ public class InnerFragment extends android.support.v4.app.Fragment {
                         //res_id[0] = "linen";
                         // intent로 넘어가는 페이지에 key가 "id"이고 value가 res_id[1] -> (Linen)을
                         // 보내서 이동하는 BrowserDemo1에서 getExtras()로 받음
-                        intent.putExtra("id", "oxfordshirt");
-                        startActivity(intent);
+                        intent.putExtra("inner", "oxfordshirt");
                         break;
-                    case 1:     // 면 반팔
+                    case 1:     // 플란넬 셔츠
+                        intent.putExtra("inner", "flannelshirt");
+                        break;
+                    case 2:     // 리넨 셔츠
+                        intent.putExtra("inner", "linenshirt");
+                        break;
+                    case 3:     // 드레스 셔츠
+                        intent.putExtra("inner", "dressshirt");
+                        break;
+                    case 4:     // 면 반팔
+                        intent.putExtra("inner", "tshirt");
+                        break;
+                    case 5:     // 면 슬리브
+                        intent.putExtra("inner", "tshirt");
+                        break;
+                    case 6:     // 니트(얇은)
+                        intent.putExtra("inner", "knit");
+                        break;
+                    case 7:     // 니트(두꺼운)
+                        intent.putExtra("inner", "knit");
+                        break;
+                    case 8:     // 맨투맨
                         Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
                         break;
-                    case 2:     // 면 슬리브
+                    case 9:     // 기모 맨투맨
                         Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
                         break;
-                    case 3:     // 맨투맨
+                    case 10:     // 네오프렌 맨투맨
                         Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
                         break;
-                    case 4:     // 기모 맨투맨
-                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                    case 11:     // 가디건(얇은)
+                        intent.putExtra("inner", "cardigan");
                         break;
-                    case 5:     // 네오프렌 맨투맨
-                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                    case 12:     // 가디건(두꺼운)
+                        intent.putExtra("inner", "cardigan");
                         break;
-                    case 6:     // 가디건(얇은)
-                        intent.putExtra("id", "cardigan");
-                        startActivity(intent);
-                        break;
-                    case 7:     // 가디건(두꺼운)
-                        intent.putExtra("id", "cardigan");
-                        startActivity(intent);
-                        break;
-                    case 8:     // 터틀넥
-                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                    case 13:     // 터틀넥
+                        intent.putExtra("inner", "turtleneck");
                         break;
                 }
                 Log.d("테스트: ", "intent 머있음?" + intent);
-                //startActivity(intent);
+                startActivity(intent);
             }
         });
         grid.setAdapter(gridViewAdapter);

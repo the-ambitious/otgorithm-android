@@ -95,8 +95,6 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankerViewHold
         notifyItemInserted(position);
     }
 
-
-
 }
 
 /*

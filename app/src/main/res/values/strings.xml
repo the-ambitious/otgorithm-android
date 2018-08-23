@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">옷고리즘</string>
+    <string name="server_root_address">http://13.124.3.73</string>
 
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <!--
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation menu_navigation</string>
+    <string name="navigation_drawer_close">Close navigation menu_navigation</string>
 -->
     <!-- in SignInActivity -->
     <string name="forgotten_password"><u>비밀번호를 잊으셨나요?</u></string>
@@ -54,10 +57,51 @@
     <string name="facebook_app_id">244104373080056</string>
     <string name="fb_login_protocol_scheme">fb244104373080056</string>
 
+    <!-- dialog_sortie.xml -->
+    <string name="sortie_title">출격 명령 서비스란?</string>
+
+    <string name="sortie_desc">
+        기상 상태와 과학적 빅데이터를 분석,\n
+        당장 입을 수 있는 아이템은 출격하고\n
+        무리라고 판단된다면 퇴각합니다.\n
+        \n
+        홈페이지에서만 확인했던 번거로움을\n
+        이제는 손에 잡히는 어플로 한번에,\n
+        시각적으로 한눈에 확인하세요!
+    </string>
+
+    <!-- dialog_province.xml -->
+    <string name="gallery_title">전투 상황판</string>
+
+    <string name="gallery_desc">
+        오늘 좀 스타일 괜찮은 것 같은데..\n
+        누가 알아봐 줬으면 한 적이 있나요?\n
+        \n
+        평소보다 신경 쓴 내 모습에 만족한다면\n
+        데일리룩을 소개하여 장군이 되어보세요!
+    </string>
+
+    <!-- dialog_province.xml -->
+    <string name="province_title">지역 선택 안내</string>
+
+    <string name="province_desc">
+        옷 좀 입을 줄 아는 장군들은\n
+        전국 각지에 포진되어 있습니다.\n
+        \n
+        데일리룩을 올릴 수 있는 공간인\n
+        전투상황 보고에서 받은 Like 수에 따라\n
+        지역별 장군들의 랭킹이 산정됩니다.\n
+        전투상황 보고는 메인 화면에 있습니다.\n
+        \n
+        자신의 구역에서 최고가 되어보세요!
+    </string>
+
+
     <!-- Custom dialog box 2018 -->
     <string name="positive_popup_text_default">
         데일리룩이 잘 보이게 촬영해주세요.\n
-        (얼굴은 나오지 않아도 괜찮아요)\n\n
+        (얼굴은 나오지 않아도 괜찮아요)\n
+        \n
         데일리룩과 무관하거나,\n
         불순한 의도의 사진 업로드 시
     </string>
