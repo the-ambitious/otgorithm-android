@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
@@ -33,6 +34,7 @@ public class AdDialog extends Dialog {
         dialog_adview = findViewById(R.id.dialog_adView);
         dialog_cancel = findViewById(R.id.dialog_cancel);
         dialog_yes = findViewById(R.id.dialog_yes);
+
 
         AdRequest request = new AdRequest.Builder().build();
         dialog_adview.loadAd(request);

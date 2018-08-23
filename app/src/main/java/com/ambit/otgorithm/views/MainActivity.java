@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.ambit.otgorithm.models.Common;
+import com.ambit.otgorithm.modules.FirstAdDialog;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.MaterialMenuView;
 import com.bumptech.glide.Glide;
@@ -213,8 +214,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Setup
         super.onCreate(savedInstanceState);
 
-        /*FirstAdDialog firstAdDialog = new FirstAdDialog(this);
-        firstAdDialog.show();*/
+        FirstAdDialog firstAdDialog = new FirstAdDialog(this);
+        firstAdDialog.show();
         //setFullAd();
        /* mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -391,8 +392,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
-                    case R.id.nav_aboutUs_intro:
-                        intent = new Intent(MainActivity.this, IntroActivity.class);
+                    case R.id.nav_aboutUs_notice:
+                        intent = new Intent(MainActivity.this, DescriptionActivity.class);
+                        intent.putExtra("description", "notice");
                         startActivity(intent);
                         break;
 
@@ -529,10 +531,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             case R.id.action_settings:
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
     /**
      * 한번을 눌렀을 경우 " 한 번 더 누르면 종료됩니다. " 라는 안내 Toast를 띄우도록 하고
@@ -541,7 +541,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      */
     @Override
     public void onBackPressed() {
-        /*if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
@@ -562,14 +562,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
                     });
             alt_bld.show();
-        }*/
+        }
 
         /*if (fromProvinceActivity) {
             AdDialog adDialog = new AdDialog(this);
             adDialog.show();
         }*/
 
-        //super.onBackPressed();
+        // super.onBackPressed();
 
 /*
         if ( pressedTime == 0 ) {

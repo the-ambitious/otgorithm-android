@@ -23,9 +23,9 @@
                 android:icon="@drawable/ic_emoticon"
                 android:title="@string/nav_contact_notice" />-->
             <item
-                android:id="@+id/nav_aboutUs_intro"
+                android:id="@+id/nav_aboutUs_notice"
                 android:icon="@drawable/ic_info_outline_black_24dp"
-                android:title="@string/nav_aboutUs_intro" />
+                android:title="@string/nav_aboutUs_notice" />
             <item
                 android:id="@+id/nav_aboutUs_settings"
                 android:icon="@drawable/ic_settings_black_24dp"

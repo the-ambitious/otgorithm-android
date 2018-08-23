@@ -181,9 +181,9 @@ public class AddInfoActivity extends AppCompatActivity {
         tieNickname.setFilters(new InputFilter[]{filter});
 
         tilNickname.setCounterEnabled(true);
-        tilNickname.setCounterMaxLength(20);
+        tilNickname.setCounterMaxLength(10);
         tilDescription.setCounterEnabled(true);
-        tilDescription.setCounterMaxLength(50);
+        tilDescription.setCounterMaxLength(40);
 
         check_duplication = (Button)findViewById(R.id.check_duplication);
         //confirm_possibility = (TextView)findViewById(R.id.confirm_possibility);
@@ -205,7 +205,6 @@ public class AddInfoActivity extends AppCompatActivity {
                     Toast.makeText(AddInfoActivity.this,"닉네임에 공백을 입력할 수 없습니다.",Toast.LENGTH_SHORT).show();
                     return;
                 }*/
-
                     if(!emptyCheck())
                         Toast.makeText(AddInfoActivity.this,"닉네임을 입력해주세요.",Toast.LENGTH_SHORT).show();
 
@@ -217,10 +216,6 @@ public class AddInfoActivity extends AppCompatActivity {
                         checkPosibility(tieNickname.getText().toString());
                         inputMethodManager.hideSoftInputFromWindow(check_duplication.getWindowToken(),0);
                     }
-
-
-
-
             }
         });
         profile_upload.setOnClickListener(new View.OnClickListener() {
@@ -339,40 +334,51 @@ public class AddInfoActivity extends AppCompatActivity {
         return true;
     }
 
+    private boolean allButtonChecked() {
+        if (!termsCheckBox.isChecked() && !privacyCheckBox.isChecked() &&
+                !locationCheckBox.isChecked()) {
+            return false;
+        }
+        return true;
+    }
+
     private void goToBattleField() {
         if (!descriptionlengthCheck()) {
             Toast.makeText(AddInfoActivity.this, "40자 이내로 써주세요", Toast.LENGTH_SHORT).show();
-        } else {
-            mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot children : dataSnapshot.getChildren()) {
-                        UserDTO userDTO = children.getValue(UserDTO.class);
-                        if (userDTO.getName() != null && userDTO.getName().equals(tieNickname.getText().toString())) {
-                            Toast.makeText(AddInfoActivity.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                            mDialog.dismiss();
-                            return;
-                        }
-                    }
-                    mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                            if (path != null) {
-                                upload(path);
-                            } else {
-                                inputDes();
+        } else  {    // 유효성 검사가 통과됨
+            if (!allButtonChecked()) {
+                Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
+            } else {
+                mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot children : dataSnapshot.getChildren()) {
+                            UserDTO userDTO = children.getValue(UserDTO.class);
+                            if (userDTO.getName() != null && userDTO.getName().equals(tieNickname.getText().toString())) {
+                                Toast.makeText(AddInfoActivity.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                mDialog.dismiss();
+                                return;
                             }
-                            Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
                         }
-                    });
-                }
+                        mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if (path != null) {
+                                    upload(path);
+                                } else {
+                                    inputDes();
+                                }
+                                Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) { }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
+            }
         }
     }   // end of goToBattleField()
 
