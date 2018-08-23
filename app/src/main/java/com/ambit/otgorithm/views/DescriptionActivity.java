@@ -68,7 +68,7 @@ public class DescriptionActivity extends AppCompatActivity {
 
         // 웹뷰에 웹페이지가 출력됨(다른페이지로감)
         // webview1.loadUrl("http://google.com");
-        descriptionWebView.loadUrl("http://13.125.253.250/site/" + target + ".html");
+        descriptionWebView.loadUrl("http://13.124.3.73/webview/" + target + ".html");
     }
 
     @Override

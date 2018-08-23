@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/to_sign_in"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     android:gravity="bottom"
     android:orientation="horizontal"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/navTheme">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -38,7 +39,7 @@
             android:paddingTop="6dp"
             android:text="로그인이 필요합니다."
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/sigin_in_email"
@@ -46,7 +47,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:text="@string/sign_in_description"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
     </LinearLayout>
 

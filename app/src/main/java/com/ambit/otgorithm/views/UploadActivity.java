@@ -18,13 +18,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,8 +50,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 
 public class UploadActivity extends AppCompatActivity {
@@ -121,6 +117,7 @@ public class UploadActivity extends AppCompatActivity {
         uploadLayout = (ConstraintLayout) findViewById(R.id.upload_content);
         uploadInfo = findViewById(R.id.upload_info);
 
+        // 다이얼로그 객체 생성
         epicDialog = new Dialog(this);
 
         storage = FirebaseStorage.getInstance();
@@ -239,7 +236,7 @@ public class UploadActivity extends AppCompatActivity {
 
     // 팝업띄우기
     public void showPopup() {
-        epicDialog.setContentView(R.layout.popup);
+        epicDialog.setContentView(R.layout.dialog_upload);
 
         closePopup = epicDialog.findViewById(R.id.close_popup);
         btnAccept = epicDialog.findViewById(R.id.btn_accept);

@@ -21,11 +21,11 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,17 +34,19 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.ambit.otgorithm.models.Common;
-import com.ambit.otgorithm.modules.AdDialog;
-import com.ambit.otgorithm.modules.FirstAdDialog;
+import com.balysv.materialmenu.MaterialMenuDrawable;
+import com.balysv.materialmenu.MaterialMenuView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
@@ -74,6 +76,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import me.relex.circleindicator.CircleIndicator;
@@ -97,8 +100,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     AutoScrollAdapter autoScrollAdapter;
 
+    Toolbar mainToolbar;
+
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+
 
     // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
@@ -203,10 +210,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setTheme(R.style.AppTheme);
         SystemClock.sleep(2000);
 
+        // Setup
         super.onCreate(savedInstanceState);
 
-        FirstAdDialog firstAdDialog = new FirstAdDialog(this);
-        firstAdDialog.show();
+        /*FirstAdDialog firstAdDialog = new FirstAdDialog(this);
+        firstAdDialog.show();*/
         //setFullAd();
        /* mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -242,8 +250,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         /*****************************************************************
          * 커스텀 툴바 셋팅
          */
-        Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
-        setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
+        mainToolbar = findViewById(R.id.toolbar_basic);
+        setSupportActionBar(mainToolbar);    // 액션바와 같게 만들어줌
 
         tv = (TextView) findViewById(R.id.toolbar_title);
         tv.setText("옷고리즘");
@@ -255,15 +263,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 기본 타이틀을 보여줄 지 말 지 설정
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_content);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
         // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_content);
-
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
         Menu menu = navigationView.getMenu();
+
         if (mFirebaseUser != null) { menu.findItem(R.id.nav_aboutUs_logout).setVisible(true); }
         else { menu.findItem(R.id.nav_aboutUs_logout).setVisible(false); }
 
@@ -302,20 +316,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String uri = dataSnapshot.getValue(String.class);
-                    if(uri != null){
+                    if (uri != null) {
                         Uri myUri = Uri.parse(uri);
                         userUri = myUri;
-                        Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
-                    }else {
-                        Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                        Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
+                    } else {
+                        Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
                     }
 
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { }
             });
 
             sigin_in_email.setText(mFirebaseUser.getEmail());
@@ -466,9 +478,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 이미지 url을 저장하는 arrayList
         // viewPager에서 보여줄 item
         ArrayList<String> bannerList = new ArrayList<String>();
-        bannerList.add("http://13.125.253.250/banners/banner1.png");
-        bannerList.add("http://13.125.253.250/banners/banner2.png");
-        bannerList.add("http://13.125.253.250/banners/banner3.png");
+        String SERVER_ROOT_ADDR = getString(R.string.server_root_address);
+        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner1.png");
+        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner2.png");
+        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner3.png");
 
         autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
         mIndicator = (CircleIndicator) findViewById(R.id.main_indicator);
@@ -551,9 +564,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             alt_bld.show();
         }*/
 
-
-        AdDialog adDialog = new AdDialog(this);
-        adDialog.show();
+        /*if (fromProvinceActivity) {
+            AdDialog adDialog = new AdDialog(this);
+            adDialog.show();
+        }*/
 
         //super.onBackPressed();
 
@@ -576,18 +590,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     public void onClick(View v) {
         Intent intent = null;
+
         switch (v.getId()) {
             case R.id.button1:
                 intent = new Intent(this, SortieActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button2:
                 intent = new Intent(this, GalleryActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button3:
                 intent = new Intent(this, ProvinceActivity.class);
+                startActivity(intent);
                 break;
         }
-        startActivity(intent);
     }
 
     /*@Override
@@ -613,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 break;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+        menu_navigation.closeDrawer(GravityCompat.START);
         return true;
     }*/   // end of
 

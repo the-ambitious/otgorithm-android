@@ -69,6 +69,9 @@ dependencies {
 
     // CircleIndicator
     implementation 'me.relex:circleindicator:1.2.2@aar'
+
+    // material-menu
+    implementation 'com.balysv.materialmenu:material-menu:2.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

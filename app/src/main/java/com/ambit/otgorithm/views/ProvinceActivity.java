@@ -1,7 +1,9 @@
 package com.ambit.otgorithm.views;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
@@ -22,11 +26,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProvinceActivity extends AppCompatActivity {
+
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
     RecyclerView mProvinceRecyclerView;
     final int ITEM_SIZE = 14;
     TextView tv;
+
+    Dialog provinceInfoDialog;
+    ImageView closePopup;
+    Button btnToGallery;
+    protected static boolean fromProvinceActivity = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +58,10 @@ public class ProvinceActivity extends AppCompatActivity {
         // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
+
+        // 도움말 다이얼로그 객체 생성
+        provinceInfoDialog = new Dialog(this);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_rank);
         mProvinceRecyclerView = (RecyclerView) findViewById(R.id.provinceview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -64,12 +79,14 @@ public class ProvinceActivity extends AppCompatActivity {
             items.add(item[i]);
         }
     }   // end of onCreate()
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_info, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -80,21 +97,56 @@ public class ProvinceActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            /*case R.id.action_gallary:
-                Intent intent = new Intent(ProvinceActivity.this, GalleryActivity.class);
-                startActivity(intent);
-                break;*/
+            case R.id.action_information:
+                showProvinceInfoPopup();
+                break;
         }
         return super.onOptionsItemSelected(item);
-    }
-    @Override
+    }   // end of onOptionsItemSelected()
+
+    /**
+     * step 1: create dialog object in onCreate method
+     *  ex. Dialog dialog = new Dialog(this);
+     * step 2: connecting widget
+     * step 3: call method and declare setContentView method
+     * step 4: event handling
+     *  ex. ImageView closePopup;
+     */
+    public void showProvinceInfoPopup() {
+        provinceInfoDialog.setContentView(R.layout.dialog_province);
+
+        closePopup = provinceInfoDialog.findViewById(R.id.close_popup);
+//        btnToGallery = provinceInfoDialog.findViewById(R.id.btn_to_gallery);
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                provinceInfoDialog.dismiss();
+            }
+        });
+//        btnToGallery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), GalleryActivity.class);
+//                fromProvinceActivity = true;
+//                startActivity(intent);
+//                provinceInfoDialog.dismiss();
+//            }
+//        });
+
+        provinceInfoDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        provinceInfoDialog.show();
+    }   // end of showProvinceInfoPopup()
+
+/*    @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
+
     public void onClick(View v) {
 //        int itemPosition = mProvinceRecyclerView.getChildLayoutPosition(v);
 //        Log.d("테스트: ", "itemPosition: " + itemPosition);
@@ -104,5 +156,6 @@ public class ProvinceActivity extends AppCompatActivity {
                 intent = new Intent(v.getContext(), RankActivity.class);
                 break;
         }
-    }
+    }   // end of onClick()
+
 }

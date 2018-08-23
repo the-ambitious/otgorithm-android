@@ -159,11 +159,11 @@ public class RankActivity extends AppCompatActivity {
         background = intent.getStringExtra("background");
         provinceName = intent.getStringExtra("provinceName");
         textView.setText(provinceName);
-        sysdate.setText(rightNow[0]+"년"+" "+rightNow[1]+"월 랭킹 현황");
+        sysdate.setText(rightNow[0] + "년" + " " + rightNow[1] + "월 랭킹 현황");
         Glide.with(this).load(background).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     linearLayout.setBackground(resource);
                 }
             }
