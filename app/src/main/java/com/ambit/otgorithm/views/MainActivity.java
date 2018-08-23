@@ -79,6 +79,7 @@ import java.util.Map;
 import java.util.Random;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+import dmax.dialog.SpotsDialog;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     AutoScrollAdapter autoScrollAdapter;
 
     Toolbar mainToolbar;
-
+android.app.AlertDialog mDialog;
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -227,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });*/
 
         setContentView(R.layout.activity_main);
-
+        mDialog = new SpotsDialog.Builder().setContext(MainActivity.this).build();
         // firebase 인증 객체 얻기
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -312,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
         if(mFirebaseUser != null) {
+            mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -320,8 +322,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Uri myUri = Uri.parse(uri);
                         userUri = myUri;
                         Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
+                        mDialog.dismiss();
                     } else {
                         Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
+                        mDialog.dismiss();
                     }
 
                 }
@@ -334,16 +338,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         if(mFirebaseUser!=null){
+            mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     nickName = dataSnapshot.getValue(String.class);
                     if(nickName == null){
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
+                        mDialog.dismiss();
                         startActivity(intent);
                         finish();
                     }
                     sign_in_nickname.setText(MainActivity.nickName);
+                    mDialog.dismiss();
                 }
 
                 @Override
