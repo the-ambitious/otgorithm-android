@@ -343,7 +343,7 @@ public class AddInfoActivity extends AppCompatActivity {
     }
 
     private boolean allButtonChecked() {
-        if (!termsCheckBox.isChecked() && !privacyCheckBox.isChecked() &&
+        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked() ||
                 !locationCheckBox.isChecked()) {
             mDialog.dismiss();
             Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
