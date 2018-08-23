@@ -16,7 +16,6 @@ import com.google.android.gms.ads.AdView;
 
 public class AdDialog extends Dialog {
 
-    TextView dialog_title;
     AdView dialog_adview;
     TextView dialog_cancel;
     TextView dialog_yes;
@@ -30,7 +29,6 @@ public class AdDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_dialog);
 
-        dialog_title = findViewById(R.id.dialog_title);
         dialog_adview = findViewById(R.id.dialog_adView);
         dialog_cancel = findViewById(R.id.dialog_cancel);
         dialog_yes = findViewById(R.id.dialog_yes);

@@ -98,6 +98,8 @@ public class AddInfoActivity extends AppCompatActivity {
 
     AlertDialog mDialog;
 
+    String mTempName;
+
     /** 한글,영어,숫자만 받기 **/
     public InputFilter filter = new InputFilter() {
         @Override
@@ -122,6 +124,7 @@ public class AddInfoActivity extends AppCompatActivity {
                     break;
                 case 2:
                     Toast.makeText(AddInfoActivity.this,"사용 가능한 닉네임입니다.",Toast.LENGTH_SHORT).show();
+                    mTempName=tieNickname.getText().toString();
                     break;
             }
         }
@@ -335,51 +338,61 @@ public class AddInfoActivity extends AppCompatActivity {
     }
 
     private boolean allButtonChecked() {
-        if (!termsCheckBox.isChecked() && !privacyCheckBox.isChecked() &&
+        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked() ||
                 !locationCheckBox.isChecked()) {
+            mDialog.dismiss();
+            Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
 
     private void goToBattleField() {
-        if (!descriptionlengthCheck()) {
-            Toast.makeText(AddInfoActivity.this, "40자 이내로 써주세요", Toast.LENGTH_SHORT).show();
-        } else  {    // 유효성 검사가 통과됨
-            if (!allButtonChecked()) {
-                Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
+        if(mTempName==null || !tieNickname.getText().toString().equals(mTempName)){
+            mDialog.dismiss();
+            Toast.makeText(AddInfoActivity.this,"중복확인을 해주세요.",Toast.LENGTH_SHORT).show();
+        }else {
+            if (!descriptionlengthCheck()) {
+                mDialog.dismiss();
+                Toast.makeText(AddInfoActivity.this, "40자 이내로 써주세요", Toast.LENGTH_SHORT).show();
             } else {
-                mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot children : dataSnapshot.getChildren()) {
-                            UserDTO userDTO = children.getValue(UserDTO.class);
-                            if (userDTO.getName() != null && userDTO.getName().equals(tieNickname.getText().toString())) {
-                                Toast.makeText(AddInfoActivity.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                                mDialog.dismiss();
-                                return;
-                            }
-                        }
-                        mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                if (path != null) {
-                                    upload(path);
-                                } else {
-                                    inputDes();
-                                }
-                                Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-                    }
+                if(!allButtonChecked()){
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) { }
-                });
+                }else {
+                    mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot children : dataSnapshot.getChildren()) {
+                                UserDTO userDTO = children.getValue(UserDTO.class);
+                                if (userDTO.getName() != null && userDTO.getName().equals(tieNickname.getText().toString())) {
+                                    Toast.makeText(AddInfoActivity.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                    mDialog.dismiss();
+                                    return;
+                                }
+                            }
+                            mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                    if (path != null) {
+                                        upload(path);
+                                    } else {
+                                        inputDes();
+                                    }
+                                    Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) { }
+                    });
+                }
             }
         }
+
     }   // end of goToBattleField()
 
     public void startGalleryChooser(){
