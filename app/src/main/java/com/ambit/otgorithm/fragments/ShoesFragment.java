@@ -39,8 +39,17 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
             arrayList.add(R.drawable.shoes_black_loafer);
         }
 
-        //더비슈즈,옥스퍼드화 always
+        //더비슈즈 always
         arrayList.add(R.drawable.shoes_permission_derby);
+
+        if(MainActivity.currenttemper >= 20){
+            //샌들 출격
+            arrayList.add(R.drawable.shoes_permission_sandle);
+        }else {
+            arrayList.add(R.drawable.shoes_black_sandle);
+        }
+
+        //옥스퍼드화 always
         arrayList.add(R.drawable.shoes_permission_oxford);
 
 
