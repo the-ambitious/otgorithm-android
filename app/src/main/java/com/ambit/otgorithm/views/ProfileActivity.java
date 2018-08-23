@@ -541,7 +541,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot children : dataSnapshot.getChildren()) {
                     userDTO = children.getValue(UserDTO.class);
-                    if (userDTO.getUid().equals(generalUid)) {
+                    if (userDTO.getUid()!=null&&userDTO.getUid().equals(generalUid)) {
                         final UserDTO mentor = userDTO;
                         mMentorRef.child(mentor.getUid()).setValue(mentor, new DatabaseReference.CompletionListener() {
                             @Override

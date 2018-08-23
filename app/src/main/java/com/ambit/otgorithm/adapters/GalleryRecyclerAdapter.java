@@ -161,9 +161,14 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProfileActivity.class);
-                intent.putExtra("ranker_id",infoData.getNickname());
-                context.startActivity(intent);
+                if(mFirebaseUser!=null){
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("ranker_id",infoData.getNickname());
+                    context.startActivity(intent);
+                }else {
+                    Toast.makeText(context,"로그인을 해주세요",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
