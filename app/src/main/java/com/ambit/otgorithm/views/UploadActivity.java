@@ -18,6 +18,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -396,6 +397,8 @@ public class UploadActivity extends AppCompatActivity {
     }   // end of upload()
 
     private void setUploadCount(){
+        mDialog = new SpotsDialog.Builder().setContext(UploadActivity.this).build();
+        mDialog.show();
         mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").child(formatDate).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -404,12 +407,17 @@ public class UploadActivity extends AppCompatActivity {
                     Map<String,Object> map = new HashMap<>();
                     map.put(formatDate,5);
                     mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").setValue(map);
+                    mDialog.dismiss();
                 }else {
                     uploadCount = upload_count;
                     if (uploadCount == 0) {
                         Toast.makeText(UploadActivity.this,"일일 업로드 횟수를 모두 사용하였습니다.",Toast.LENGTH_LONG).show();
+                        mDialog.dismiss();
                         finish();
+                        return;
                     }
+                    Log.d("일일업로드 초과시","들어옴");
+                    mDialog.dismiss();
                 }
             }
 
