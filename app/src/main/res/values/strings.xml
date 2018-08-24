@@ -93,13 +93,23 @@
         전국 각지에 포진되어 있습니다.\n
         \n
         데일리룩을 올릴 수 있는 공간인\n
-        전투상황 보고에서 받은 Like 수에 따라\n
-        지역별 장군들의 랭킹이 산정됩니다.\n
-        전투상황 보고는 메인 화면에 있습니다.\n
+        메인 화면의 전투상황 보고에서 받은\n
+        Like에 따라 지역별 랭킹이 산정됩니다.\n
         \n
         자신의 구역에서 최고가 되어보세요!
     </string>
 
+    <!-- dialog_rank.xml -->
+    <string name="rank_title">장군 서열 안내</string>
+
+    <string name="rank_desc">
+        [마이 페이지] - [출격 선언]에서\n
+        업로드했던 데일리룩과 닉네임,\n
+        그리고 간단한 코멘트가 보여집니다.\n
+        \n
+        로그인 후 클릭하게 되면\n
+        해당 장군으로 이동할 수 있어요.
+    </string>
 
     <!-- Custom dialog box 2018 -->
     <string name="positive_popup_text_default">

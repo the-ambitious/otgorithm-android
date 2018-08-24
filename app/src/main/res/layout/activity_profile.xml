@@ -103,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="80dp"
-        android:src="@drawable/ic_star_border_gray_32dp"
+        android:src="@drawable/cic_star_off"
         app:layout_anchor="@id/htab_appbar"
         app:fabSize="normal"
         android:backgroundTint="@android:color/white"

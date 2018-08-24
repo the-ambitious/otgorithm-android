@@ -73,7 +73,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         //좋아요 , 즐겨찾기 버튼 없앤 부분
         holder.likey.setVisibility(View.INVISIBLE);
         //holder.star.setVisibility(View.INVISIBLE);
-        holder.star.setImageResource(R.drawable.thumbs_up_on);
+        holder.star.setImageResource(R.drawable.cic_thumbs_up_on);
         holder.my_count.setVisibility(View.VISIBLE);
 
         if (position > previousPosition) {      // // We are scrolling DOWN
@@ -168,7 +168,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         // 변수 선언
         TextView textView;
         ImageView imageView;
-        ImageButton star;
+        ImageView star;
         ImageView likey;
         TextView my_count;
 
@@ -178,7 +178,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
 
             this.textView = (TextView) itemView.findViewById(R.id.txv_row);
             this.imageView = (ImageView) itemView.findViewById(R.id.img_row);
-            this.star = (ImageButton) itemView.findViewById(R.id.star);
+            this.star = itemView.findViewById(R.id.star);
             this.likey = (ImageView) itemView.findViewById(R.id.likey);
             this.my_count = (TextView) itemView.findViewById(R.id.my_count);
         }

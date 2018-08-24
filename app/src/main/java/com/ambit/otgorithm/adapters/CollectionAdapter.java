@@ -68,7 +68,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         holder.textview.setText(collectionItem.sysdate);
         Uri uri = Uri.parse(collectionItem.imageUrl);
          Glide.with(context).load(uri).into(holder.imageview);
-         Glide.with(context).load(R.drawable.ic_star_yellow_24dp).into(holder.likey);
+         Glide.with(context).load(R.drawable.cic_star_on).into(holder.likey);
          holder.star.setVisibility(View.INVISIBLE);
 
         final CharSequence[] oitems = {"삭제","취소"};
@@ -128,7 +128,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         // 변수 선언
         TextView textview;
         ImageView imageview;
-        ImageButton star;
+        ImageView star;
         ImageView likey;
 
         public CollectionViewHolder(View itemView) {
@@ -137,7 +137,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             // 위젯 연결
             textview = (TextView) itemView.findViewById(R.id.txv_row);
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
-            star =  (ImageButton) itemView.findViewById(R.id.star);
+            star =  (ImageView) itemView.findViewById(R.id.star);
             likey = (ImageView) itemView.findViewById(R.id.likey);
         }
     }   // end of class CollectionViewHolder

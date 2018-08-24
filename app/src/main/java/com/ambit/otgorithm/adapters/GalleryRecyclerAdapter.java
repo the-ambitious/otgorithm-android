@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,10 +46,9 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     FirebaseUser mFirebaseUser;
     String key;
     FirebaseAuth mAuth;
-    ImageButton thumbs_up;
+    ImageView thumbs_up;
     ImageView favorites;
     int collectionCount;
-
 
     private Handler handler = new Handler(){
         @Override
@@ -58,16 +57,16 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
             switch (msg.what){
                 case 1:
-                    Glide.with(context).load(R.drawable.thumbs_up_on).into(thumbs_up);
+                    Glide.with(context).load(R.drawable.cic_thumbs_up_on).into(thumbs_up);
                     break;
                 case 2:
-                    Glide.with(context).load(R.drawable.thumbs_up_off).into(thumbs_up);
+                    Glide.with(context).load(R.drawable.cic_thumbs_up_off).into(thumbs_up);
                     break;
                 case 3:
-                    Glide.with(context).load(R.drawable.ic_star_border_gray_32dp).into(favorites);
+                    Glide.with(context).load(R.drawable.cic_star_off).into(favorites);
                     break;
                 case 4:
-                    Glide.with(context).load(R.drawable.ic_star_yellow_24dp).into(favorites);
+                    Glide.with(context).load(R.drawable.cic_star_on).into(favorites);
                     break;
             }
 
@@ -109,7 +108,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             handler.sendEmptyMessage(0);*/
             // Glide.with(context).load(R.drawable.baseline_favorite_black_18dp).into(myViewHolder.star);
             // 기존에 누른 사람들 기록 유지하기 위함
-            myViewHolder.star.setImageResource(R.drawable.thumbs_up_on);
+            myViewHolder.star.setImageResource(R.drawable.cic_thumbs_up_on);
         }else if (mAuth.getCurrentUser() == null){
             myViewHolder.star.setVisibility(View.INVISIBLE);
         }
@@ -274,7 +273,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 public void onDataChange(DataSnapshot dataSnapshot) {
                         GalleryDTO gallery = dataSnapshot.getValue(GalleryDTO.class);
                         if(gallery != null){
-                            myViewHolder.likey.setImageResource(R.drawable.ic_star_yellow_24dp);
+                            myViewHolder.likey.setImageResource(R.drawable.cic_star_on);
                         }
                 }
 
@@ -290,7 +289,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
         TextView textview;
         ImageView imageview;
-        ImageButton star;
+        ImageView star;
         ImageView likey;
 
         public MyViewHolder(View itemView) {
@@ -298,7 +297,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
             textview = (TextView) itemView.findViewById(R.id.txv_row);
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
-            star =  (ImageButton) itemView.findViewById(R.id.star);
+            star =  (ImageView) itemView.findViewById(R.id.star);
             likey = (ImageView) itemView.findViewById(R.id.likey);
         }
 

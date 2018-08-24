@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     AutoScrollAdapter autoScrollAdapter;
 
     Toolbar mainToolbar;
-android.app.AlertDialog mDialog;
+    android.app.AlertDialog mDialog;
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -303,7 +304,6 @@ android.app.AlertDialog mDialog;
                         finish();
                         startActivity(intent);
                     }
-
                 }
             }
         });
@@ -314,6 +314,7 @@ android.app.AlertDialog mDialog;
         sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
+
         if(mFirebaseUser != null) {
             mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -329,23 +330,21 @@ android.app.AlertDialog mDialog;
                         Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
                         mDialog.dismiss();
                     }
-
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) { }
             });
-
             sigin_in_email.setText(mFirebaseUser.getEmail());
         }
 
-        if(mFirebaseUser!=null){
+        if (mFirebaseUser != null) {
             mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     nickName = dataSnapshot.getValue(String.class);
-                    if(nickName == null){
+                    if (nickName == null) {
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         mDialog.dismiss();
                         startActivity(intent);
@@ -356,9 +355,7 @@ android.app.AlertDialog mDialog;
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { }
             });
         }
 
@@ -1071,9 +1068,9 @@ android.app.AlertDialog mDialog;
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Toast.makeText(this, "현재 회원 : " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "현재 " + currentUser.getEmail() + " 으로 접속중입니다.", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "현재 회원 : 없음", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "현재 비로그인 상태입니다.", Toast.LENGTH_SHORT).show();
         }
     }
 

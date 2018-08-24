@@ -78,7 +78,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_star_yellow_24dp" />
+                app:srcCompat="@drawable/cic_star_on" />
 
             <TextView
                 android:id="@+id/thumbs_up_count"
@@ -231,7 +231,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/kakao"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_star_yellow_24dp" />
+                app:srcCompat="@drawable/cic_star_on" />
 
         </android.support.constraint.ConstraintLayout>
 

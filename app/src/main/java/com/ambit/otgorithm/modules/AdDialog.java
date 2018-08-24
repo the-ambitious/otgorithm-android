@@ -20,6 +20,7 @@ public class AdDialog extends Dialog {
     TextView dialog_cancel;
     TextView dialog_yes;
 
+
     public AdDialog(@NonNull Context context) {
         super(context);
     }

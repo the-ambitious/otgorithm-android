@@ -23,7 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +30,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -105,10 +103,10 @@ public class ProfileActivity extends AppCompatActivity {
                     Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(chatFab);
                     break;
                 case 3:
-                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_yellow_24dp).into(favoritesFab);
+                    Glide.with(ProfileActivity.this).load(R.drawable.cic_star_on).into(favoritesFab);
                     break;
                 case 4:
-                    Glide.with(ProfileActivity.this).load(R.drawable.ic_star_border_gray_32dp).into(favoritesFab);
+                    Glide.with(ProfileActivity.this).load(R.drawable.cic_star_off).into(favoritesFab);
                     break;
                 case 5:
                     Glide.with(ProfileActivity.this).load(android.R.drawable.sym_action_chat).into(chatFab);
