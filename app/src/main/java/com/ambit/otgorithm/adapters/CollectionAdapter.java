@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +49,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     public CollectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // GalleryActivity의 포맷을 그대로 가져왔음
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_row, parent, false);
+                .inflate(R.layout.item_gallery, parent, false);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -68,8 +67,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         holder.textview.setText(collectionItem.sysdate);
         Uri uri = Uri.parse(collectionItem.imageUrl);
          Glide.with(context).load(uri).into(holder.imageview);
-         Glide.with(context).load(R.drawable.cic_star_on).into(holder.likey);
-         holder.star.setVisibility(View.INVISIBLE);
+         Glide.with(context).load(R.drawable.cic_star_on).into(holder.btnFavorites);
+         holder.btnLike.setVisibility(View.INVISIBLE);
 
         final CharSequence[] oitems = {"삭제","취소"};
         final AlertDialog.Builder oDialog = new AlertDialog.Builder(context,android.R.style.Theme_DeviceDefault_Dialog_Alert);
@@ -128,8 +127,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         // 변수 선언
         TextView textview;
         ImageView imageview;
-        ImageView star;
-        ImageView likey;
+        ImageView btnLike;
+        ImageView btnFavorites;
 
         public CollectionViewHolder(View itemView) {
             super(itemView);
@@ -137,8 +136,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             // 위젯 연결
             textview = (TextView) itemView.findViewById(R.id.txv_row);
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
-            star =  (ImageView) itemView.findViewById(R.id.star);
-            likey = (ImageView) itemView.findViewById(R.id.likey);
+            btnLike =  itemView.findViewById(R.id.btn_like);
+            btnFavorites = (ImageView) itemView.findViewById(R.id.btn_favorites);
         }
     }   // end of class CollectionViewHolder
 

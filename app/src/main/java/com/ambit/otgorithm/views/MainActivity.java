@@ -35,11 +35,9 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,9 +45,6 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.ambit.otgorithm.models.Common;
 import com.ambit.otgorithm.modules.AdDialog;
-import com.ambit.otgorithm.modules.FirstAdDialog;
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.MaterialMenuView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
@@ -79,7 +74,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import dmax.dialog.SpotsDialog;
@@ -216,9 +210,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         // Setup
         super.onCreate(savedInstanceState);
-
-        FirstAdDialog firstAdDialog = new FirstAdDialog(this);
-        firstAdDialog.show();
         //setFullAd();
        /* mInterstitialAd.setAdListener(new AdListener() {
             @Override
