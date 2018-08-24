@@ -122,9 +122,6 @@
             android:name=".views.UploadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.ProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".views.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -158,7 +155,8 @@
             android:name=".views.SettingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".modules.AdDialog" />
-        <activity android:name=".modules.FirstAdDialog"></activity>
+        <activity android:name=".modules.FirstAdDialog" />
+        <activity android:name=".views.ProfileActivity"></activity>
     </application>
 
 </manifest>

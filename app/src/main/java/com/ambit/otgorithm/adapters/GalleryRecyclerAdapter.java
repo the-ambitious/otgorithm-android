@@ -1,7 +1,6 @@
 package com.ambit.otgorithm.adapters;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.modules.AnimationUtil;
-import com.ambit.otgorithm.views.GalleryActivity;
 import com.ambit.otgorithm.views.MainActivity;
 import com.ambit.otgorithm.views.ProfileActivity;
 import com.bumptech.glide.Glide;

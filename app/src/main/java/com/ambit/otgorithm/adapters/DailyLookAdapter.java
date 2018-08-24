@@ -139,9 +139,6 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
                 }
             });
         }
-
-
-
     }
 
     private void removeStorage(GalleryDTO galleryDTO){

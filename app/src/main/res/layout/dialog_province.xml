@@ -59,6 +59,16 @@
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/developer"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
                 <!--<Button
                 android:id="@+id/btn_to_gallery"
                 android:layout_width="240dp"

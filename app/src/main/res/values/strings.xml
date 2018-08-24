@@ -25,6 +25,7 @@
 
     <string name="nav_aboutUs">옷고리즘에 대하여</string>
     <!--<string name="nav_contact_notice">공지사항</string>-->
+    <string name="nav_aboutUs_origin">옷고리즘의 기원</string>
     <string name="nav_aboutUs_notice">공지사항</string>
     <string name="nav_aboutUs_settings">설정</string>
     <string name="nav_aboutUs_logout">로그아웃</string>
@@ -57,16 +58,19 @@
     <string name="facebook_app_id">244104373080056</string>
     <string name="fb_login_protocol_scheme">fb244104373080056</string>
 
-    <!-- dialog_sortie.xml -->
+    <!-- Copyright by Ambitious People -->
+    <string name="developer">by 야인 be amBITious</string>
+
+    <!-- in dialog_sortie.xml -->
     <string name="sortie_title">출격 명령 서비스란?</string>
 
     <string name="sortie_desc">
         기상 상태와 과학적 빅데이터를 분석,\n
         당장 입을 수 있는 아이템은 출격하고\n
-        무리라고 판단된다면 퇴각합니다.\n
+        무리라고 판단된다면 퇴각을 내립니다.\n
         \n
-        홈페이지에서만 확인했던 번거로움을\n
-        이제는 손에 잡히는 어플로 한번에,\n
+        홈페이지에서만 확인 가능했던 수고를\n
+        이제는 손에 잡히는 어플로 한 번에,\n
         시각적으로 한눈에 확인하세요!
     </string>
 

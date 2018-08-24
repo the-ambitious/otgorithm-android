@@ -400,12 +400,18 @@ android.app.AlertDialog mDialog;
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
+                    case R.id.nav_aboutUs_origin:
+                        intent = new Intent(MainActivity.this, DescriptionActivity.class);
+                        intent.putExtra("description", "origin");
+                        startActivity(intent);
+                        break;
+/*
                     case R.id.nav_aboutUs_notice:
                         intent = new Intent(MainActivity.this, DescriptionActivity.class);
                         intent.putExtra("description", "notice");
                         startActivity(intent);
                         break;
-
+*/
                     case R.id.nav_aboutUs_settings:
                     intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
@@ -990,8 +996,11 @@ android.app.AlertDialog mDialog;
                     Log.d("날씨","구름2");
                 } else if (sky == 4){
                     weathericon.setImageResource(R.drawable.weather_bad_cloudy);
-                    weatherdiscrip.setText("먹구름이 뭉게뭉게~");
-                    weatherDescription.setText("날씨가 흐려요~" + "\n" + "컨디션 관리에 주의하세요!");
+                    weatherdiscrip.setText("먹구름이 가득?!");
+                    weatherDescription.setText(
+                            "시커먼 구름이 모여 있어요!" + "\n" +
+                            "햇빛이 보이지 않아 시원하지만" + "\n" +
+                            "바깥출입을 한다면 조심해야겠어요.");
                     temper.setText(currenttemper + "°");
                 }
 
