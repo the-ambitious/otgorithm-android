@@ -1028,7 +1028,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(list.get(0).getAdminArea());
+                            if(dataSnapshot.exists()){
+                                mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(list.get(0).getAdminArea());
+                            }else {
+                                return;
+                            }
                         }
 
                         @Override
@@ -1075,13 +1079,26 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     void passPushTokenToServer(){
-        String uid = mFirebaseUser.getUid();
+        final String uid = mFirebaseUser.getUid();
         Common.currentToken = FirebaseInstanceId.getInstance().getToken();
-        String token = Common.currentToken;
-        Map<String, Object> map = new HashMap<>();
-        map.put("token", token);
+        final String token = Common.currentToken;
 
-        mUserRef.child(uid).updateChildren(map);
+        mUserRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    mUserRef.child(uid).child("token").setValue(token);
+                }else {
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }   // end of passPushTokenToServer()
 
     private void setFullAd() {
