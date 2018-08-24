@@ -70,7 +70,9 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         holder.my_count.setText(Integer.toString(dailyLookList.get(position).starCount));
 
         //좋아요 , 즐겨찾기 버튼 없앤 부분
-        holder.btnFavorites.setVisibility(View.INVISIBLE);
+        holder.btnFavorites.setVisibility(View.GONE);
+        holder.btnAccustion.setVisibility(View.GONE);
+        holder.btnProfile.setVisibility(View.GONE);
         //holder.star.setVisibility(View.INVISIBLE);
         holder.btnLike.setImageResource(R.drawable.cic_thumbs_up_on);
         holder.my_count.setVisibility(View.VISIBLE);
@@ -169,6 +171,8 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         ImageView imageView;
         ImageView btnLike;
         ImageView btnFavorites;
+        ImageView btnAccustion;
+        ImageView btnProfile;
         TextView my_count;
 
         // 생성자
@@ -180,6 +184,8 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
             this.btnLike = itemView.findViewById(R.id.btn_like);
             this.btnFavorites = (ImageView) itemView.findViewById(R.id.btn_favorites);
             this.my_count = (TextView) itemView.findViewById(R.id.my_count);
+            this.btnAccustion = itemView.findViewById(R.id.btn_accustion);
+            this.btnProfile = itemView.findViewById(R.id.btn_profile);
         }
 
     }   // end of class MyViewHolder

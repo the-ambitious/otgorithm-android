@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +46,9 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 
@@ -68,6 +73,8 @@ public class GalleryActivity extends AppCompatActivity
     DatabaseReference mGalleryRef;
     ArrayList<GalleryDTO> mGalleryDTOS;
     int position;
+
+    CoordinatorLayout mCoordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +138,7 @@ public class GalleryActivity extends AppCompatActivity
             }
         });
 */
-
+        mCoordinatorLayout = findViewById(R.id.layout_gallery);
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         mGalleryDTOS = new ArrayList<>();
         //position = 0;
@@ -140,11 +147,14 @@ public class GalleryActivity extends AppCompatActivity
 
         Log.d("ㄷㄷㄷ : ","ㄷㄷㄷ");
         adapter = new GalleryRecyclerAdapter(this, mGalleryDTOS);
+        //adapter.setmGalleryActivity(this);
         //Log.d("갤러리 테스트: ", DataDTO.getData().get(0).imageUrl);
         recyclerView.setAdapter(adapter);
 
         // Vertical Orientation By Default
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
+       // adapter.setRecyclerView(recyclerView);
 
        /* recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this, new RecyclerViewItemClickListener.OnItemClickListener() {
             @Override
@@ -321,6 +331,37 @@ public class GalleryActivity extends AppCompatActivity
         adapter.addList(list);
     }
 
+   /* public void accuse(final GalleryDTO galleryDTO){
+        Log.d("끄억","끄억");
+        Snackbar.make(mCoordinatorLayout,"신고는 철회가 안되니 신중히 해주십시오.",Snackbar.LENGTH_LONG).setAction("신고", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGalleryRef.child(galleryDTO.gid).child("accusationCount").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            int accusationCount = dataSnapshot.getValue(Integer.class);
+                            if(accusationCount>=4){
+                                mGalleryRef.child(galleryDTO.gid).removeValue();
+                            }else {
+                                mGalleryRef.child(galleryDTO.gid).child("accusationCount").setValue(accusationCount+1);
+                                Map<String,Boolean> map = new HashMap<>();
+
+                            }
+
+                        }else {
+                            mGalleryRef.child(galleryDTO.gid).child("accusationCount").setValue(1);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }).show();
+    }*/
 
 }   // end of class
 
