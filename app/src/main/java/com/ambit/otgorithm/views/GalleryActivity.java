@@ -134,7 +134,7 @@ public class GalleryActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         mGalleryDTOS = new ArrayList<>();
-        position = 0;
+        //position = 0;
 
         addGalleryListener();
 

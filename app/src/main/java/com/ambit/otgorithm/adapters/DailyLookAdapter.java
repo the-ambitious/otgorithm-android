@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +51,7 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
     @NonNull
     @Override
     public DailyLookAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_item_row, parent, false);
+        View view = inflater.inflate(R.layout.item_gallery, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         /************************************/
         mAuth = FirebaseAuth.getInstance();
@@ -71,9 +70,9 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         holder.my_count.setText(Integer.toString(dailyLookList.get(position).starCount));
 
         //좋아요 , 즐겨찾기 버튼 없앤 부분
-        holder.likey.setVisibility(View.INVISIBLE);
+        holder.btnFavorites.setVisibility(View.INVISIBLE);
         //holder.star.setVisibility(View.INVISIBLE);
-        holder.star.setImageResource(R.drawable.cic_thumbs_up_on);
+        holder.btnLike.setImageResource(R.drawable.cic_thumbs_up_on);
         holder.my_count.setVisibility(View.VISIBLE);
 
         if (position > previousPosition) {      // // We are scrolling DOWN
@@ -168,8 +167,8 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
         // 변수 선언
         TextView textView;
         ImageView imageView;
-        ImageView star;
-        ImageView likey;
+        ImageView btnLike;
+        ImageView btnFavorites;
         TextView my_count;
 
         // 생성자
@@ -178,8 +177,8 @@ public class DailyLookAdapter extends RecyclerView.Adapter<DailyLookAdapter.MyVi
 
             this.textView = (TextView) itemView.findViewById(R.id.txv_row);
             this.imageView = (ImageView) itemView.findViewById(R.id.img_row);
-            this.star = itemView.findViewById(R.id.star);
-            this.likey = (ImageView) itemView.findViewById(R.id.likey);
+            this.btnLike = itemView.findViewById(R.id.btn_like);
+            this.btnFavorites = (ImageView) itemView.findViewById(R.id.btn_favorites);
             this.my_count = (TextView) itemView.findViewById(R.id.my_count);
         }
 

@@ -1,17 +1,16 @@
 package com.ambit.otgorithm.modules;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 public class AdDialog extends Dialog {
@@ -19,7 +18,6 @@ public class AdDialog extends Dialog {
     AdView dialog_adview;
     TextView dialog_cancel;
     TextView dialog_yes;
-
 
     public AdDialog(@NonNull Context context) {
         super(context);
@@ -34,6 +32,8 @@ public class AdDialog extends Dialog {
         dialog_cancel = findViewById(R.id.dialog_cancel);
         dialog_yes = findViewById(R.id.dialog_yes);
 
+        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT);
 
         AdRequest request = new AdRequest.Builder().build();
         dialog_adview.loadAd(request);
