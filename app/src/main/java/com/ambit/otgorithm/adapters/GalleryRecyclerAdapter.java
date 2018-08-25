@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.modules.AnimationUtil;
+import com.ambit.otgorithm.modules.ExpansionDialog;
 import com.ambit.otgorithm.views.GalleryActivity;
 import com.ambit.otgorithm.views.MainActivity;
 import com.ambit.otgorithm.views.ProfileActivity;
@@ -349,6 +350,29 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
             }
         });
+
+        myViewHolder.imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGalleryRef.child(infoData.gid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            ExpansionDialog expansionDialog = new ExpansionDialog(context,infoData);
+                            expansionDialog.show();
+                        }else {
+                            Toast.makeText(context, "삭제된 게시물입니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
     }   // end of onBindViewHolder()
 
     @Override

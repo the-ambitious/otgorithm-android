@@ -152,7 +152,7 @@ public class GalleryActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
 
         // Vertical Orientation By Default
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
        // adapter.setRecyclerView(recyclerView);
 
