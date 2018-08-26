@@ -20,6 +20,12 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="DialogTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <!-- this is used for styling the dialog_upload like from the three dots on the right -->

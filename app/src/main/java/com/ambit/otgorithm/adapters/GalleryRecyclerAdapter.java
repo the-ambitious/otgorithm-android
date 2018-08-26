@@ -118,6 +118,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         Uri uri = Uri.parse(data.get(position).imageUrl);
         Glide.with(context).load(uri).into(myViewHolder.imageview);
         //myViewHolder.imageview.setImageURI(uri);
+
         Log.d("onBindViewHolder 테스트: ", "사진 경로? : " + data.get(position).imageUrl);
         if (mAuth.getCurrentUser() != null && data.get(position).stars.containsKey(mAuth.getCurrentUser().getUid())) {
     /*        like = true;
@@ -129,9 +130,9 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             myViewHolder.btnLike.setVisibility(View.INVISIBLE);
         }
 
-        if(mFirebaseUser!=null && data.get(position).accusations.containsKey(mFirebaseUser.getUid())){
+        if (mFirebaseUser != null && data.get(position).accusations.containsKey(mFirebaseUser.getUid())) {
             myViewHolder.btnAccustion.setImageResource(R.drawable.cic_siren_on_64dp);
-        } else if(mFirebaseUser==null){
+        } else if (mFirebaseUser == null) {
             myViewHolder.btnAccustion.setVisibility(View.INVISIBLE);
         }
 
@@ -143,7 +144,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             myViewHolder.btnProfile.setVisibility(View.GONE);
         }
 
-        if (position > previousPosition) {      // We are scrolling DOWN
+        if (position >= previousPosition) {      // We are scrolling DOWN
             AnimationUtil.animate(myViewHolder, true);
         } else {    // We are scrolling UP
             AnimationUtil.animate(myViewHolder, false);
@@ -358,7 +359,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
-                            ExpansionDialog expansionDialog = new ExpansionDialog(context,infoData);
+                            ExpansionDialog expansionDialog = new ExpansionDialog(context, infoData);
                             expansionDialog.show();
                         }else {
                             Toast.makeText(context, "삭제된 게시물입니다.", Toast.LENGTH_SHORT).show();

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -23,25 +24,25 @@ public class ExpansionDialog extends Dialog {
     GalleryDTO galleryDTO;
     Context context;
 
-
-
-    public ExpansionDialog(@NonNull Context context,GalleryDTO galleryDTO) {
+    public ExpansionDialog(@NonNull Context context, GalleryDTO galleryDTO) {
         super(context);
         this.context = context;
+        this.context.setTheme(android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
         this.galleryDTO = galleryDTO;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        //context.setTheme(android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
         setContentView(R.layout.expansion_dialog);
 
         expansion = findViewById(R.id.image_expansion);
         close = findViewById(R.id.dialog_close);
 
-        getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT);
-
+//        getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.WRAP_CONTENT);
 
         Glide.with(context).load(galleryDTO.imageUrl).into(expansion);
        /* Uri myUri = Uri.parse(galleryDTO.imageUrl);
