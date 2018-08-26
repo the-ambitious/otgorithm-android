@@ -3,6 +3,7 @@ package com.ambit.otgorithm.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,11 +17,15 @@ import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
+import com.ambit.otgorithm.views.ProfileActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -34,6 +39,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDb;
     private DatabaseReference mUserRef;
+    private DatabaseReference mGalleryRef;
     private FirebaseUser mFirebaseUser;
 
     // 생성자
@@ -56,6 +62,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         mFirebaseUser = mAuth.getCurrentUser();
         mFirebaseDb = FirebaseDatabase.getInstance();
         mUserRef = mFirebaseDb.getReference("users");
+        mGalleryRef = mFirebaseDb.getReference("galleries");
 
         return new CollectionViewHolder(view);
     }
@@ -105,6 +112,29 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
                  return true;
              }
          });
+
+         holder.btnProfile.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 mGalleryRef.child(collectionItem.gid).addListenerForSingleValueEvent(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(DataSnapshot dataSnapshot) {
+                         if(dataSnapshot.exists()){
+                             Intent intent = new Intent(context, ProfileActivity.class);
+                             intent.putExtra("ranker_id",collectionItem.getNickname());
+                             context.startActivity(intent);
+                         }else {
+                             Toast.makeText(context,"삭제된 게시물입니다.",Toast.LENGTH_SHORT).show();
+                         }
+                     }
+
+                     @Override
+                     public void onCancelled(DatabaseError databaseError) {
+
+                     }
+                 });
+             }
+         });
     }
 
     @Override
@@ -133,6 +163,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         ImageView btnFavorites;
         ImageView btnAccustion;
         LinearLayout linearLayout;
+        ImageView btnProfile;
 
         public CollectionViewHolder(View itemView) {
             super(itemView);
@@ -144,6 +175,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             btnFavorites = (ImageView) itemView.findViewById(R.id.btn_favorites);
             linearLayout = itemView.findViewById(R.id.layout_picture);
             btnAccustion = itemView.findViewById(R.id.btn_accustion);
+            btnProfile = itemView.findViewById(R.id.btn_profile);
         }
     }   // end of class CollectionViewHolder
 

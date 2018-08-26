@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ambit.otgorithm.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
@@ -76,10 +77,15 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         findPreference("blacklist").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(getApplicationContext(), FavoritesActivity.class);
-                intent.putExtra("blacknwhite", "blacklist");
-                startActivity(intent);
-                return false;
+                if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                    Toast.makeText(SettingActivity.this,"로그인이 필요한 서비스입니다.",Toast.LENGTH_SHORT).show();
+                    return false;
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), FavoritesActivity.class);
+                    intent.putExtra("blacknwhite", "blacklist");
+                    startActivity(intent);
+                    return false;
+                }
             }
         });
 
