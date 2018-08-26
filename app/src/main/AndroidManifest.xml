@@ -156,7 +156,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".modules.AdDialog" />
         <activity android:name=".modules.FirstAdDialog" />
-        <activity android:name=".views.ProfileActivity"></activity>
+        <activity android:name=".views.ProfileActivity" />
+        <activity android:name=".modules.ExpansionDialog"></activity>
     </application>
 
 </manifest>

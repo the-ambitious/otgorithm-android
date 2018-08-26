@@ -16,7 +16,8 @@ public class GalleryDTO {
     public int weatherIcon;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
-
+    public int accusationCount = 0;
+    public Map<String, Boolean> accusations = new HashMap<>();
     public GalleryDTO() {
     }
 
@@ -32,6 +33,38 @@ public class GalleryDTO {
         this.weatherIcon = weatherIcon;
         this.starCount = starCount;
         this.stars = stars;
+    }
+
+    public GalleryDTO(String nickname, String description, String imageUrl, String email, String sysdate, String battlefield, String gid, int weather, int weatherIcon, int starCount, Map<String, Boolean> stars, int accusationCount, Map<String, Boolean> accusations) {
+        this.nickname = nickname;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.email = email;
+        this.sysdate = sysdate;
+        this.battlefield = battlefield;
+        this.gid = gid;
+        this.weather = weather;
+        this.weatherIcon = weatherIcon;
+        this.starCount = starCount;
+        this.stars = stars;
+        this.accusationCount = accusationCount;
+        this.accusations = accusations;
+    }
+
+    public int getAccusationCount() {
+        return accusationCount;
+    }
+
+    public void setAccusationCount(int accusationCount) {
+        this.accusationCount = accusationCount;
+    }
+
+    public Map<String, Boolean> getAccusations() {
+        return accusations;
+    }
+
+    public void setAccusations(Map<String, Boolean> accusations) {
+        this.accusations = accusations;
     }
 
     public String getNickname() {

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,12 +69,13 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         Uri uri = Uri.parse(collectionItem.imageUrl);
          Glide.with(context).load(uri).into(holder.imageview);
          Glide.with(context).load(R.drawable.cic_star_on).into(holder.btnFavorites);
-         holder.btnLike.setVisibility(View.INVISIBLE);
+         holder.btnLike.setVisibility(View.GONE);
+         holder.btnAccustion.setVisibility(View.GONE);
 
         final CharSequence[] oitems = {"삭제","취소"};
         final AlertDialog.Builder oDialog = new AlertDialog.Builder(context,android.R.style.Theme_DeviceDefault_Dialog_Alert);
 
-         holder.imageview.setOnLongClickListener(new View.OnLongClickListener() {
+         holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
              @Override
              public boolean onLongClick(View v) {
                 oDialog.setTitle("").setItems(oitems, new DialogInterface.OnClickListener() {
@@ -129,6 +131,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         ImageView imageview;
         ImageView btnLike;
         ImageView btnFavorites;
+        ImageView btnAccustion;
+        LinearLayout linearLayout;
 
         public CollectionViewHolder(View itemView) {
             super(itemView);
@@ -138,6 +142,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             imageview = (ImageView) itemView.findViewById(R.id.img_row);
             btnLike =  itemView.findViewById(R.id.btn_like);
             btnFavorites = (ImageView) itemView.findViewById(R.id.btn_favorites);
+            linearLayout = itemView.findViewById(R.id.layout_picture);
+            btnAccustion = itemView.findViewById(R.id.btn_accustion);
         }
     }   // end of class CollectionViewHolder
 
