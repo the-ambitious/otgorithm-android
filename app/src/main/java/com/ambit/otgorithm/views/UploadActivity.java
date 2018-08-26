@@ -407,6 +407,7 @@ public class UploadActivity extends AppCompatActivity {
                     Map<String,Object> map = new HashMap<>();
                     map.put(formatDate,5);
                     mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").setValue(map);
+                    uploadCount = 5;
                     mDialog.dismiss();
                 }else {
                     uploadCount = upload_count;

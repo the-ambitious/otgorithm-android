@@ -365,15 +365,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    nickName = dataSnapshot.getValue(String.class);
-                    if (nickName == null) {
+                    if(dataSnapshot.exists()){
+                        nickName = dataSnapshot.getValue(String.class);
+                        sign_in_nickname.setText(MainActivity.nickName);
+                        mDialog.dismiss();
+                    }else {
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         mDialog.dismiss();
                         startActivity(intent);
                         finish();
                     }
-                    sign_in_nickname.setText(MainActivity.nickName);
-                    mDialog.dismiss();
                 }
 
                 @Override
