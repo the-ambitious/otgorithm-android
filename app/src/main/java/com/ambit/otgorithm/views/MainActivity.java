@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -60,6 +61,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.hanks.htextview.base.HTextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -80,6 +82,8 @@ import dmax.dialog.SpotsDialog;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
+
+    final private int INTERVAL_TIME = 4000;     // milliseconds
 
     // admob 전면광고
     private InterstitialAd mInterstitialAd;
@@ -104,8 +108,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-
-    // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
+    // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다. 웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
 
     // 변수 선언
@@ -172,6 +175,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd/HHmm");
     String formatDate = sdfNow.format(date);
     String[] rightNow;
+
+    // HTextView
+    ArrayList<String> sayingSet = new ArrayList<>();
+    int position = 0;
+    HTextView sayingHTV;
+    Handler handler;
 
     private FirebaseDatabase database;
     private DatabaseReference mUserRef;
@@ -268,6 +277,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
+
+        // Some Sample Messages for Animation
+        sayingSet.add("당신은 패션을 알고 있거나 그렇지 않다.");
+        sayingSet.add("- Anna Wintour");
+        sayingSet.add("You either know fashion or you don't.");
+
+        // Initialize HTextView
+        sayingHTV = findViewById(R.id.saying);
+        
+        // First Message
+        sayingHTV.animateText(sayingSet.get(position));
+        // Change Messages every 4.5 Seconds
+        handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                handler.postDelayed(this, INTERVAL_TIME);
+                if (position >= sayingSet.size())
+                    position = 0;
+                sayingHTV.animateText(sayingSet.get(position));
+                position++;
+            }
+        }, INTERVAL_TIME);
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
@@ -495,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         autoViewPager.setAdapter(scrollAdapter);    // Auto Viewpager에 Adapter 장착
         mIndicator.setViewPager(autoViewPager);
-        autoViewPager.setInterval(5000);            // 페이지 넘어갈 시간 간격 설정
+        autoViewPager.setInterval(INTERVAL_TIME);            // 페이지 넘어갈 시간 간격 설정
         autoViewPager.startAutoScroll();            // Auto Scroll 시작
 
 //        autoScrollAdapter = new AutoScrollAdapter(getLayoutInflater(), arrayList,this);
@@ -979,7 +1010,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     weathericon.setImageResource(R.drawable.weather_cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
-                    weatherDescription.setText("오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
+                    weatherDescription.setText("핫하다 핫해!" + "\n" + "오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
                     temper.setText(currenttemper + "°");
                     Log.d("날씨","구름2");
                 } else if (sky == 4){
@@ -1014,7 +1045,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 battlefield.setText(list.get(0).getAdminArea());
                 current_time.setText(this_is_the_moment[0] + "년 " + this_is_the_moment[1] + "월 " + this_is_the_moment[2] + "일");
-
+                current_time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 if (mFirebaseUser != null) {
                     mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

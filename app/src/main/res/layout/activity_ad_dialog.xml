@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:background="@drawable/button"
-            android:text="네, 종료하겠습니다."
+            android:text="네, 다음에 또 만나요."
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
@@ -68,16 +68,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:background="@drawable/button_cancel"
-            android:text="아니오, 좀 더 둘러보겠습니다."
+            android:text="아니요, 좀 더 둘러볼게요."
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="본 광고는 애플리케이션의\n서버 유지 및 관리 비용에 이용됩니다."
+            android:text="본 광고는 애플리케이션의\n서버 유지 및 관리비에 이용됩니다."
             android:textAlignment="center"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 </RelativeLayout>

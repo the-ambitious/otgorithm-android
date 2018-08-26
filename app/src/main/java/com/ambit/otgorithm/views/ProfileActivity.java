@@ -97,10 +97,10 @@ public class ProfileActivity extends AppCompatActivity {
                     Glide.with(ProfileActivity.this).load(photoUri).into(htab_header);
                     break;
                 case 1:
-                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request).into(chatFab);
+                    Glide.with(ProfileActivity.this).load(R.drawable.cic_chat_req_64dp).into(chatFab);
                     break;
                 case 2:
-                    Glide.with(ProfileActivity.this).load(R.drawable.chat_request_ok).into(chatFab);
+                    Glide.with(ProfileActivity.this).load(R.drawable.cic_chat_req_ok_64dp).into(chatFab);
                     break;
                 case 3:
                     Glide.with(ProfileActivity.this).load(R.drawable.cic_star_on).into(favoritesFab);
@@ -109,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Glide.with(ProfileActivity.this).load(R.drawable.cic_star_off).into(favoritesFab);
                     break;
                 case 5:
-                    Glide.with(ProfileActivity.this).load(android.R.drawable.sym_action_chat).into(chatFab);
+                    Glide.with(ProfileActivity.this).load(R.drawable.cic_chat_default_64dp).into(chatFab);
                     break;
             }
         }

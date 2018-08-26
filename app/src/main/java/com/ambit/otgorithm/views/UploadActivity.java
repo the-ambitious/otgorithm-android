@@ -103,7 +103,7 @@ public class UploadActivity extends AppCompatActivity {
          * 커스텀 툴바 셋팅
          */
         textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        textViewToolbarTitle.setText("출격 상황 알림");
+        textViewToolbarTitle.setText("출격");
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar uploadToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -115,7 +115,7 @@ public class UploadActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
-        uploadLayout = (ConstraintLayout) findViewById(R.id.upload_content);
+        uploadLayout = findViewById(R.id.upload_content);
         uploadInfo = findViewById(R.id.upload_info);
 
         // 다이얼로그 객체 생성

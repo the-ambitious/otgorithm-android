@@ -15,6 +15,10 @@ import android.widget.TextView;
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,26 +27,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class IntroFragment extends Fragment {
 
-
     TextView favorites_count;
-
     TextView thumbs_up_count;
-
     TextView profile_description;
 
     private FirebaseAuth mAuth;
-
     private FirebaseUser mFirebaseUser;
-
     private FirebaseDatabase mFirebaseDb;
-
     private DatabaseReference mUserRef;
-
     private DatabaseReference mGalleryRef;
 
     String ranker_id;
@@ -57,12 +56,12 @@ public class IntroFragment extends Fragment {
             super.handleMessage(msg);
 
             switch (msg.what){
-                case 0:
-                    thumbs_up_count.setText(Integer.toString(thumbs_up));
-                    break;
-                case 1:
-                    favorites_count.setText(Integer.toString(favorites));
-                    break;
+//                case 0:
+//                    thumbs_up_count.setText(Integer.toString(thumbs_up));
+//                    break;
+//                case 1:
+//                    favorites_count.setText(Integer.toString(favorites));
+//                    break;
                 case 2:
                     profile_description.setText(description);
                     break;
@@ -82,10 +81,26 @@ public class IntroFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_intro, container, false);
 
-
-        favorites_count = view.findViewById(R.id.favorites_count);
-        thumbs_up_count = view.findViewById(R.id.thumbs_up_count);
+//        favorites_count = view.findViewById(R.id.favorites_count);
+//        thumbs_up_count = view.findViewById(R.id.thumbs_up_count);
         profile_description = view.findViewById(R.id.profile_description);
+
+        // To make vertical bar chart, initialize graph id this way<br />
+        BarChart barChart = (BarChart) view.findViewById(R.id.chart);
+
+        ArrayList<BarEntry> entries = new ArrayList <>();
+        entries.add(new BarEntry(4f, 0));
+        entries.add(new BarEntry(8f, 1));
+
+        BarDataSet dataset = new BarDataSet(entries, "# of Calls");
+
+        // creating labels<br />
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("January");
+        labels.add("February");
+
+        BarData data = new BarData(dataset);
+        barChart.setData(data); // set the data and list of lables into chart
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();

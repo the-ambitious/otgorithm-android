@@ -190,16 +190,8 @@ public class FavoritesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
-
-
-        // 이곳에 firebase에서 가져온 데이터를 .setter로 넣어주고
-        // favorList에 .add하면 됨
-        // 아래는 예제
-
     }
 
     private void initBlackList(final ArrayList<UserDTO> blackList){
@@ -214,9 +206,7 @@ public class FavoritesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 

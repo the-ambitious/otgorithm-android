@@ -72,6 +72,13 @@ dependencies {
 
     // material-menu
     implementation 'com.balysv.materialmenu:material-menu:2.0.0'
+
+    // HTextView
+    implementation "com.hanks:htextview-base:0.1.6"
+    implementation "com.hanks:htextview-scale:0.1.6"
+
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

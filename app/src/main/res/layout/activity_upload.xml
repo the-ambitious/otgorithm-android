@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/upload_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/upload_content"
     tools:context=".views.UploadActivity">
 
-    <include layout="@layout/custom_toolbar"
-        android:id="@+id/include" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/custom_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/picture_view"
@@ -22,35 +26,18 @@
 
     <EditText
         android:id="@+id/picture_description"
-        android:layout_width="321dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="396dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Description"
+        android:hint="10자 내외로 간단하게 적어주세요"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/picture_upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/button"
-        android:textSize="20sp"
-        android:text="완료"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/picture_description"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/simple_comment" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/picture_choose"
@@ -59,7 +46,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="316dp"
         android:layout_marginTop="208dp"
+        android:backgroundTint="@android:color/white"
         android:clickable="true"
+        app:borderWidth="0dp"
+        app:fabSize="auto"
         app:layout_constraintEnd_toEndOf="@+id/include"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,12 +62,29 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="데일리룩을 올려보세요."
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/picture_view" />
+
+    <TextView
+        android:id="@+id/simple_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="간단한 코멘트를 남겨주세요."
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileComment" />
 
     <ImageView
         android:id="@+id/upload_info"
@@ -88,19 +95,6 @@
         app:layout_constraintTop_toBottomOf="@+id/picture_view"
         app:srcCompat="@android:drawable/ic_menu_info_details" />
 
-    <TextView
-        android:id="@+id/simple_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="16dp"
-        android:text="간단한 코멘트를 남겨주세요."
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/picture_description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileComment"
-        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView2"
@@ -115,9 +109,42 @@
         app:layout_constraintBottom_toTopOf="@+id/picture_upload"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/picture_description"
-        app:layout_constraintVertical_bias="0.222" />
+        app:layout_constraintVertical_bias="0.0" />
 
-<!--    <ImageView
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="지금 지역별 장군 확인하러 가기"
+        app:layout_constraintBottom_toTopOf="@+id/picture_upload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/picture_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/button"
+        android:text="완료"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/picture_description"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--    <ImageView
         android:id="@+id/imageView4"
         android:layout_width="24dp"
         android:layout_height="24dp"
