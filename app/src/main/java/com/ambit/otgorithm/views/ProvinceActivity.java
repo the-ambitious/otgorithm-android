@@ -1,12 +1,17 @@
 package com.ambit.otgorithm.views;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +42,30 @@ public class ProvinceActivity extends AppCompatActivity {
     ImageView closePopup;
     Button btnToGallery;
     protected static boolean fromProvinceActivity = false;
+
+    /**
+     * isNetworkConnected(): 네트워크 연결 상태 예외 처리 메서드
+     * if (wimax != null): wimax 상태 체크
+     * if (mobile != null): // 모바일 네트워크 체크
+     * if (wifi.isConnected() || bwimax): wifi 네트워크 체크
+     */
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo wimax = manager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
+        boolean bwimax = false;
+
+        if (wimax != null) {
+            bwimax = wimax.isConnected();
+        }
+        if (mobile != null) {
+            if (mobile.isConnected() || wifi.isConnected() || bwimax) return true;
+        } else {
+            if (wifi.isConnected() || bwimax) return true;
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +98,30 @@ public class ProvinceActivity extends AppCompatActivity {
         mProvinceRecyclerView.setHasFixedSize(true);
         mProvinceRecyclerView.setLayoutManager(layoutManager);
         List<ItemDTO> items = new ArrayList<>();
-        mProvinceRecyclerView.setAdapter(
-                new ProvinceRecyclerAdapter(getApplicationContext(), items, R.layout.activity_province));
+
+        // 인터넷 연결 상태를 확인(예외처리)
+        if (isNetworkConnected(getApplicationContext())) {
+            mProvinceRecyclerView.setAdapter(
+                    new ProvinceRecyclerAdapter(getApplicationContext(), items, R.layout.activity_province));
+        } else {
+            // 인터넷에 연결할 수 없습니다. 연결을 확인하세요.
+            AlertDialog.Builder alert_internet_status = new AlertDialog.Builder(this);
+            alert_internet_status.setTitle("알림");
+            alert_internet_status.setMessage(
+                    "연결이 불안정하여 앱을 종료합니다." + "\n" +
+                            "네트워크 연결 상태를 확인해주세요.")
+                    .setCancelable(false);
+            alert_internet_status.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();   //닫기
+                    moveTaskToBack(true);
+                    finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            });
+            alert_internet_status.show();
+        }
+
         ItemDTO[] item = new ItemDTO[ITEM_SIZE];
 /*        item[0] = new ItemDTO("서울", R.drawable.seoul);
         item[1] = new ItemDTO("대전", R.drawable.daejeon);

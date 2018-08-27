@@ -575,9 +575,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
      */
     @Override
     public void onBackPressed() {
-        /*if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
+            AdDialog adDialog = new AdDialog(this);
+            adDialog.show();
+
+/*
             AlertDialog.Builder alt_bld = new AlertDialog.Builder(MainActivity.this);
             alt_bld.setTitle("확인")
                     .setMessage("종료하시겠습니까?")
@@ -596,11 +600,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         }
                     });
             alt_bld.show();
-        }*/
-
-        AdDialog adDialog = new AdDialog(this);
-        adDialog.show();
-
+*/
+        }
         // super.onBackPressed();
 
 /*

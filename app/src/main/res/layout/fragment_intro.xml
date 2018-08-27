@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:text="내가 받은 Like와 데일리룩을 담은 현황입니다."
+            android:text="내가 받은 Like 현황을 확인할 수 있습니다."
             android:textSize="16sp" />
 
         <android.support.constraint.ConstraintLayout
