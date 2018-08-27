@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,6 +87,8 @@ public class ProfileActivity extends AppCompatActivity {
     APIService mService;
     CoordinatorLayout coordinatorLayout;
 
+    NestedScrollView nestedScrollView;
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -119,6 +122,10 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        nestedScrollView = findViewById(R.id.nested_scroll_view);
+        nestedScrollView.setFillViewport(true);
+
         /*****************************************************************
          * Remove shadow from the action bar(커스텀 툴바 셋팅)
          * .setTitle(<-- 이곳에 로그인한 유저의 닉네임을 기입 -->)
@@ -141,10 +148,10 @@ public class ProfileActivity extends AppCompatActivity {
         chatFab = findViewById(R.id.action_chat);
         favoritesFab = findViewById(R.id.favoites_registration);
         profileFab = findViewById(R.id.profile);
-        if(ranker_id.equals(MainActivity.nickName)){
+        if (ranker_id.equals(MainActivity.nickName)) {
             chatFab.setVisibility(View.INVISIBLE);
             favoritesFab.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             profileFab.setVisibility(View.INVISIBLE);
             intentUpload.setVisibility(View.INVISIBLE);
         }
@@ -152,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, UploadActivity.class);
-                intent.putExtra("mode","upload");
+                intent.putExtra("mode", "upload");
                 startActivity(intent);
                 finish();
             }
@@ -163,7 +170,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
                 builder
-                        .setMessage("선택해주세요~!")
+                        .setMessage("업로드 할 기능을 선택해주세요.")
                         .setNegativeButton("프로필 배경", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

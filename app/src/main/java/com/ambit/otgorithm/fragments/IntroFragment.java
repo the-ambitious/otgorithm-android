@@ -19,6 +19,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -85,22 +86,52 @@ public class IntroFragment extends Fragment {
 //        thumbs_up_count = view.findViewById(R.id.thumbs_up_count);
         profile_description = view.findViewById(R.id.profile_description);
 
-        // To make vertical bar chart, initialize graph id this way<br />
+        /*****************************************************************
+         *
+         */
+        // To make vertical bar chart, initialize graph id this way
         BarChart barChart = (BarChart) view.findViewById(R.id.chart);
 
         ArrayList<BarEntry> entries = new ArrayList <>();
-        entries.add(new BarEntry(4f, 0));
-        entries.add(new BarEntry(8f, 1));
+        entries.add(new BarEntry(8f, 0));
+        entries.add(new BarEntry(2f, 1));
+        entries.add(new BarEntry(5f, 2));
+        entries.add(new BarEntry(20f, 3));
+        entries.add(new BarEntry(15f, 4));
+        entries.add(new BarEntry(19f, 5));
+        entries.add(new BarEntry(8f, 6));
+        entries.add(new BarEntry(2f, 7));
+        entries.add(new BarEntry(5f, 8));
+        entries.add(new BarEntry(20f, 9));
+        entries.add(new BarEntry(15f, 10));
+        entries.add(new BarEntry(19f, 11));
 
         BarDataSet dataset = new BarDataSet(entries, "# of Calls");
 
-        // creating labels<br />
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
+        // creating labels
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add("1월");
+        labels.add("2월");
+        labels.add("3월");
+        labels.add("4월");
+        labels.add("5월");
+        labels.add("6월");
+        labels.add("7월");
+        labels.add("8월");
+        labels.add("9월");
+        labels.add("10월");
+        labels.add("11월");
+        labels.add("12월");
 
-        BarData data = new BarData(dataset);
-        barChart.setData(data); // set the data and list of lables into chart
+        BarData data = new BarData(labels, dataset);
+        barChart.setData(data); // set the data and list of labels into chart
+
+        barChart.setDescription("Expenditure for the year 2018");   // set the description
+
+        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        barChart.animateY(4000);
+        /*****************************************************************/
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();

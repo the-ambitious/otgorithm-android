@@ -162,13 +162,13 @@ public class UploadActivity extends AppCompatActivity {
         });
 
         if(mode.equals("background")){
-            profile.setText("프로필 배경을 올려보세요");
-            pictureDescription.setVisibility(View.INVISIBLE);
-            simple_comment.setVisibility(View.INVISIBLE);
+            profile.setText("프로필 배경을 올려보세요.");
+            pictureDescription.setVisibility(View.GONE);
+            simple_comment.setVisibility(View.GONE);
         }
 
         if(mode.equals("profile"))
-            profile.setText("프로필 사진을 올려보세요");
+            profile.setText("프로필 사진을 올려보세요.");
 
         pictureUpload = findViewById(R.id.picture_upload);
         pictureUpload.setOnClickListener(new View.OnClickListener() {

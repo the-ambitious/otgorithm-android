@@ -78,7 +78,7 @@ dependencies {
     implementation "com.hanks:htextview-scale:0.1.6"
 
     // MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
