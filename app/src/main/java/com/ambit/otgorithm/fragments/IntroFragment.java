@@ -1,6 +1,7 @@
 package com.ambit.otgorithm.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,7 @@ import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.IntegerFormatter;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -39,7 +41,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +68,7 @@ public class IntroFragment extends Fragment {
     String description;
 
     BarChart barChart;
+    YAxis yAxis;
 
     private Handler handler = new Handler(){
         @Override
@@ -93,7 +99,7 @@ public class IntroFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_intro, container, false);
+        final View view = inflater.inflate(R.layout.fragment_intro, container, false);
 
 //        favorites_count = view.findViewById(R.id.favorites_count);
 //        thumbs_up_count = view.findViewById(R.id.thumbs_up_count);
@@ -104,6 +110,9 @@ public class IntroFragment extends Fragment {
          */
         // To make vertical bar chart, initialize graph id this way
         barChart = (BarChart) view.findViewById(R.id.chart);
+
+        yAxis = barChart.getAxisLeft();
+        yAxis.setAxisMinValue(0);
 
         //yAxis.setGranularity(1f);
         ArrayList<BarEntry> entries = new ArrayList <>();
@@ -120,34 +129,32 @@ public class IntroFragment extends Fragment {
         entries.add(new BarEntry(0, 10));
         entries.add(new BarEntry(0, 11));*/
 
-        BarDataSet dataset = new BarDataSet(entries, "# of Calls");
+        BarDataSet dataset = new BarDataSet(entries, "색깔 별로 Like 분포를 나타냅니다.");
 
         // creating labels
-        ArrayList<String> labels = new ArrayList<>();
+        final ArrayList<String> labels = new ArrayList<>();
+        labels.clear();
         labels.add("Jan");
         labels.add("Feb");
-        labels.add("Jan");
-        labels.add("Jan");
-        labels.add("s");
-        labels.add("6");
-        labels.add("7");
-        labels.add("8");
-        labels.add("9");
-        labels.add("10");
-        labels.add("11");
-        labels.add("12");
-
-        BarData data = new BarData(labels, dataset);
-        barChart.setData(data); // set the data and list of labels into chart
-
-//        barChart.setDescription("Expenditure for the year 2018");   // set the description
+        labels.add("Mar");
+        labels.add("Apr");
+        labels.add("May");
+        labels.add("Jun");
+        labels.add("Jul");
+        labels.add("Aug");
+        labels.add("Sep");
+        labels.add("Oct");
+        labels.add("Nov");
+        labels.add("Dec");
 
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        barChart.getXAxis().setValueFormatter(new XAxisValueFormatter() {
+        final XAxis xAxis = barChart.getXAxis();
+
+        xAxis.setValueFormatter(new XAxisValueFormatter() {
             @Override
             public String getXValue(String original, int index, ViewPortHandler viewPortHandler) {
-                return String.valueOf((int) Math.floor(index));
+                return labels.get((int) index);
             }
         });
 
@@ -155,19 +162,39 @@ public class IntroFragment extends Fragment {
         yAxis.setAxisMinValue(0);
         yAxis.setAxisMaxValue(100);
 
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setAxisMinValue(1);
-        xAxis.setAxisMaxValue(12);
-        xAxis.setSpaceBetweenLabels(1);
+        xAxis.setAxisMinValue(0);
+        xAxis.setAxisMaxValue(11);
+        xAxis.setLabelsToSkip(0);
+        //xAxis.setSpaceBetweenLabels(1);
 
         barChart.getAxisRight().setDrawLabels(false);
         barChart.setDescription("");
-        YAxis yAxisRight = barChart.getAxisRight();
+//        YAxis yAxisRight = barChart.getAxisRight();
+//        yAxisRight.setDrawAxisLine(true);
+
+//        barChart.getAxisLeft().setValueFormatter(new CustomFormatter());
+//        barChart.getAxisRight().setValueFormatter(new CustomFormatter());
+        dataset.setValueFormatter(new IntegerFormatter());
+//        YAxisValueFormatter customYaxisFomatter = new YAxisValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value, YAxis yAxis) {
+//                return String.valueOf((int) Math.floor(value));
+//            }
+//        };
+//        barChart.getAxisLeft().setValueFormatter(customYaxisFomatter);
+//        barChart.getAxisRight().setValueFormatter(customYaxisFomatter);
+
+
+        barChart.animateY(3000);
+
+        BarData data = new BarData(labels, dataset);
+        barChart.setData(data); // set the data and list of labels into chart
+
+//        barChart.setDescription("Expenditure for the year 2018");   // set the description
+
+
 //        yAxisRight.setAxisMinValue(0);
 //        yAxisRight.setAxisMaxValue(100);
-        yAxisRight.setDrawAxisLine(true);
-
-        barChart.animateY(4000);
         /*****************************************************************/
 
         mAuth = FirebaseAuth.getInstance();
@@ -186,32 +213,42 @@ public class IntroFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int []thumb_count = new int[12];
+                int maxValue = 0;
                 for(DataSnapshot children : dataSnapshot.getChildren()){
                     GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
                     if(galleryDTO.nickname!=null&&galleryDTO.nickname.equals(ranker_id)){
                         String month = galleryDTO.sysdate.substring(0,2);
                         //Log.d("니나노노",galleryDTO.sysdate.substring(0,2));
                         switch (month){
-                            case "01": thumb_count[0]++;  break;
-                            case "02": thumb_count[1]++;  break;
-                            case "03": thumb_count[2]++;  break;
-                            case "04": thumb_count[3]++;  break;
-                            case "05": thumb_count[4]++;  break;
-                            case "06": thumb_count[5]++;  break;
-                            case "07": thumb_count[6]++;  break;
-                            case "08": thumb_count[7]++;  break;
-                            case "09": thumb_count[8]++;  break;
-                            case "10": thumb_count[9]++;  break;
-                            case "11": thumb_count[10]++; break;
-                            case "12": thumb_count[11]++; break;
+                            case "01": thumb_count[0] += galleryDTO.starCount;  break;
+                            case "02": thumb_count[1] += galleryDTO.starCount;  break;
+                            case "03": thumb_count[2] += galleryDTO.starCount;  break;
+                            case "04": thumb_count[3] += galleryDTO.starCount;  break;
+                            case "05": thumb_count[4] += galleryDTO.starCount;  break;
+                            case "06": thumb_count[5] += galleryDTO.starCount;  break;
+                            case "07": thumb_count[6] += galleryDTO.starCount;  break;
+                            case "08": thumb_count[7] += galleryDTO.starCount;  break;
+                            case "09": thumb_count[8] += galleryDTO.starCount;  break;
+                            case "10": thumb_count[9] += galleryDTO.starCount;  break;
+                            case "11": thumb_count[10] += galleryDTO.starCount; break;
+                            case "12": thumb_count[11] += galleryDTO.starCount; break;
                         }
                         //thumbs_up += galleryDTO.starCount;
                     }
                 }
-                for(int i=0;i<12;i++){
+                for (int i = 0; i < 12; i++) {
                     entries.add(new BarEntry(thumb_count[i], i));
+                    if (maxValue < thumb_count[i])
+                        maxValue = thumb_count[i];
                 }
-
+                if (maxValue != 0) {
+                    int length = (int) (Math.log10(maxValue) + 1);
+                    Log.d("하하", Integer.toString((int) Math.pow(10, length - 1)));
+                    int firstNum = maxValue / (int) Math.pow(10, length - 1);
+                    yAxis.setAxisMaxValue((firstNum + 1) * (int) Math.pow(10, length - 1));
+                } else {
+                    yAxis.setAxisMaxValue(1);
+                }
                 barChart.notifyDataSetChanged();
                 handler.sendEmptyMessage(0);
             }
@@ -254,33 +291,22 @@ public class IntroFragment extends Fragment {
 
                             }
                         });
-
-
                         return;
                     }
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 
-    private class MyValueFormatter implements ValueFormatter {
-
-        protected String[] months = new String[]{
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-        };
-
-        public MyValueFormatter(String[] months) {
-            this.months = months;
-        }
+    private class CustomFormatter implements YAxisValueFormatter {
 
         @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return Math.round(value)+"";
+        public String getFormattedValue(float value, YAxis yAxis) {
+            return "" + ((int) value);
         }
     }
+
 }
