@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.EventLogTags;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.IntegerFormatter;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -103,10 +105,6 @@ public class IntroFragment extends Fragment {
         // To make vertical bar chart, initialize graph id this way
         barChart = (BarChart) view.findViewById(R.id.chart);
 
-        YAxis yAxis = barChart.getAxisLeft();
-        yAxis.setAxisMinValue(0);
-        yAxis.setAxisMaxValue(100);
-
         //yAxis.setGranularity(1f);
         ArrayList<BarEntry> entries = new ArrayList <>();
      /*   entries.add(new BarEntry(0, 0));
@@ -126,25 +124,48 @@ public class IntroFragment extends Fragment {
 
         // creating labels
         ArrayList<String> labels = new ArrayList<>();
-        labels.add("1월");
-        labels.add("2월");
-        labels.add("3월");
-        labels.add("4월");
-        labels.add("5월");
-        labels.add("6월");
-        labels.add("7월");
-        labels.add("8월");
-        labels.add("9월");
-        labels.add("10월");
-        labels.add("11월");
-        labels.add("12월");
+        labels.add("Jan");
+        labels.add("Feb");
+        labels.add("Jan");
+        labels.add("Jan");
+        labels.add("s");
+        labels.add("6");
+        labels.add("7");
+        labels.add("8");
+        labels.add("9");
+        labels.add("10");
+        labels.add("11");
+        labels.add("12");
 
         BarData data = new BarData(labels, dataset);
         barChart.setData(data); // set the data and list of labels into chart
 
-        barChart.setDescription("Expenditure for the year 2018");   // set the description
+//        barChart.setDescription("Expenditure for the year 2018");   // set the description
 
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        barChart.getXAxis().setValueFormatter(new XAxisValueFormatter() {
+            @Override
+            public String getXValue(String original, int index, ViewPortHandler viewPortHandler) {
+                return String.valueOf((int) Math.floor(index));
+            }
+        });
+
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setAxisMinValue(0);
+        yAxis.setAxisMaxValue(100);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setAxisMinValue(1);
+        xAxis.setAxisMaxValue(12);
+        xAxis.setSpaceBetweenLabels(1);
+
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.setDescription("");
+        YAxis yAxisRight = barChart.getAxisRight();
+//        yAxisRight.setAxisMinValue(0);
+//        yAxisRight.setAxisMaxValue(100);
+        yAxisRight.setDrawAxisLine(true);
 
         barChart.animateY(4000);
         /*****************************************************************/
@@ -154,7 +175,6 @@ public class IntroFragment extends Fragment {
         mFirebaseDb = FirebaseDatabase.getInstance();
         mUserRef = mFirebaseDb.getReference("users");
         mGalleryRef = mFirebaseDb.getReference("galleries");
-
 
         addIntroListener(ranker_id,entries);
 
@@ -248,4 +268,19 @@ public class IntroFragment extends Fragment {
         });
     }
 
+    private class MyValueFormatter implements ValueFormatter {
+
+        protected String[] months = new String[]{
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
+        };
+
+        public MyValueFormatter(String[] months) {
+            this.months = months;
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return Math.round(value)+"";
+        }
+    }
 }
