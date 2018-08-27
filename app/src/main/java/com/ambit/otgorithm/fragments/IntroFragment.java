@@ -1,6 +1,7 @@
 package com.ambit.otgorithm.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import com.ambit.otgorithm.dto.GalleryDTO;
 import com.ambit.otgorithm.dto.UserDTO;
 import com.ambit.otgorithm.modules.IntegerFormatter;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -38,6 +40,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +65,7 @@ public class IntroFragment extends Fragment {
     String description;
 
     BarChart barChart;
+    YAxis yAxis;
 
     private Handler handler = new Handler(){
         @Override
@@ -103,9 +108,11 @@ public class IntroFragment extends Fragment {
         // To make vertical bar chart, initialize graph id this way
         barChart = (BarChart) view.findViewById(R.id.chart);
 
-        YAxis yAxis = barChart.getAxisLeft();
+        yAxis = barChart.getAxisLeft();
         yAxis.setAxisMinValue(0);
-        yAxis.setAxisMaxValue(100);
+
+
+
 
         //yAxis.setGranularity(1f);
         ArrayList<BarEntry> entries = new ArrayList <>();
@@ -166,6 +173,7 @@ public class IntroFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int []thumb_count = new int[12];
+                int maxValue = 0;
                 for(DataSnapshot children : dataSnapshot.getChildren()){
                     GalleryDTO galleryDTO = children.getValue(GalleryDTO.class);
                     if(galleryDTO.nickname!=null&&galleryDTO.nickname.equals(ranker_id)){
@@ -190,8 +198,17 @@ public class IntroFragment extends Fragment {
                 }
                 for(int i=0;i<12;i++){
                     entries.add(new BarEntry(thumb_count[i], i));
+                    if(maxValue<thumb_count[i])
+                        maxValue=thumb_count[i];
                 }
-
+                if(maxValue!=0){
+                    int length = (int)(Math.log10(maxValue)+1);
+                    Log.d("하하", Integer.toString((int)Math.pow(10,length-1)));
+                    int firstNum =maxValue/(int)Math.pow(10,length-1);
+                    yAxis.setAxisMaxValue((firstNum+1)*(int)Math.pow(10,length-1));
+                }else {
+                    yAxis.setAxisMaxValue(1);
+                }
                 barChart.notifyDataSetChanged();
                 handler.sendEmptyMessage(0);
             }
