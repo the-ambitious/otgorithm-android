@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         webView = (WebView)findViewById(R.id.webview);
+        String SERVER_ROOT_ADDR = getString(R.string.server_root_address);
+        Log.d("테스트: ", SERVER_ROOT_ADDR);
 
         // 방법 2.1 : MainActivity에서 넘긴 Data를 받기위해 Intent 선언;
         // 자신을 호출한 Activity에게서 intent값을 받음
@@ -33,7 +36,26 @@ public class WebViewActivity extends AppCompatActivity {
         // (바로 데이터를 받을 것이므로 보통은 onCreate() 메서드에 구현한다)
 
         //방법 2-2
-        String idd = intent.getStringExtra("id");
+        String outerItem = intent.getStringExtra("outer");
+        String innerItem = intent.getStringExtra("inner");
+        String pantsItem = intent.getStringExtra("pants");
+        String shoesItem = intent.getStringExtra("shoes");
+        String accessoryItem = intent.getStringExtra("accessory");
+
+        // 안드로이드 내장 브라우저가 아닌 현재 화면에서 구동되도록 처리
+        webView.setWebViewClient(new WebViewClient());
+
+        if (outerItem != null) {
+            webView.loadUrl(SERVER_ROOT_ADDR + "/sortie/wv/outer/" + outerItem);
+        } else if (innerItem != null) {
+            webView.loadUrl(SERVER_ROOT_ADDR + "/sortie/wv/inner/" + innerItem);
+        } else if (pantsItem != null) {
+            webView.loadUrl(SERVER_ROOT_ADDR + "/sortie/wv/pants/" + pantsItem);
+        } else if (shoesItem != null) {
+            webView.loadUrl(SERVER_ROOT_ADDR + "/sortie/wv/shoes/" + shoesItem);
+        } else if (accessoryItem != null) {
+            webView.loadUrl(SERVER_ROOT_ADDR + "/sortie/wv/accessories/" + accessoryItem);
+        }
 
         /*****************************************************************
          * 커스텀 툴바 셋팅
@@ -42,7 +64,7 @@ public class WebViewActivity extends AppCompatActivity {
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
         textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        textViewToolbarTitle.setText(idd);
+        textViewToolbarTitle.setText("품목");
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -62,14 +84,9 @@ public class WebViewActivity extends AppCompatActivity {
         /*String id = intent.getExtras().getString("id");
         Log.d("테스트: ", "intent.getExtras().getString() 값: " + intent.getExtras().getString("id"));*/
 
-        Log.v("hhhhhhhhh","===="+idd);
-
-        // 안드로이드 내장 브라우저가 아닌 현재 화면에서 구동되도록 처리
-        webView.setWebViewClient(new WebViewClient());
-
         // 웹뷰에 웹페이지가 출력됨(다른페이지로감)
         // webview1.loadUrl("http://google.com");
-        webView.loadUrl("http://13.125.253.250/img/"+idd);
+//        webView.loadUrl("http://13.124.3.73/category/wv/" + idd);
     }
 
     @Override
@@ -81,11 +98,10 @@ public class WebViewActivity extends AppCompatActivity {
 
         switch (id) {
             case android.R.id.home:
-                // mDrawerLayout.openDrawer(GravityCompat.START);
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }   // end of onOptionsItemSelected()
 
 }

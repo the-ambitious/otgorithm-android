@@ -7,7 +7,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -69,6 +69,16 @@ dependencies {
 
     // CircleIndicator
     implementation 'me.relex:circleindicator:1.2.2@aar'
+
+    // material-menu
+    implementation 'com.balysv.materialmenu:material-menu:2.0.0'
+
+    // HTextView
+    implementation "com.hanks:htextview-base:0.1.6"
+    implementation "com.hanks:htextview-scale:0.1.6"
+
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

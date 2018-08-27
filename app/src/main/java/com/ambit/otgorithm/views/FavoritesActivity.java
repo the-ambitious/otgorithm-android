@@ -121,10 +121,10 @@ public class FavoritesActivity extends AppCompatActivity {
              */
             @Override
             public void onLongItemClick(View view, final int position) {
-                Log.d("인텐트 테스트 ", target);
+                //Log.d("인텐트 테스트 ", target);
 
                 // 차단친구 관리에서 꾹 눌렀을 시
-                if (target.equals("blacklist")) {
+                if (target!=null&&target.equals("blacklist")) {
 
                     final CharSequence[] oitems = {"차단 해제", "취소"};
                     final android.app.AlertDialog.Builder oDialog = new android.app.AlertDialog.Builder(FavoritesActivity.this);
@@ -190,16 +190,8 @@ public class FavoritesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
-
-
-        // 이곳에 firebase에서 가져온 데이터를 .setter로 넣어주고
-        // favorList에 .add하면 됨
-        // 아래는 예제
-
     }
 
     private void initBlackList(final ArrayList<UserDTO> blackList){
@@ -214,9 +206,7 @@ public class FavoritesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 

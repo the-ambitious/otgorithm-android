@@ -52,17 +52,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="47"
-            android:padding="8dp"
+            android:layout_weight="40"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
+                android:paddingTop="16dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingTop="8dp"
-                android:text="자신을 대표할 수 있는\n코디 사진을 올려주세요!" />
+                android:text="자신을 대표할 수 있는\n코디룩을 올려주세요!" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -74,7 +73,7 @@
                     android:id="@+id/user_image"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/c" />
+                    android:src="@drawable/signup_profile_default" />
 
 
                 <android.support.design.widget.FloatingActionButton
@@ -83,9 +82,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
                     android:clickable="true"
-                    android:src="@drawable/ic_done"
+                    android:src="@drawable/ic_photo_camera_black_24dp"
                     app:fabSize="mini"
                     app:layout_anchor="@id/user_image"
+                    app:borderWidth="0dp"
+                    android:backgroundTint="@android:color/white"
                     app:layout_anchorGravity="bottom|right|end" />
 
             </FrameLayout>
@@ -112,7 +113,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="닉네임"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:maxLength="10" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -155,9 +157,151 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="간단한 소개"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:maxLength="40" />
             </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="25"
+            android:paddingBottom="16dp"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_terms"
+                        android:button="@android:color/transparent"
+                        android:background="@drawable/checkbox"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+
+                    <TextView
+                        android:paddingLeft="8dp"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="서비스 이용약관(필수)"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_privacy"
+                        android:button="@android:color/transparent"
+                        android:background="@drawable/checkbox"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+
+                    <TextView
+                        android:paddingLeft="8dp"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="개인정보 수집 이용(필수)"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_location"
+                        android:button="@android:color/transparent"
+                        android:background="@drawable/checkbox"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                    <TextView
+                        android:paddingLeft="8dp"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="위치기반 서비스 이용(필수)"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="9">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/details_terms"
+                    android:background="@drawable/button"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:onClick="detailsOnClick"
+                    android:text="상세보기"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/details_privacy"
+                    android:background="@drawable/button"
+                    android:textColor="#FFFFFF"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:onClick="detailsOnClick"
+                    android:text="상세보기"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/details_location"
+                    android:background="@drawable/button"
+                    android:textColor="#FFFFFF"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:onClick="detailsOnClick"
+                    android:text="상세보기"/>
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

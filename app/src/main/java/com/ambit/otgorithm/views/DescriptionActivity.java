@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -59,6 +60,9 @@ public class DescriptionActivity extends AppCompatActivity {
             case "#contact":
                 textViewToolbarTitle.setText("이메일 문의");
                 break;
+            case "notice":
+                textViewToolbarTitle.setText("이메일 문의");
+                break;
         }
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
@@ -66,9 +70,15 @@ public class DescriptionActivity extends AppCompatActivity {
         // 안드로이드 내장 브라우저가 아닌 현재 화면에서 구동되도록 처리
         descriptionWebView.setWebViewClient(new WebViewClient());
 
+        Log.d("=====테스트=====: ", target);
+
         // 웹뷰에 웹페이지가 출력됨(다른페이지로감)
         // webview1.loadUrl("http://google.com");
-        descriptionWebView.loadUrl("http://13.125.253.250/site/" + target + ".html");
+        if (target.equals("notice")) {
+            descriptionWebView.loadUrl("http://13.124.3.73/" + target);
+        } else {
+            descriptionWebView.loadUrl("http://13.124.3.73/webview/" + target + ".html");
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import java.util.List;
 
 // ProvinceActivity의 Adapter
 public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecyclerAdapter.ViewHolder> {
+
     private String url;     // 지역 이미지를 불러오기 위한 경로
     private ArrayList<String> urlList;
     private ArrayList<String> nameList;
@@ -33,6 +34,8 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
     Context context;
     List<ItemDTO> items;
     int item_layout;
+
+    String SERVER_ROOT_ADDR;
 
     public ProvinceRecyclerAdapter(Context context, List<ItemDTO> items, int item_layout) {
         this.context = context;
@@ -60,61 +63,63 @@ public class ProvinceRecyclerAdapter extends RecyclerView.Adapter<ProvinceRecycl
         holder.provinceTitle.startAnimation(ani);
         // 지역 제목의 글자 크기 조절
         holder.provinceTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36);
+
+        String SERVER_ROOT_ADDR = context.getResources().getString(R.string.server_root_address);
         switch (position) {
             case 0:     // 전국
-                url = "http://13.125.253.250/provinces/korea.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/korea.png";
                 provinceName = new SpannableString("전 국");
                 break;
             case 1:     // 서울
-                url = "http://13.125.253.250/provinces/seoul.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/seoul.png";
                 provinceName = new SpannableString("서 울");
                 break;
             case 2:     // 인천
-                url = "http://13.125.253.250/provinces/incheon.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/incheon.png";
                 provinceName = new SpannableString("인 천");
                 break;
             case 3:     // 대전
-                url = "http://13.125.253.250/provinces/daejeon.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/daejeon.png";
                 provinceName = new SpannableString("대 전");
                 break;
             case 4:     // 대구
-                url = "http://13.125.253.250/provinces/daegu.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/daegu.png";
                 provinceName = new SpannableString("대 구");
                 break;
             case 5:     // 광주
-                url = "http://13.125.253.250/provinces/gwangju.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/gwangju.png";
                 provinceName = new SpannableString("광 주");
                 break;
             case 6:     // 부산
-                url = "http://13.125.253.250/provinces/busan.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/busan.png";
                 provinceName = new SpannableString("부 산");
                 break;
             case 7:     // 울산
-                url = "http://13.125.253.250/provinces/ulsan.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/ulsan.png";
                 provinceName = new SpannableString("울 산");
                 break;
             case 8:     // 경기도
-                url = "http://13.125.253.250/provinces/gyeonggi.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/gyeonggi.png";
                 provinceName = new SpannableString("경기도");
                 break;
             case 9:     // 강원도
-                url = "http://13.125.253.250/provinces/gangwon.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/gangwon.png";
                 provinceName = new SpannableString("강원도");
                 break;
             case 10:     // 충청도
-                url = "http://13.125.253.250/provinces/chungcheong.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/chungcheong.png";
                 provinceName = new SpannableString("충청도");
                 break;
             case 11:     // 경상도
-                url = "http://13.125.253.250/provinces/kyungsang.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/kyungsang.png";
                 provinceName = new SpannableString("경상도");
                 break;
             case 12:     // 전라도
-                url = "http://13.125.253.250/provinces/jeolla.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/jeolla.png";
                 provinceName = new SpannableString("전라도");
                 break;
             case 13:     // 제주도
-                url = "http://13.125.253.250/provinces/jeju.png";
+                url = SERVER_ROOT_ADDR + "/images/provinces/jeju.png";
                 provinceName = new SpannableString("제주도");
                 break;
         }

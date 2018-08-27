@@ -1,6 +1,9 @@
 package com.ambit.otgorithm.views;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,12 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.fragments.ChatFragment;
 import com.ambit.otgorithm.fragments.FriendFragment;
 import com.ambit.otgorithm.fragments.FriendRequestFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +36,10 @@ import butterknife.ButterKnife;
 public class ChatMain extends AppCompatActivity {
 
     TextView tv;
+    
+    Dialog chatDialog;
+    ImageView closePopup;
+    Button btnToUpload;
 
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
@@ -53,7 +64,7 @@ public class ChatMain extends AppCompatActivity {
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
         tv = (TextView) findViewById(R.id.toolbar_title);
-        tv.setText("나의 서신함");
+        tv.setText("내 서신함");
         tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
         tv.setTextColor(Color.WHITE);
         Toolbar galleryToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -65,6 +76,9 @@ public class ChatMain extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
+        // 도움말 다이얼로그 객체 생성
+        chatDialog = new Dialog(this);
+        
         ButterKnife.bind(this);
         mTabLayout.setupWithViewPager(mViewPager);
         setUpViewPager();
@@ -89,7 +103,7 @@ public class ChatMain extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_info, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -104,15 +118,48 @@ public class ChatMain extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_information:
+                showChatInfoPopup();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * step 1: create dialog object in onCreate method
+     *  ex. Dialog dialog = new Dialog(this);
+     * step 2: connecting widget
+     * step 3: call method and declare setContentView method
+     * step 4: event handling
+     *  ex. ImageView closePopup;
+     */
+    public void showChatInfoPopup() {
+        chatDialog.setContentView(R.layout.dialog_letterbox);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+
+        closePopup = chatDialog.findViewById(R.id.close_popup);
+
+        if(firebaseUser==null)
+            btnToUpload.setVisibility(View.INVISIBLE);
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatDialog.dismiss();
+            }
+        });
+
+        chatDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        chatDialog.show();
+    }
+
     private void setUpViewPager(){
         mPageAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mPageAdapter.addFragment(new FriendRequestFragment(), "친구요청");
-        mPageAdapter.addFragment(new FriendFragment(), "친구");
-        mPageAdapter.addFragment(new ChatFragment(), "채팅");
+        mPageAdapter.addFragment(new FriendRequestFragment(), "면담 신청");
+        mPageAdapter.addFragment(new FriendFragment(), "명단");
+        mPageAdapter.addFragment(new ChatFragment(), "담판");
         mViewPager.setAdapter(mPageAdapter);
     }
 

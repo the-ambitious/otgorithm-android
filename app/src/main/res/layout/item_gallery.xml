@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:id="@+id/layout_picture">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,15 +39,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:paddingTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_height="wrap_content">
+                android:gravity="center"
+                android:paddingTop="4dp">
 
                 <!--업로드 날짜-->
                 <TextView
@@ -55,47 +55,61 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Hello How Are you"
+                    android:layout_marginLeft="4dp"
+                    android:text="loading sysdate.."
+                    android:textAlignment="center"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_width="0dp"
-                android:layout_weight="4"
-                android:layout_margin="4dp"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/my_count"
-                    android:visibility="invisible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
-                <!--즐겨찾기 -->
+
+                <!-- 프로필 화면 -->
                 <ImageView
-                    android:id="@+id/likey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:background="@drawable/ic_star_border_gray_32dp" />
+                    android:id="@+id/btn_profile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/cic_profile_64dp" />
+
+                <!-- 신고 -->
+                <ImageView
+                    android:id="@+id/btn_accustion"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/cic_siren_off_64dp" />
 
                 <!--따봉 -->
-                <ImageButton
-                    android:id="@+id/star"
+                <ImageView
+                    android:id="@+id/btn_like"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/cic_thumbs_up_off" />
+                <TextView
+                    android:id="@+id/my_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    card_view:srcCompat="@drawable/thumbs_up_off" />
+                    android:visibility="invisible" />
+                <!--즐겨찾기 -->
+                <ImageView
+                    android:id="@+id/btn_favorites"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/cic_star_off" />
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

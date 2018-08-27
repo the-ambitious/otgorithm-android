@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,8 +51,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 
 public class UploadActivity extends AppCompatActivity {
@@ -106,7 +103,7 @@ public class UploadActivity extends AppCompatActivity {
          * 커스텀 툴바 셋팅
          */
         textViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        textViewToolbarTitle.setText("출격 상황 알림");
+        textViewToolbarTitle.setText("출격");
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textViewToolbarTitle.setTextColor(Color.WHITE);
         Toolbar uploadToolbar = (Toolbar) findViewById(R.id.toolbar_basic);
@@ -118,9 +115,10 @@ public class UploadActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
-        uploadLayout = (ConstraintLayout) findViewById(R.id.upload_content);
+        uploadLayout = findViewById(R.id.upload_content);
         uploadInfo = findViewById(R.id.upload_info);
 
+        // 다이얼로그 객체 생성
         epicDialog = new Dialog(this);
 
         storage = FirebaseStorage.getInstance();
@@ -164,13 +162,13 @@ public class UploadActivity extends AppCompatActivity {
         });
 
         if(mode.equals("background")){
-            profile.setText("프로필 배경을 올려보세요");
-            pictureDescription.setVisibility(View.INVISIBLE);
-            simple_comment.setVisibility(View.INVISIBLE);
+            profile.setText("프로필 배경을 올려보세요.");
+            pictureDescription.setVisibility(View.GONE);
+            simple_comment.setVisibility(View.GONE);
         }
 
         if(mode.equals("profile"))
-            profile.setText("프로필 사진을 올려보세요");
+            profile.setText("프로필 사진을 올려보세요.");
 
         pictureUpload = findViewById(R.id.picture_upload);
         pictureUpload.setOnClickListener(new View.OnClickListener() {
@@ -239,7 +237,7 @@ public class UploadActivity extends AppCompatActivity {
 
     // 팝업띄우기
     public void showPopup() {
-        epicDialog.setContentView(R.layout.popup);
+        epicDialog.setContentView(R.layout.dialog_upload);
 
         closePopup = epicDialog.findViewById(R.id.close_popup);
         btnAccept = epicDialog.findViewById(R.id.btn_accept);
@@ -399,6 +397,8 @@ public class UploadActivity extends AppCompatActivity {
     }   // end of upload()
 
     private void setUploadCount(){
+        mDialog = new SpotsDialog.Builder().setContext(UploadActivity.this).build();
+        mDialog.show();
         mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").child(formatDate).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -407,12 +407,18 @@ public class UploadActivity extends AppCompatActivity {
                     Map<String,Object> map = new HashMap<>();
                     map.put(formatDate,5);
                     mUserRef.child(mFirebaseUser.getUid()).child("uploadcount").setValue(map);
+                    uploadCount = 5;
+                    mDialog.dismiss();
                 }else {
                     uploadCount = upload_count;
                     if (uploadCount == 0) {
                         Toast.makeText(UploadActivity.this,"일일 업로드 횟수를 모두 사용하였습니다.",Toast.LENGTH_LONG).show();
+                        mDialog.dismiss();
                         finish();
+                        return;
                     }
+                    Log.d("일일업로드 초과시","들어옴");
+                    mDialog.dismiss();
                 }
             }
 

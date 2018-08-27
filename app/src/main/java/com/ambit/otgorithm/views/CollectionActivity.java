@@ -1,14 +1,18 @@
 package com.ambit.otgorithm.views;
 
+import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ambit.otgorithm.R;
@@ -28,6 +32,10 @@ public class CollectionActivity extends AppCompatActivity {
 
     TextView textViewToolbarTitle;
 
+    // custom dialog
+    Dialog collectionInfoDialog;
+    ImageView closePopup;
+    
     RecyclerView mCollectionRecyclerView;
     ArrayList<GalleryDTO> mCollectionDTOS;
 
@@ -67,6 +75,9 @@ public class CollectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
+        // 도움말 다이얼로그 객체 생성
+        collectionInfoDialog = new Dialog(this);
+
         mCollectionRecyclerView = (RecyclerView) findViewById(R.id.collection_recyclerview);
         mCollectionDTOS = new ArrayList<>();
         mCollectionAdapter = new CollectionAdapter(mCollectionDTOS,this);
@@ -99,6 +110,13 @@ public class CollectionActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_info, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -109,8 +127,26 @@ public class CollectionActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_information:
+                showCollectionInfoPopup();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }   // end of onOptionsItemSelected()
 
+    public void showCollectionInfoPopup() {
+        collectionInfoDialog.setContentView(R.layout.dialog_collection);
+
+        closePopup = collectionInfoDialog.findViewById(R.id.close_popup);
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectionInfoDialog.dismiss();
+            }
+        });
+
+        collectionInfoDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        collectionInfoDialog.show();
+    }   // end of showCollectionInfoPopup()
+    
 }

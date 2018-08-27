@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,52 +33,60 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
 
         arrayList = new ArrayList();
 
-        if(MainActivity.currenttemper >= 7){
-            //로퍼 출격
+        // 로퍼 출격
+        if (MainActivity.currenttemper >= 7) {
             arrayList.add(R.drawable.shoes_permission_loafer);
-        }else {
+        } else {
             arrayList.add(R.drawable.shoes_black_loafer);
         }
 
-        //더비슈즈,옥스퍼드화 always
+
+        // 더비 슈즈 always
         arrayList.add(R.drawable.shoes_permission_derby);
+
+
+        // 샌들 출격
+        /*if (MainActivity.currenttemper >= 20) {
+            arrayList.add(R.drawable.shoes_permission_sandal);
+        } else {
+            arrayList.add(R.drawable.shoes_black_sandal);
+        }*/
+
+        // 옥스퍼드화 always
         arrayList.add(R.drawable.shoes_permission_oxford);
 
-
-        if(MainActivity.currenttemper < 30 ){
-            //부츠 , 워커 출격
+        // 부츠, 워커 출격
+        if (MainActivity.currenttemper < 30) {
             arrayList.add(R.drawable.shoes_permission_boots);
             arrayList.add(R.drawable.shoes_permission_worker);
-        }else {
+        } else {
             arrayList.add(R.drawable.shoes_black_boots);
             arrayList.add(R.drawable.shoes_black_worker);
         }
 
-        if(MainActivity.snowrain == 0 || MainActivity.snowrain == 3 ){
-            //스니커즈(가죽/스웨이드) 출격
+        // 스니커즈(가죽/스웨이드) 출격
+        if (MainActivity.snowrain == 0 || MainActivity.snowrain == 3) {
             arrayList.add(R.drawable.shoes_permission_sneakers_suede);
-        }else {
+        } else {
             arrayList.add(R.drawable.shoes_black_sneakers_suede);
         }
 
-        //스니커즈(에나멜/면) always
+        // 스니커즈(에나멜/면) always
         arrayList.add(R.drawable.shoes_permission_sneakers_enamel);
 
-        if(MainActivity.snowrain != 1 && MainActivity.currenttemper >= 10){
-            //슬립온(면) 출격
+        // 슬립온(면) 출격
+        if (MainActivity.snowrain != 1 && MainActivity.currenttemper >= 10) {
             arrayList.add(R.drawable.shoes_permission_slip_on_cotton);
-        }else {
+        } else {
             arrayList.add(R.drawable.shoes_black_slip_on_cotton);
         }
 
-        if(MainActivity.snowrain == 1 || MainActivity.snowrain == 2 || MainActivity.currenttemper < 10 || MainActivity.sky == 4){
-            //슬립온(가죽/합성피혁) 퇴각
+        // 슬립온(가죽/합성피혁) 퇴각
+        if (MainActivity.snowrain == 1 || MainActivity.snowrain == 2 || MainActivity.currenttemper < 10 || MainActivity.sky == 4) {
             arrayList.add(R.drawable.shoes_black_slip_on_leather);
-        }else {
+        } else {
             arrayList.add(R.drawable.shoes_permission_slip_on_leather);
         }
-
-
 
         grid = view.findViewById(R.id.grid);
         gridViewAdapter = new GridViewAdapter(getActivity(),arrayList,R.layout.square_view);
@@ -88,27 +97,41 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
 
                 switch (position) {
                     case 0:     // 로퍼
-                        intent.putExtra("id", "loafer");
+                        intent.putExtra("shoes", "loafer");
                         startActivity(intent);
                         break;
-                    case 4:     // 스니커즈(가죽/스웨이드)
-                        intent.putExtra("id", "sneakers");
+                    case 1:     // 더비 슈즈
+                        intent.putExtra("shoes", "derby");
+                        startActivity(intent);
+                        break;
+                    case 2:     // 옥스포드화
+                        intent.putExtra("shoes", "oxford");
+                        startActivity(intent);
+                        break;
+                    case 3:     // 부츠
+                        intent.putExtra("shoes", "boots");
                         startActivity(intent);
                         break;
                     case 5:     // 스니커즈(가죽/스웨이드)
-                        intent.putExtra("id", "sneakers");
+                        intent.putExtra("shoes", "sneakers");
                         startActivity(intent);
                         break;
-                    case 6:     // 슬립온(가죽/합성피혁)
-                        intent.putExtra("id", "slipon");
+                    case 6:     // 스니커즈(애나멜/면)
+                        intent.putExtra("shoes", "sneakers");
                         startActivity(intent);
                         break;
                     case 7:     // 슬립온(면)
-                        intent.putExtra("id", "slipon");
+                        intent.putExtra("shoes", "slipon");
                         startActivity(intent);
                         break;
+                    case 8:     // 슬립온(가죽/합성피혁)
+                        intent.putExtra("shoes", "slipon");
+                        startActivity(intent);
+                        break;
+                    case 9:     // 샌들(추가 예정)
+                        Log.d("테스트: ", "case 9 진입");
+                        break;
                 }
-
             }
         });
         grid.setAdapter(gridViewAdapter);
@@ -116,7 +139,7 @@ public class ShoesFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    public static ShoesFragment newInstance(){
+    public static ShoesFragment newInstance() {
         Bundle args = new Bundle();
 
         ShoesFragment fragment = new ShoesFragment();

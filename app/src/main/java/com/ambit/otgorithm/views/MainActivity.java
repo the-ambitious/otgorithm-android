@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -26,6 +27,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,7 +46,6 @@ import com.ambit.otgorithm.R;
 import com.ambit.otgorithm.adapters.AutoScrollAdapter;
 import com.ambit.otgorithm.models.Common;
 import com.ambit.otgorithm.modules.AdDialog;
-import com.ambit.otgorithm.modules.FirstAdDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
@@ -60,6 +61,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.hanks.htextview.base.HTextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,9 +78,12 @@ import java.util.List;
 import java.util.Map;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+import dmax.dialog.SpotsDialog;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
+
+    final private int INTERVAL_TIME = 4000;     // milliseconds
 
     // admob 전면광고
     private InterstitialAd mInterstitialAd;
@@ -97,10 +102,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     AutoScrollAdapter autoScrollAdapter;
 
+    Toolbar mainToolbar;
+    android.app.AlertDialog mDialog;
     // 툴바 변수 선언
     private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
 
-    // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다.웹에서 세션개념과 비슷하다.
+    // firebase 인증 객체 싱글톤으로 어느 곳에서나 부를수 있다. 웹에서 세션개념과 비슷하다.
     private FirebaseAuth mAuth;
 
     // 변수 선언
@@ -168,6 +176,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     String formatDate = sdfNow.format(date);
     String[] rightNow;
 
+    // HTextView
+    ArrayList<String> sayingSet = new ArrayList<>();
+    int position = 0;
+    HTextView sayingHTV;
+    Handler handler;
+
     private FirebaseDatabase database;
     private DatabaseReference mUserRef;
     private FirebaseUser mFirebaseUser;
@@ -203,10 +217,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setTheme(R.style.AppTheme);
         SystemClock.sleep(2000);
 
+        // Setup
         super.onCreate(savedInstanceState);
-
-        FirstAdDialog firstAdDialog = new FirstAdDialog(this);
-        firstAdDialog.show();
         //setFullAd();
        /* mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -219,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });*/
 
         setContentView(R.layout.activity_main);
-
+        mDialog = new SpotsDialog.Builder().setContext(MainActivity.this).build();
         // firebase 인증 객체 얻기
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
@@ -242,8 +254,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         /*****************************************************************
          * 커스텀 툴바 셋팅
          */
-        Toolbar provinceToolbar = findViewById(R.id.toolbar_basic);
-        setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
+        mainToolbar = findViewById(R.id.toolbar_basic);
+        setSupportActionBar(mainToolbar);    // 액션바와 같게 만들어줌
 
         tv = (TextView) findViewById(R.id.toolbar_title);
         tv.setText("옷고리즘");
@@ -255,15 +267,43 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 기본 타이틀을 보여줄 지 말 지 설정
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_content);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
         // 뒤로가기 버튼, Default로 true만 해도 Back 버튼이 생김
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /****************************************************************/
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_content);
+        // Some Sample Messages for Animation
+        sayingSet.add("당신은 패션을 알고 있거나 그렇지 않다.");
+        sayingSet.add("- Anna Wintour");
+        sayingSet.add("You either know fashion or you don't.");
+
+        // Initialize HTextView
+        sayingHTV = findViewById(R.id.saying);
+        
+        // First Message
+        sayingHTV.animateText(sayingSet.get(position));
+        // Change Messages every 4.5 Seconds
+        handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                handler.postDelayed(this, INTERVAL_TIME);
+                if (position >= sayingSet.size())
+                    position = 0;
+                sayingHTV.animateText(sayingSet.get(position));
+                position++;
+            }
+        }, INTERVAL_TIME);
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View nav_header_view = navigationView.getHeaderView(0);
         Menu menu = navigationView.getMenu();
+
         if (mFirebaseUser != null) { menu.findItem(R.id.nav_aboutUs_logout).setVisible(true); }
         else { menu.findItem(R.id.nav_aboutUs_logout).setVisible(false); }
 
@@ -286,7 +326,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         finish();
                         startActivity(intent);
                     }
-
                 }
             }
         });
@@ -297,47 +336,49 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         sigin_in_email = nav_header_view.findViewById(R.id.sigin_in_email);
         sigin_in_thumbnail = nav_header_view.findViewById(R.id.sigin_in_thumbnail);
         sign_in_nickname = nav_header_view.findViewById(R.id.sign_in_nickname);
+
         if(mFirebaseUser != null) {
+            mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("profileUrl").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String uri = dataSnapshot.getValue(String.class);
-                    if(uri != null){
+                    if (uri != null) {
                         Uri myUri = Uri.parse(uri);
                         userUri = myUri;
-                        Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
-                    }else {
-                        Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80,800)).into(sigin_in_thumbnail);
+                        Glide.with(MainActivity.this).load(myUri).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
+                        mDialog.dismiss();
+                    } else {
+                        Glide.with(MainActivity.this).load(R.drawable.thumbnail_default).apply(new RequestOptions().override(80, 800)).into(sigin_in_thumbnail);
+                        mDialog.dismiss();
                     }
-
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { }
             });
-
             sigin_in_email.setText(mFirebaseUser.getEmail());
         }
 
-        if(mFirebaseUser!=null){
+        if (mFirebaseUser != null) {
+            mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    nickName = dataSnapshot.getValue(String.class);
-                    if(nickName == null){
+                    if(dataSnapshot.exists()){
+                        nickName = dataSnapshot.getValue(String.class);
+                        sign_in_nickname.setText(MainActivity.nickName);
+                        mDialog.dismiss();
+                    }else {
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
+                        mDialog.dismiss();
                         startActivity(intent);
                         finish();
                     }
-                    sign_in_nickname.setText(MainActivity.nickName);
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { }
             });
         }
 
@@ -379,11 +420,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         // Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                         break;
 
-                    case R.id.nav_aboutUs_intro:
-                        intent = new Intent(MainActivity.this, IntroActivity.class);
+                    case R.id.nav_aboutUs_origin:
+                        intent = new Intent(MainActivity.this, DescriptionActivity.class);
+                        intent.putExtra("description", "origin");
                         startActivity(intent);
                         break;
-
+/*
+                    case R.id.nav_aboutUs_notice:
+                        intent = new Intent(MainActivity.this, DescriptionActivity.class);
+                        intent.putExtra("description", "notice");
+                        startActivity(intent);
+                        break;
+*/
                     case R.id.nav_aboutUs_settings:
                     intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
@@ -466,9 +514,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // 이미지 url을 저장하는 arrayList
         // viewPager에서 보여줄 item
         ArrayList<String> bannerList = new ArrayList<String>();
-        bannerList.add("http://13.125.253.250/banners/banner1.png");
-        bannerList.add("http://13.125.253.250/banners/banner2.png");
-        bannerList.add("http://13.125.253.250/banners/banner3.png");
+        String SERVER_ROOT_ADDR = getString(R.string.server_root_address);
+        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner1.png");
+        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner2.png");
+        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner3.png");
 
         autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
         mIndicator = (CircleIndicator) findViewById(R.id.main_indicator);
@@ -478,7 +527,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         autoViewPager.setAdapter(scrollAdapter);    // Auto Viewpager에 Adapter 장착
         mIndicator.setViewPager(autoViewPager);
-        autoViewPager.setInterval(5000);            // 페이지 넘어갈 시간 간격 설정
+        autoViewPager.setInterval(INTERVAL_TIME);            // 페이지 넘어갈 시간 간격 설정
         autoViewPager.startAutoScroll();            // Auto Scroll 시작
 
 //        autoScrollAdapter = new AutoScrollAdapter(getLayoutInflater(), arrayList,this);
@@ -516,10 +565,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             case R.id.action_settings:
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
     /**
      * 한번을 눌렀을 경우 " 한 번 더 누르면 종료됩니다. " 라는 안내 Toast를 띄우도록 하고
@@ -551,11 +598,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             alt_bld.show();
         }*/
 
-
         AdDialog adDialog = new AdDialog(this);
         adDialog.show();
 
-        //super.onBackPressed();
+        // super.onBackPressed();
 
 /*
         if ( pressedTime == 0 ) {
@@ -576,18 +622,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     public void onClick(View v) {
         Intent intent = null;
+
         switch (v.getId()) {
             case R.id.button1:
                 intent = new Intent(this, SortieActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button2:
                 intent = new Intent(this, GalleryActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button3:
                 intent = new Intent(this, ProvinceActivity.class);
+                startActivity(intent);
                 break;
         }
-        startActivity(intent);
     }
 
     /*@Override
@@ -613,7 +662,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 break;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+        menu_navigation.closeDrawer(GravityCompat.START);
         return true;
     }*/   // end of
 
@@ -962,13 +1011,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     weathericon.setImageResource(R.drawable.weather_cloudy);
                     weatherdiscrip.setText("구름이 뭉게뭉게");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
-                    weatherDescription.setText("오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
+                    weatherDescription.setText("핫하다 핫해!" + "\n" + "오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
                     temper.setText(currenttemper + "°");
                     Log.d("날씨","구름2");
                 } else if (sky == 4){
                     weathericon.setImageResource(R.drawable.weather_bad_cloudy);
-                    weatherdiscrip.setText("먹구름이 뭉게뭉게~");
-                    weatherDescription.setText("날씨가 흐려요~" + "\n" + "컨디션 관리에 주의하세요!");
+                    weatherdiscrip.setText("먹구름이 가득?!");
+                    weatherDescription.setText(
+                            "시커먼 구름이 모여 있어요!" + "\n" +
+                            "햇빛이 보이지 않아 시원하지만" + "\n" +
+                            "바깥출입을 한다면 조심해야겠어요.");
                     temper.setText(currenttemper + "°");
                 }
 
@@ -994,12 +1046,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 battlefield.setText(list.get(0).getAdminArea());
                 current_time.setText(this_is_the_moment[0] + "년 " + this_is_the_moment[1] + "월 " + this_is_the_moment[2] + "일");
-
+                current_time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 if (mFirebaseUser != null) {
                     mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(list.get(0).getAdminArea());
+                            if(dataSnapshot.exists()){
+                                mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(list.get(0).getAdminArea());
+                            }else {
+                                return;
+                            }
                         }
 
                         @Override
@@ -1039,20 +1095,33 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Toast.makeText(this, "현재 회원 : " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "현재 " + currentUser.getEmail() + " 으로 접속중입니다.", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "현재 회원 : 없음", Toast.LENGTH_SHORT).show();
+            Snackbar.make(mDrawerLayout, "현재 비로그인 상태입니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
     void passPushTokenToServer(){
-        String uid = mFirebaseUser.getUid();
+        final String uid = mFirebaseUser.getUid();
         Common.currentToken = FirebaseInstanceId.getInstance().getToken();
-        String token = Common.currentToken;
-        Map<String, Object> map = new HashMap<>();
-        map.put("token", token);
+        final String token = Common.currentToken;
 
-        mUserRef.child(uid).updateChildren(map);
+        mUserRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    mUserRef.child(uid).child("token").setValue(token);
+                }else {
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }   // end of passPushTokenToServer()
 
     private void setFullAd() {
