@@ -975,10 +975,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
-                    case 1:     // rainy
+                    case 1:     // weather_rainy_128dp
                         Log.d("날씨","비1");
-                        weather_Icon = R.drawable.rainy;
-                        weathericon.setImageResource(R.drawable.rainy);
+                        weather_Icon = R.drawable.weather_rainy_128dp;
+                        weathericon.setImageResource(R.drawable.weather_rainy_128dp);
                         //weatherdiscrip.setTextColor(Color.WHITE);
                         weatherdiscrip.setText("센치해지는 비내림");
                         weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
@@ -1011,22 +1011,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 if (sky == 1) {
                     Log.d("날씨","맑음1");
-                    weather_Icon = R.drawable.sunny;
-                    weathericon.setImageResource(R.drawable.sunny);
+                    weather_Icon = R.drawable.weather_sunny_128dp;
+                    weathericon.setImageResource(R.drawable.weather_sunny_128dp);
                     weatherdiscrip.setText("날이 맑네요");
                     temper.setText(currenttemper + "도");
                     Log.d("날씨","맑음2");
                 } else if (sky == 2 || sky == 3) {
                     Log.d("날씨","구름1");
-                    weather_Icon = R.drawable.weather_cloudy;
-                    weathericon.setImageResource(R.drawable.weather_cloudy);
+                    weather_Icon = R.drawable.weather_cloudy_128dp;
+                    weathericon.setImageResource(R.drawable.weather_cloudy_128dp);
                     weatherdiscrip.setText("구름이 뭉게뭉게");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
                     weatherDescription.setText("핫하다 핫해!" + "\n" + "오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
                     temper.setText(currenttemper + "°");
                     Log.d("날씨","구름2");
                 } else if (sky == 4){
-                    weathericon.setImageResource(R.drawable.weather_bad_cloudy);
+                    weathericon.setImageResource(R.drawable.weather_bad_cloudy_128dp);
                     weatherdiscrip.setText("먹구름이 가득?!");
                     weatherDescription.setText(
                             "시커먼 구름이 모여 있어요!" + "\n" +

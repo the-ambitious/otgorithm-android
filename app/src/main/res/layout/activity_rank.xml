@@ -42,7 +42,6 @@
             android:layout_weight="31.5"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="@drawable/province_busan"
             android:weightSum="10">
 
             <TextView
