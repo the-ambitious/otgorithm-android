@@ -299,7 +299,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                                         if(dataSnapshot.exists()){
                                                             int accusationCount = dataSnapshot.getValue(Integer.class);
-                                                            if(accusationCount>=1){
+                                                            if(accusationCount>=4){
                                                                 FirebaseStorage storage = FirebaseStorage.getInstance();
                                                                 StorageReference storageReference = storage.getReference();
 
