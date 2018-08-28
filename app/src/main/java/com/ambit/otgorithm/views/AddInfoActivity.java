@@ -178,6 +178,7 @@ public class AddInfoActivity extends AppCompatActivity {
                 "전국", "서울", "인천", "대전", "대구", "광주", "부산", "울산",
                 "경기도", "강원도", "충청도", "경상도", "전라도", "제주도"
         );
+
         mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 switch (position) {
@@ -416,8 +417,7 @@ public class AddInfoActivity extends AppCompatActivity {
     }
 
     private boolean allButtonChecked() {
-        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked() ||
-                !locationCheckBox.isChecked()) {
+        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked()) {
             mDialog.dismiss();
             Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
             return false;
