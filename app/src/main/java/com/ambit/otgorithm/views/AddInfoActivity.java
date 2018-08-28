@@ -110,6 +110,8 @@ public class AddInfoActivity extends AppCompatActivity {
 
     String mTempName;
 
+    String battlefield;
+
     /** 한글,영어,숫자만 받기 **/
     //한글. 영문. 부분적 특수문자 허용 InputFilter
     public InputFilter filterSearch = new InputFilter() {
@@ -173,6 +175,8 @@ public class AddInfoActivity extends AppCompatActivity {
         addInfoDialog = new Dialog(this);
         showAddInfoPopup();
 
+        battlefield = "전국";
+
         mSpinner = (MaterialSpinner) findViewById(R.id.spinner_location);
         mSpinner.setItems(
                 "전국", "서울", "인천", "대전", "대구", "광주", "부산", "울산",
@@ -180,7 +184,10 @@ public class AddInfoActivity extends AppCompatActivity {
         );
         mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                switch (position) {
+
+                    battlefield = item;
+
+               /* switch (position) {
                     case 0:     // 전국
                         Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
                         break;
@@ -223,7 +230,7 @@ public class AddInfoActivity extends AppCompatActivity {
                     case 13:     // 제주도
                         Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
                         break;
-                }
+                }*/
             }
         });
 
@@ -416,8 +423,7 @@ public class AddInfoActivity extends AppCompatActivity {
     }
 
     private boolean allButtonChecked() {
-        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked() ||
-                !locationCheckBox.isChecked()) {
+        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked()) {
             mDialog.dismiss();
             Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
             return false;
@@ -448,6 +454,7 @@ public class AddInfoActivity extends AppCompatActivity {
                                     return;
                                 }
                             }
+                            mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(battlefield);
                             mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

@@ -168,7 +168,9 @@
                 android:id="@+id/spinner_location"
                 android:layout_width="100dp"
                 app:ms_text_color="@android:color/black"
+                app:ms_dropdown_max_height="350dp"
                 android:layout_marginLeft="8dp"
+                app:ms_dropdown_height="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
