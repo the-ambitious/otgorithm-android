@@ -233,7 +233,7 @@ public class ProfileActivity extends AppCompatActivity {
 //        profileTabs.getTabAt(0).setIcon(R.drawable.ic_mr_button_connected_17_dark);
         /*****************************************************************/
         try {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snow);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.weather_snowy_128dp);
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                 @SuppressWarnings("ResourceType")
                 @Override

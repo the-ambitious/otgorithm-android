@@ -69,7 +69,7 @@ public class UploadActivity extends AppCompatActivity {
     private TextView textViewToolbarTitle;
     private TextView profile;
 
-    private TextView simple_comment;
+    private TextView simple_comment, linkToProvince;
     private ImageView pictureView;
     private FloatingActionButton pictureChoose;
     private Button pictureUpload;
@@ -132,6 +132,16 @@ public class UploadActivity extends AppCompatActivity {
         pictureDescription = findViewById(R.id.picture_description);
         profile = findViewById(R.id.profileComment);
         simple_comment = findViewById(R.id.simple_comment);
+        linkToProvince = findViewById(R.id.link_to_province);
+
+        // 지역 페이지 이동
+        linkToProvince.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UploadActivity.this, ProvinceActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // 정보띄우기
         uploadInfo.setOnClickListener(new View.OnClickListener() {

@@ -110,6 +110,8 @@ public class AddInfoActivity extends AppCompatActivity {
 
     String mTempName;
 
+    String battlefield;
+
     /** 한글,영어,숫자만 받기 **/
     //한글. 영문. 부분적 특수문자 허용 InputFilter
     public InputFilter filterSearch = new InputFilter() {
@@ -173,6 +175,8 @@ public class AddInfoActivity extends AppCompatActivity {
         addInfoDialog = new Dialog(this);
         showAddInfoPopup();
 
+        battlefield = "전국";
+
         mSpinner = (MaterialSpinner) findViewById(R.id.spinner_location);
         mSpinner.setItems(
                 "전국", "서울", "인천", "대전", "대구", "광주", "부산", "울산",
@@ -180,51 +184,9 @@ public class AddInfoActivity extends AppCompatActivity {
         );
 
         mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                switch (position) {
-                    case 0:     // 전국
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 1:     // 서울
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 2:     // 인천
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 3:     // 대전
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 4:     // 대구
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 5:     // 광주
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 6:     // 부산
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 7:     // 울산
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 8:     // 경기도
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 9:     // 강원도
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 10:     // 충청도
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 11:     // 경상도
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 12:     // 전라도
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                    case 13:     // 제주도
-                        Snackbar.make(view, "Clicked " + item + ", Pos: " + position, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                battlefield = item;
             }
         });
 
@@ -238,12 +200,9 @@ public class AddInfoActivity extends AppCompatActivity {
 
         termsCheckBox = findViewById(R.id.checkbox_terms);
         privacyCheckBox = findViewById(R.id.checkbox_privacy);
-//        locationCheckBox = findViewById(R.id.checkbox_location);
 
         termsBtn = findViewById(R.id.details_terms);
         privacyBtn = findViewById(R.id.details_privacy);
-//        locationBtn = findViewById(R.id.details_location);
-
 
         tieNickname.setFilters(new InputFilter[]{filterSearch});
 
@@ -448,6 +407,7 @@ public class AddInfoActivity extends AppCompatActivity {
                                     return;
                                 }
                             }
+                            mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(battlefield);
                             mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

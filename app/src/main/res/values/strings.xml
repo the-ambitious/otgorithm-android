@@ -74,10 +74,13 @@
     <!-- dialog_province.xml -->
     <string name="gallery_title">전투 상황판</string>
 
-    <string name="gallery_desc">
+    <string name="gallery_desc1">
         오늘 좀 스타일 괜찮은 것 같은데..\n
         누가 알아봐 줬으면 한 적이 있나요?\n
-        \n
+        옷고리즘은 다음과 같은 기능을 제공합니다.
+    </string>
+
+    <string name="gallery_desc2">
         평소보다 신경 쓴 내 모습에 만족한다면\n
         데일리룩을 소개하여 장군이 되어보세요!
     </string>
