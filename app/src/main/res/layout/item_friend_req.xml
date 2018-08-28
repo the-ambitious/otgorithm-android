@@ -30,6 +30,7 @@
                 android:id="@+id/friend_req_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Nickname"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
@@ -40,11 +41,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:textSize="14sp"
+                android:layout_margin="4dp"
                 android:text="수락"
                 android:textColor="#FFFFFF"
                 android:background="@drawable/button"/>
 
             <Button
+                android:layout_margin="4dp"
                 android:id="@+id/friend_req_decline"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"

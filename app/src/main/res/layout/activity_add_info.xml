@@ -96,7 +96,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="15"
+            android:layout_weight="14"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:padding="8dp"
@@ -126,15 +126,51 @@
                 android:id="@+id/check_duplication"
                 android:layout_width="0dp"
                 android:layout_weight="3"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_gravity="center"
                 android:background="@drawable/button"
                 android:text="중복확인"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"/>
         </LinearLayout>
-
         <!-- 닉네임 입력란 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="11"
+            android:padding="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:text="본인의 출격 지역을 선택해주세요."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:text="한번 선택하면 변경할 수 없으니 신중하게!"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_location"
+                android:layout_width="100dp"
+                app:ms_text_color="@android:color/black"
+                android:layout_marginLeft="8dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
 
         <!-- 소개 입력란 -->
@@ -165,45 +201,70 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:layout_weight="25"
-            android:paddingBottom="16dp"
+            android:layout_weight="16"
             android:weightSum="10">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="30dp">
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="3"
+                    android:layout_weight="5"
+                    android:paddingBottom="4dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:weightSum="10">
 
-                    <CheckBox
-                        android:id="@+id/checkbox_terms"
-                        android:button="@android:color/transparent"
-                        android:background="@drawable/checkbox"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
-
-                    <TextView
-                        android:paddingLeft="8dp"
-                        android:textSize="14sp"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="서비스 이용약관(필수)"/>
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/checkbox_terms"
+                            android:button="@android:color/transparent"
+                            android:background="@drawable/checkbox"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                        <TextView
+                            android:paddingLeft="8dp"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="서비스 이용약관(필수)"/>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/details_terms"
+                        android:layout_marginLeft="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button"
+                        android:textColor="#FFFFFF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:onClick="detailsOnClick"
+                        android:text="상세보기"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="3"
+                    android:layout_weight="5"
+                    android:paddingTop="4dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                     <CheckBox
                         android:id="@+id/checkbox_privacy"
@@ -218,89 +279,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="개인정보 수집 이용(필수)"/>
-                </LinearLayout>
+                    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <CheckBox
-                        android:id="@+id/checkbox_location"
-                        android:button="@android:color/transparent"
-                        android:background="@drawable/checkbox"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
-                    <TextView
-                        android:paddingLeft="8dp"
-                        android:textSize="14sp"
+                    <Button
+                        android:id="@+id/details_privacy"
+                        android:background="@drawable/button"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginLeft="24dp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="위치기반 서비스 이용(필수)"/>
+                        android:layout_height="30dp"
+                        android:onClick="detailsOnClick"
+                        android:text="상세보기"/>
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="9">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/details_terms"
-                    android:background="@drawable/button"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:onClick="detailsOnClick"
-                    android:text="상세보기"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/details_privacy"
-                    android:background="@drawable/button"
-                    android:textColor="#FFFFFF"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:onClick="detailsOnClick"
-                    android:text="상세보기"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/details_location"
-                    android:background="@drawable/button"
-                    android:textColor="#FFFFFF"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:onClick="detailsOnClick"
-                    android:text="상세보기"/>
-                </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
 

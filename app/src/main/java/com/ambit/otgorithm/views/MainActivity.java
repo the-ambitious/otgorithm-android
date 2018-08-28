@@ -53,6 +53,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -84,6 +85,8 @@ import me.relex.circleindicator.CircleIndicator;
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     final private int INTERVAL_TIME = 4000;     // milliseconds
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     // admob 전면광고
     private InterstitialAd mInterstitialAd;
@@ -231,6 +234,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });*/
 
         setContentView(R.layout.activity_main);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         mDialog = new SpotsDialog.Builder().setContext(MainActivity.this).build();
         // firebase 인증 객체 얻기
         mAuth = FirebaseAuth.getInstance();
@@ -366,6 +373,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     if(dataSnapshot.exists()){
                         Log.d("왜뜨냐1",mFirebaseUser.toString());
                         nickName = dataSnapshot.getValue(String.class);
@@ -373,6 +381,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         mDialog.dismiss();
                     }else {
                         Log.d("왜뜨냐2",mFirebaseUser.toString());
+
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         mDialog.dismiss();
                         startActivity(intent);
