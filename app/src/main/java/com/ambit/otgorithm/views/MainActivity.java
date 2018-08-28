@@ -1051,7 +1051,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 battlefield.setText(list.get(0).getAdminArea());
                 current_time.setText(this_is_the_moment[0] + "년 " + this_is_the_moment[1] + "월 " + this_is_the_moment[2] + "일");
                 current_time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                if (mFirebaseUser != null) {
+               /* if (mFirebaseUser != null) {
                     mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1065,7 +1065,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         @Override
                         public void onCancelled(DatabaseError databaseError) { }
                     });
-                }
+                }*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
