@@ -43,8 +43,8 @@ public class FirstStartActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = a.edit();
             editor.putInt("First", infoFirst);
             editor.commit();
-            (Toast.makeText(getApplicationContext(), "저장완료 : ",
-                    Toast.LENGTH_LONG)).show();
+            /*(Toast.makeText(getApplicationContext(), "저장완료 : ",
+                    Toast.LENGTH_LONG)).show();*/
             finish();
         }
     };

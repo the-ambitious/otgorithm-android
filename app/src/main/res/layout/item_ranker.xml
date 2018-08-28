@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/userId"
             android:layout_below="@+id/userId"
-            android:text="http://corock.tistory.com"
+            android:text="here is description"
             android:textSize="18sp" />
     </RelativeLayout>
 

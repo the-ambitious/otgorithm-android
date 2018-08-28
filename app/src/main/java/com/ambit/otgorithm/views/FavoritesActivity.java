@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 public class FavoritesActivity extends AppCompatActivity {
 
-    TextView tv;
+    TextView tv, favoritesIntro;
 
     private RecyclerView favoritesRecyclerView;
     private FavoritesAdapter favoritesAdapter;
@@ -66,11 +66,14 @@ public class FavoritesActivity extends AppCompatActivity {
         setSupportActionBar(provinceToolbar);    // 액션바와 같게 만들어줌
 
         tv = (TextView) findViewById(R.id.toolbar_title);
+        favoritesIntro = (TextView) findViewById(R.id.favorites_intro);
 
         if (target!=null && target.equals("blacklist")) {
-            tv.setText("차단 친구 관리");
+            tv.setText("차단 인원 관리");
+            favoritesIntro.setText("아래는 차단한 인원현황입니다.");
         } else {
             tv.setText("즐겨찾는 장군");
+            favoritesIntro.setText("아래는 서열 현황에서" + "\n" + "즐겨찾기를 한 장군들입니다.");
         }
         tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
         tv.setTextColor(Color.WHITE);

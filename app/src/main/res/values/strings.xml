@@ -47,6 +47,18 @@
     <string name="developer">by 야인 be amBITious</string>
 
     <!-- in dialog_sortie.xml -->
+    <string name="add_info_title">추가 정보 입력</string>
+
+    <string name="add_info_desc">
+        옷고리즘 앱을 보다 원활하게\n
+        이용하기 위한 최소한의 정보에요!\n
+        \n
+        어플 이용에 필요 없는 정보는\n
+        수집하거나 사용하지 않습니다 :)
+    </string>
+
+
+    <!-- in dialog_sortie.xml -->
     <string name="sortie_title">출격 명령 서비스란?</string>
 
     <string name="sortie_desc">
@@ -62,10 +74,13 @@
     <!-- dialog_province.xml -->
     <string name="gallery_title">전투 상황판</string>
 
-    <string name="gallery_desc">
+    <string name="gallery_desc1">
         오늘 좀 스타일 괜찮은 것 같은데..\n
         누가 알아봐 줬으면 한 적이 있나요?\n
-        \n
+        옷고리즘은 다음과 같은 기능이 있습니다.
+    </string>
+
+    <string name="gallery_desc2">
         평소보다 신경 쓴 내 모습에 만족한다면\n
         데일리룩을 소개하여 장군이 되어보세요!
     </string>

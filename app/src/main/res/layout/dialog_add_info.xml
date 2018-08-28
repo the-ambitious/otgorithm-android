@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="@string/favorites_title"
+                    android:text="@string/add_info_title"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="24dp"
@@ -55,55 +55,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/favorites_desc1"
-                    android:textAlignment="center"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="4dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:background="@drawable/cic_profile_64dp"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp" />
-
-                    <TextView
-                        android:text=" : 해당 장군 프로필 화면으로 이동합니다."
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <!-- 즐겨찾기 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="4dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:background="@drawable/cic_star_on"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp" />
-
-                    <TextView
-                        android:text=" : 마음에 들었던 데일리룩을 표시합니다."
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/favorites_desc2"
+                    android:text="@string/add_info_desc"
                     android:textAlignment="center"
                     android:textSize="16sp" />
 

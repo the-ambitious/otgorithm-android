@@ -41,7 +41,7 @@ public class SortieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sortie);
 
         // .initialize(): 배너를 사용하기 위해서 초기화를 해준다. 한번만 실행하면 된다.
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        MobileAds.initialize(this, "ca-app-pub-2000513005580135/1575681990");
         mAdView = findViewById(R.id.adView);
 
         // 도움말 다이얼로그 객체 생성

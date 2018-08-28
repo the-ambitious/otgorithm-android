@@ -2,10 +2,12 @@ package com.ambit.otgorithm.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -63,6 +67,12 @@ import dmax.dialog.SpotsDialog;
 public class AddInfoActivity extends AppCompatActivity {
 
     LinearLayout mContent;
+
+    MaterialSpinner mSpinner;
+
+    // custom dialog
+    Dialog addInfoDialog;
+    ImageView closePopup;
 
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int GALLERY_IMAGE_REQUEST = 1;
@@ -100,11 +110,14 @@ public class AddInfoActivity extends AppCompatActivity {
 
     String mTempName;
 
+    String battlefield;
+
     /** 한글,영어,숫자만 받기 **/
-    public InputFilter filter = new InputFilter() {
-        @Override
+    //한글. 영문. 부분적 특수문자 허용 InputFilter
+    public InputFilter filterSearch = new InputFilter() {
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            Pattern ps = Pattern.compile("^[ㄱ-ㅣ가-힣0-9a-zA-Z]*$");
+            // 천지인 자판 : middle dot 문제 > \u318D\u119E\u11A2\u2022\u2025a\u00B7\uFE55
+            Pattern ps = Pattern.compile("^[ㄱ-ㅣ가-힣a-zA-Z0-9_\\s\\.\\?\\!\\-\\,|\u318D\u119E\u11A2\u2022\u2025a\u00B7\uFE55]*$");
             if (!ps.matcher(source).matches()) {
                 return "";
             }
@@ -157,12 +170,25 @@ public class AddInfoActivity extends AppCompatActivity {
         /****************************************************************/
 
         mContent = findViewById(R.id.add_info_content);
-        Snackbar.make(mContent, getString(R.string.add_desc), Snackbar.LENGTH_INDEFINITE).setAction("닫기", new View.OnClickListener() {
+        
+        // 도움말 다이얼로그 객체 생성
+        addInfoDialog = new Dialog(this);
+        showAddInfoPopup();
+
+        battlefield = "전국";
+
+        mSpinner = (MaterialSpinner) findViewById(R.id.spinner_location);
+        mSpinner.setItems(
+                "전국", "서울", "인천", "대전", "대구", "광주", "부산", "울산",
+                "경기도", "강원도", "충청도", "경상도", "전라도", "제주도"
+        );
+
+        mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override
-            public void onClick(View v) {
-                
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                battlefield = item;
             }
-        }).show();
+        });
 
         // 위젯 연결
         tilNickname = findViewById(R.id.til_nickname);
@@ -174,19 +200,16 @@ public class AddInfoActivity extends AppCompatActivity {
 
         termsCheckBox = findViewById(R.id.checkbox_terms);
         privacyCheckBox = findViewById(R.id.checkbox_privacy);
-        locationCheckBox = findViewById(R.id.checkbox_location);
 
         termsBtn = findViewById(R.id.details_terms);
         privacyBtn = findViewById(R.id.details_privacy);
-        locationBtn = findViewById(R.id.details_location);
 
-
-        tieNickname.setFilters(new InputFilter[]{filter});
+        tieNickname.setFilters(new InputFilter[]{filterSearch});
 
         tilNickname.setCounterEnabled(true);
         tilNickname.setCounterMaxLength(10);
         tilDescription.setCounterEnabled(true);
-        tilDescription.setCounterMaxLength(40);
+        tilDescription.setCounterMaxLength(30);
 
         check_duplication = (Button)findViewById(R.id.check_duplication);
         //confirm_possibility = (TextView)findViewById(R.id.confirm_possibility);
@@ -229,6 +252,21 @@ public class AddInfoActivity extends AppCompatActivity {
         });
     }   // end of onCreate()
 
+    public void showAddInfoPopup() {
+        addInfoDialog.setContentView(R.layout.dialog_add_info);
+
+        closePopup = addInfoDialog.findViewById(R.id.close_popup);
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addInfoDialog.dismiss();
+            }
+        });
+
+        addInfoDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        addInfoDialog.show();
+    }   // end of showAddInfoPopup()
+
     public void detailsOnClick(View v) {
         Intent intent = new Intent(this, DescriptionActivity.class);
 
@@ -239,9 +277,9 @@ public class AddInfoActivity extends AppCompatActivity {
             case R.id.details_privacy:
                 intent.putExtra("description", "privacy");
                 break;
-            case R.id.details_location:
-                intent.putExtra("description", "location");
-                break;
+//            case R.id.details_location:
+//                intent.putExtra("description", "location");
+//                break;
         }
         startActivity(intent);
     }   // end of detailsOnClick()
@@ -331,15 +369,14 @@ public class AddInfoActivity extends AppCompatActivity {
     }
 
     private boolean descriptionlengthCheck(){
-        if (tieDescription.getText().toString().length() > 40) {
+        if (tieDescription.getText().toString().length() > 30) {
             return false;
         }
         return true;
     }
 
     private boolean allButtonChecked() {
-        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked() ||
-                !locationCheckBox.isChecked()) {
+        if (!termsCheckBox.isChecked() || !privacyCheckBox.isChecked()) {
             mDialog.dismiss();
             Snackbar.make(mContent, "약관에 동의해주세요.", Snackbar.LENGTH_SHORT).show();
             return false;
@@ -354,7 +391,7 @@ public class AddInfoActivity extends AppCompatActivity {
         }else {
             if (!descriptionlengthCheck()) {
                 mDialog.dismiss();
-                Toast.makeText(AddInfoActivity.this, "40자 이내로 써주세요", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddInfoActivity.this, "30자 이내로 써주세요", Toast.LENGTH_SHORT).show();
             } else {
                 if(!allButtonChecked()){
 
@@ -370,14 +407,17 @@ public class AddInfoActivity extends AppCompatActivity {
                                     return;
                                 }
                             }
+                            mUserRef.child(mFirebaseUser.getUid()).child("battlefield").setValue(battlefield);
                             mUserRef.child(mFirebaseUser.getUid()).child("name").setValue(tieNickname.getText().toString(), new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
                                     if (path != null) {
                                         upload(path);
                                     } else {
                                         inputDes();
+                                    }
+                                    if(mDialog != null && mDialog.isShowing()) {
+                                        mDialog.dismiss();
                                     }
                                     Intent intent = new Intent(AddInfoActivity.this, MainActivity.class);
                                     startActivity(intent);
@@ -472,7 +512,6 @@ public class AddInfoActivity extends AppCompatActivity {
                 mFirebaseDb.getReference().child("profiles").child(mFirebaseUser.getUid()).setValue(galleryDTO);
                 mUserRef.child(mFirebaseUser.getUid()).child("description").setValue(galleryDTO.description);
                 mFirebaseDb.getReference().child("users").child(mFirebaseUser.getUid()).child("profileUrl").setValue(galleryDTO.imageUrl);
-                mDialog.dismiss();
             }
         });
 

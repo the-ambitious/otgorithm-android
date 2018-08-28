@@ -25,27 +25,23 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    /*
-        implementation 'com.google.firebase:firebase-core:16.0.0'
-        implementation 'com.google.firebase:firebase-database:16.0.1'
-        implementation 'com.google.firebase:firebase-storage:16.0.1'
-        implementation 'com.google.firebase:firebase-crash:16.0.1'
-        implementation 'com.google.firebase:firebase-auth:15.1.0'
-        implementation 'com.google.android.gms:play-services-auth:15.0.0'
-    */
+
     implementation 'com.google.firebase:firebase-core:15.0.0'
     implementation 'com.google.firebase:firebase-database:15.0.0'
     implementation 'com.google.firebase:firebase-storage:15.0.0'
     implementation 'com.google.firebase:firebase-crash:15.0.2'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
+
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
     // 페이스북 관련 dependencies
     implementation 'com.facebook.android:facebook-login:[4,5)'
     implementation 'com.android.support:customtabs:27.1.1'
@@ -53,6 +49,7 @@ dependencies {
     implementation('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
+
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //json객체를 자바 오브젝트로 변환시켜줌
@@ -79,6 +76,9 @@ dependencies {
 
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+
+    // Material Spinner
+    implementation 'com.jaredrummler:material-spinner:1.2.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

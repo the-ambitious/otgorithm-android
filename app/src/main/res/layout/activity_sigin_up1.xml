@@ -45,12 +45,13 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp">
 
+<!--
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_image"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:src="@drawable/c" />
-
+-->
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"

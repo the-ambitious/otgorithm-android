@@ -42,7 +42,6 @@
             android:layout_weight="31.5"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="@drawable/province_busan"
             android:weightSum="10">
 
             <TextView
@@ -87,7 +86,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+            ads:adUnitId="ca-app-pub-2000513005580135/1575681990">
         </com.google.android.gms.ads.AdView>
     </LinearLayout>
 

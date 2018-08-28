@@ -68,8 +68,6 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-
-
                 <!-- 프로필 화면 -->
                 <ImageView
                     android:id="@+id/btn_profile"

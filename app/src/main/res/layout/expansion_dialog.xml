@@ -7,7 +7,6 @@
     tools:context=".modules.ExpansionDialog"
     android:background="@color/myGray">
 
-
     <ImageView
         android:id="@+id/image_expansion"
         android:layout_width="match_parent"

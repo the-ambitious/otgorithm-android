@@ -45,23 +45,26 @@ public class DescriptionActivity extends AppCompatActivity {
         String target = intent.getStringExtra("description");
 
         switch (target) {
-            case "copyright":  // origin으로 바꿔야 함; copyright test 중
+            case "origin":
                 textViewToolbarTitle.setText("옷고리즘의 기원");
                 break;
             case "privacy":
                 textViewToolbarTitle.setText("개인정보처리방침");
                 break;
             case "terms":
-                textViewToolbarTitle.setText("이용약관");
+                textViewToolbarTitle.setText("이용 약관");
                 break;
             case "license":
                 textViewToolbarTitle.setText("오픈 소스 라이브러리");
+                break;
+            case "copyright":
+                textViewToolbarTitle.setText("저작물 표시");
                 break;
             case "#contact":
                 textViewToolbarTitle.setText("이메일 문의");
                 break;
             case "notice":
-                textViewToolbarTitle.setText("이메일 문의");
+                textViewToolbarTitle.setText("공지사항");
                 break;
         }
         textViewToolbarTitle.setGravity(View.TEXT_ALIGNMENT_CENTER);

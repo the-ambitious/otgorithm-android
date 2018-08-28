@@ -53,6 +53,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -73,9 +74,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import dmax.dialog.SpotsDialog;
@@ -84,6 +83,8 @@ import me.relex.circleindicator.CircleIndicator;
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     final private int INTERVAL_TIME = 4000;     // milliseconds
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     // admob 전면광고
     private InterstitialAd mInterstitialAd;
@@ -231,6 +232,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });*/
 
         setContentView(R.layout.activity_main);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         mDialog = new SpotsDialog.Builder().setContext(MainActivity.this).build();
         // firebase 인증 객체 얻기
         mAuth = FirebaseAuth.getInstance();
@@ -361,15 +366,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         if (mFirebaseUser != null) {
+            Log.d("왜뜨냐",mFirebaseUser.toString());
             mDialog.show();
             mUserRef.child(mFirebaseUser.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     if(dataSnapshot.exists()){
+                        Log.d("왜뜨냐1",mFirebaseUser.toString());
                         nickName = dataSnapshot.getValue(String.class);
                         sign_in_nickname.setText(MainActivity.nickName);
                         mDialog.dismiss();
                     }else {
+                        Log.d("왜뜨냐2",mFirebaseUser.toString());
+
                         Intent intent = new Intent(MainActivity.this, AddInfoActivity.class);
                         mDialog.dismiss();
                         startActivity(intent);
@@ -965,10 +975,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 // snowrain : 비, 눈 알려주는 것
                 switch (snowrain) {
-                    case 1:     // rainy
+                    case 1:     // weather_rainy_128dp
                         Log.d("날씨","비1");
-                        weather_Icon = R.drawable.rainy;
-                        weathericon.setImageResource(R.drawable.rainy);
+                        weather_Icon = R.drawable.weather_rainy_128dp;
+                        weathericon.setImageResource(R.drawable.weather_rainy_128dp);
                         //weatherdiscrip.setTextColor(Color.WHITE);
                         weatherdiscrip.setText("센치해지는 비내림");
                         weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
@@ -980,16 +990,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         break;
                     case 2:
                         Log.d("날씨","진눈개비1");
-                        weather_Icon = R.drawable.snowrain;
-                        weathericon.setImageResource(R.drawable.snowrain);
+                        weather_Icon = R.drawable.weather_snowy_128dp;
+                        weathericon.setImageResource(R.drawable.weather_snowy_128dp);
                         weatherdiscrip.setText("진눈개비가 내리네요");
                         temper.setText(currenttemper + "도");
                         Log.d("날씨","진눈개비2");
                         break;
                     case 3:
                         Log.d("날씨","눈1");
-                        weather_Icon = R.drawable.snow;
-                        weathericon.setImageResource(R.drawable.snow);
+                        weather_Icon = R.drawable.weather_snowy_128dp;
+                        weathericon.setImageResource(R.drawable.weather_snowy_128dp);
                         weatherdiscrip.setText("눈이 내립니다");
                         temper.setText(currenttemper + "도");
                         Log.d("날씨","눈2");
@@ -1001,22 +1011,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 if (sky == 1) {
                     Log.d("날씨","맑음1");
-                    weather_Icon = R.drawable.sunny;
-                    weathericon.setImageResource(R.drawable.sunny);
+                    weather_Icon = R.drawable.weather_sunny_128dp;
+                    weathericon.setImageResource(R.drawable.weather_sunny_128dp);
                     weatherdiscrip.setText("날이 맑네요");
                     temper.setText(currenttemper + "도");
                     Log.d("날씨","맑음2");
                 } else if (sky == 2 || sky == 3) {
                     Log.d("날씨","구름1");
-                    weather_Icon = R.drawable.weather_cloudy;
-                    weathericon.setImageResource(R.drawable.weather_cloudy);
+                    weather_Icon = R.drawable.weather_cloudy_128dp;
+                    weathericon.setImageResource(R.drawable.weather_cloudy_128dp);
                     weatherdiscrip.setText("구름이 뭉게뭉게");
                     weatherBackground.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.theme_weather));
                     weatherDescription.setText("핫하다 핫해!" + "\n" + "오늘도 더위가 계속되니" + "\n" + "안전 관리에 주의하세요");
                     temper.setText(currenttemper + "°");
                     Log.d("날씨","구름2");
                 } else if (sky == 4){
-                    weathericon.setImageResource(R.drawable.weather_bad_cloudy);
+                    weathericon.setImageResource(R.drawable.weather_bad_cloudy_128dp);
                     weatherdiscrip.setText("먹구름이 가득?!");
                     weatherDescription.setText(
                             "시커먼 구름이 모여 있어요!" + "\n" +
@@ -1048,7 +1058,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 battlefield.setText(list.get(0).getAdminArea());
                 current_time.setText(this_is_the_moment[0] + "년 " + this_is_the_moment[1] + "월 " + this_is_the_moment[2] + "일");
                 current_time.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                if (mFirebaseUser != null) {
+              /*  if (mFirebaseUser != null) {
                     mUserRef.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1062,7 +1072,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         @Override
                         public void onCancelled(DatabaseError databaseError) { }
                     });
-                }
+                }*/
             } catch (Exception e) {
                 e.printStackTrace();
             }

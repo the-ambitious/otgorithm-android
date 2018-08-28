@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
         android:padding="16dp"
-        android:text="아래는 서열 현황에서\n즐겨찾기를 한 장군들입니다."
         android:textAlignment="center" />
 
     <android.support.v7.widget.RecyclerView

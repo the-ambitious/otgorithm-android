@@ -122,6 +122,16 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
             }
         });
 
+        // 사용한 라이선스
+        findPreference("copyright").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
+                intent.putExtra("description", "copyright");
+                startActivity(intent);
+                return false;
+            }
+        });
 
         screen = getPreferenceScreen();
 
