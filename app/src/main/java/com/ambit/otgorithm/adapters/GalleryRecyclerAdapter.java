@@ -127,13 +127,13 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             // 기존에 누른 사람들 기록 유지하기 위함
             myViewHolder.btnLike.setImageResource(R.drawable.cic_thumbs_up_on);
         } else if (mAuth.getCurrentUser() == null) {
-            myViewHolder.btnLike.setVisibility(View.INVISIBLE);
+            myViewHolder.btnLike.setVisibility(View.GONE);
         }
 
         if (mFirebaseUser != null && data.get(position).accusations.containsKey(mFirebaseUser.getUid())) {
             myViewHolder.btnAccustion.setImageResource(R.drawable.cic_siren_on_64dp);
         } else if (mFirebaseUser == null) {
-            myViewHolder.btnAccustion.setVisibility(View.INVISIBLE);
+            myViewHolder.btnAccustion.setVisibility(View.GONE);
         }
 
 
@@ -308,9 +308,9 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
                                                             }else {
                                                                 mGalleryRef.child(infoData.gid).child("accusationCount").setValue(accusationCount+1);
-                                                                Map<String,Boolean> map = new HashMap<>();
+                                                                Map<String,Object> map = new HashMap<>();
                                                                 map.put(mFirebaseUser.getUid(),true);
-                                                                mGalleryRef.child(infoData.gid).child("accusations").setValue(map);
+                                                                mGalleryRef.child(infoData.gid).child("accusations").updateChildren(map);
                                                                 handler.sendEmptyMessage(5);
                                                             }
 
@@ -416,7 +416,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
                 public void onCancelled(DatabaseError databaseError) { }
             });
         } else {
-            myViewHolder.btnFavorites.setVisibility(View.INVISIBLE);
+            myViewHolder.btnFavorites.setVisibility(View.GONE);
         }
     }
 

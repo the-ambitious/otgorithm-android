@@ -209,7 +209,7 @@ public class AddInfoActivity extends AppCompatActivity {
         tilNickname.setCounterEnabled(true);
         tilNickname.setCounterMaxLength(10);
         tilDescription.setCounterEnabled(true);
-        tilDescription.setCounterMaxLength(40);
+        tilDescription.setCounterMaxLength(30);
 
         check_duplication = (Button)findViewById(R.id.check_duplication);
         //confirm_possibility = (TextView)findViewById(R.id.confirm_possibility);
@@ -369,7 +369,7 @@ public class AddInfoActivity extends AppCompatActivity {
     }
 
     private boolean descriptionlengthCheck(){
-        if (tieDescription.getText().toString().length() > 40) {
+        if (tieDescription.getText().toString().length() > 30) {
             return false;
         }
         return true;
@@ -391,7 +391,7 @@ public class AddInfoActivity extends AppCompatActivity {
         }else {
             if (!descriptionlengthCheck()) {
                 mDialog.dismiss();
-                Toast.makeText(AddInfoActivity.this, "40자 이내로 써주세요", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddInfoActivity.this, "30자 이내로 써주세요", Toast.LENGTH_SHORT).show();
             } else {
                 if(!allButtonChecked()){
 

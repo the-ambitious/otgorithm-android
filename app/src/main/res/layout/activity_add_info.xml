@@ -75,7 +75,6 @@
                     android:layout_height="150dp"
                     android:src="@drawable/signup_profile_default" />
 
-
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/profile_upload"
                     android:layout_width="wrap_content"
@@ -178,127 +177,125 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
-            android:orientation="horizontal"
+            android:layout_weight="36"
             android:gravity="center_horizontal"
+            android:orientation="horizontal"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/tie_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="간단한 소개"
-                    android:inputType="textMultiLine"
-                    android:maxLength="40" />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_weight="16"
-            android:weightSum="10">
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_description"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5"
-                    android:paddingBottom="4dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:weightSum="10">
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/tie_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="간단한 소개"
+                        android:inputType="textMultiLine"
+                        android:maxLength="30" />
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:weightSum="10">
 
-                        <CheckBox
-                            android:id="@+id/checkbox_terms"
-                            android:button="@android:color/transparent"
-                            android:background="@drawable/checkbox"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp" />
-
-                        <TextView
-                            android:paddingLeft="8dp"
-                            android:textSize="14sp"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="서비스 이용약관(필수)"/>
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/checkbox_terms"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/checkbox"
+                                android:button="@android:color/transparent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="8dp"
+                                android:text="서비스 이용약관(필수)"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/details_terms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="40dp"
+                            android:background="@drawable/button"
+                            android:onClick="detailsOnClick"
+                            android:text="상세보기"
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
-
-                    <Button
-                        android:id="@+id/details_terms"
-                        android:layout_marginLeft="40dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/button"
-                        android:textColor="#FFFFFF"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:onClick="detailsOnClick"
-                        android:text="상세보기"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5"
-                    android:paddingTop="4dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
 
-                    <CheckBox
-                        android:id="@+id/checkbox_privacy"
-                        android:button="@android:color/transparent"
-                        android:background="@drawable/checkbox"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:paddingLeft="8dp"
-                        android:textSize="14sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="개인정보 수집 이용(필수)"/>
+                            <CheckBox
+                                android:id="@+id/checkbox_privacy"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/checkbox"
+                                android:button="@android:color/transparent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="8dp"
+                                android:text="개인정보 수집 이용(필수)"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/details_privacy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="24dp"
+                            android:background="@drawable/button"
+                            android:onClick="detailsOnClick"
+                            android:text="상세보기"
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
-
-                    <Button
-                        android:id="@+id/details_privacy"
-                        android:background="@drawable/button"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginLeft="24dp"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:onClick="detailsOnClick"
-                        android:text="상세보기"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>
+
 
     <!--
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

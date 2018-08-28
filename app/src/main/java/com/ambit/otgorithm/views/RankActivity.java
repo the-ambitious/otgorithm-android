@@ -90,7 +90,7 @@ public class RankActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rank);
 
         // .initialize(): 배너를 사용하기 위해서 초기화를 해준다. 한번만 실행하면 된다.
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        MobileAds.initialize(this, "ca-app-pub-2000513005580135/1575681990");
         mAdView = findViewById(R.id.adView);
 
         // 초기화만 해서는 배너가 표시되지 않는다. 로드를 해주면 배너가 표시된다.
