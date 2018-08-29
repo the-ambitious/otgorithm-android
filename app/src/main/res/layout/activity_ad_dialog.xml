@@ -40,7 +40,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="32dp"
         ads:adSize="MEDIUM_RECTANGLE"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+        ads:adUnitId="ca-app-pub-2000513005580135/5371178509" />
 
     <LinearLayout
         android:id="@+id/rr"
