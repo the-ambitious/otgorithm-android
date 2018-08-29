@@ -6,15 +6,30 @@ android {
         applicationId "com.ambit.otgorithm"
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 3
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    // 프로젝트에서 Release 버전의 apk 파일 생성을 위한 설정
+    signingConfigs {
+        release {
+            storeFile file("keystore/ambitppl.jks")
+            storePassword "ambit0517" // 스토어 패스워드
+            keyAlias "ambitppl" // 키 별칭명
+            keyPassword "ambit0517" // 키 별칭 패스워드
+        }
+    }
+    // 프로젝트에서 Release 버전의 apk 파일 생성을 위한 설정
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release // 프로젝트에서 Release 버전의 apk 파일 생성을 위한 설정
         }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 

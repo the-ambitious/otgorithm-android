@@ -196,13 +196,13 @@ public class OuterFragment extends android.support.v4.app.Fragment {
                         intent.putExtra("outer", "deckjacket");
                         break;
                     case 12:     // 라이트다운 패딩
-                        Log.d("테스트: ", "수정중");
+                        intent.putExtra("outer", "padding");
                         break;
                     case 13:     // 헤스티아급 패딩
-                        Log.d("테스트: ", "수정중");
+                        intent.putExtra("outer", "padding");
                         break;
                     case 14:     // 히말라야급 패딩
-                        Log.d("테스트: ", "수정중");
+                        intent.putExtra("outer", "padding");
                         break;
                     case 15:     // n3b
                         intent.putExtra("outer", "n3b");

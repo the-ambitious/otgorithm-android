@@ -37,7 +37,7 @@
             android:paddingBottom="6dp"
             android:paddingLeft="8dp"
             android:paddingTop="6dp"
-            android:text="로그인이 필요합니다."
+            android:text="로그인 하기"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="17sp" />
 

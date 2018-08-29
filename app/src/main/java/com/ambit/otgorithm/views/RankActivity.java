@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,6 +88,10 @@ public class RankActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 액티비티 내 캡쳐 방지
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(R.layout.activity_rank);
 
         // .initialize(): 배너를 사용하기 위해서 초기화를 해준다. 한번만 실행하면 된다.

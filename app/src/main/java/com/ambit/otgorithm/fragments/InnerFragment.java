@@ -180,13 +180,13 @@ public class InnerFragment extends android.support.v4.app.Fragment {
                         intent.putExtra("inner", "knit");
                         break;
                     case 8:     // 맨투맨
-                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        intent.putExtra("inner", "sweatshirt");
                         break;
                     case 9:     // 기모 맨투맨
-                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        intent.putExtra("inner", "sweatshirt");
                         break;
                     case 10:     // 네오프렌 맨투맨
-                        Snackbar.make(view, "준비중입니다.", Snackbar.LENGTH_LONG).show();
+                        intent.putExtra("inner", "sweatshirt");
                         break;
                     case 11:     // 가디건(얇은)
                         intent.putExtra("inner", "cardigan");
