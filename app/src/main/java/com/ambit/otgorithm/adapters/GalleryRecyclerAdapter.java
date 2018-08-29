@@ -308,9 +308,9 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
                                                             }else {
                                                                 mGalleryRef.child(infoData.gid).child("accusationCount").setValue(accusationCount+1);
-                                                                Map<String,Boolean> map = new HashMap<>();
+                                                                Map<String,Object> map = new HashMap<>();
                                                                 map.put(mFirebaseUser.getUid(),true);
-                                                                mGalleryRef.child(infoData.gid).child("accusations").setValue(map);
+                                                                mGalleryRef.child(infoData.gid).child("accusations").updateChildren(map);
                                                                 handler.sendEmptyMessage(5);
                                                             }
 
