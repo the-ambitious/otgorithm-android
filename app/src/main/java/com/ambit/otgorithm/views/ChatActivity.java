@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -93,6 +94,10 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 액티비티 내 캡쳐 방지
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(R.layout.content_chat);
 
         /*****************************************************************
