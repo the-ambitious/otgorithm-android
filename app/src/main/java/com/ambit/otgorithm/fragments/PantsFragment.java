@@ -119,7 +119,7 @@ public class PantsFragment extends android.support.v4.app.Fragment {
 
                 switch (position) {
                     case 0:     // 숏팬츠
-                        intent.putExtra("pants", "bottom/shortpants");
+                        intent.putExtra("pants", "shortpants");
                         break;
                     case 1:     // 조거 팬츠
                         intent.putExtra("pants", "joggerpants");
