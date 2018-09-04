@@ -523,11 +523,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Log.d("coco5: ", "오토스크롤뷰페이저");
         // 이미지 url을 저장하는 arrayList
         // viewPager에서 보여줄 item
-        ArrayList<String> bannerList = new ArrayList<String>();
+        ArrayList<Integer> bannerList = new ArrayList<Integer>();
         String SERVER_ROOT_ADDR = getString(R.string.server_root_address);
-        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner1.png");
-        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner2.png");
-        bannerList.add(SERVER_ROOT_ADDR + "/images/banners/banner3.png");
+        bannerList.add(R.drawable.banner1);
+        bannerList.add(R.drawable.banner2);
+        bannerList.add(R.drawable.banner3);
 
         autoViewPager = (AutoScrollViewPager) findViewById(R.id.autoViewPager);
         mIndicator = (CircleIndicator) findViewById(R.id.main_indicator);

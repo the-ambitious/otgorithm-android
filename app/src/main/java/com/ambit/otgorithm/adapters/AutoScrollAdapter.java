@@ -19,14 +19,14 @@ import java.util.ArrayList;
 public class AutoScrollAdapter extends PagerAdapter {
 
     Context context;
-    ArrayList<String> arrayList;
+    ArrayList<Integer> arrayList;
     LayoutInflater inflater;
 
     /**
      * @param inflater : View를 찾을 때 쓰는 인수
      * @param arrayList : Viewpager에 들어갈 Item을 받아올 ArrayList
      */
-    public AutoScrollAdapter(LayoutInflater inflater, ArrayList<String> arrayList, Context context) {
+    public AutoScrollAdapter(LayoutInflater inflater, ArrayList<Integer> arrayList, Context context) {
         this.inflater = inflater;
         this.arrayList = arrayList;
         this.context = context;
