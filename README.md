@@ -3,6 +3,10 @@ Otgorithm is a smart coordinator application considering weather conditions.
 
 
 
+:tophat: :necktie: :running_shirt_with_sash: :jeans: :mans_shoe: :closed_umbrella:
+
+
+
 ## Install
 Otgorithm is available in Google Play Store.
 
