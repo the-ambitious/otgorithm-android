@@ -1,4 +1,7 @@
 # Otgorithm
+
+![sponsors-opening](https://img.shields.io/badge/sponsors-opening-brightgreen)
+
 Otgorithm is a smart coordinator application considering weather conditions.
 
 
